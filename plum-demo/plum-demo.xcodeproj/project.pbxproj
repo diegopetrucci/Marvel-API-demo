@@ -18,6 +18,7 @@
 		6C02648C248590C2002EE69A /* SuperheroList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648B248590C2002EE69A /* SuperheroList.swift */; };
 		6C02648E248590D4002EE69A /* SuperheroCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648D248590D4002EE69A /* SuperheroCell.swift */; };
 		6C026490248590FB002EE69A /* Superhero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648F248590FB002EE69A /* Superhero.swift */; };
+		6C6FE3D72485972900709EAF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6FE3D62485972900709EAF /* SnapshotTesting */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C6FE3D72485972900709EAF /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +171,9 @@
 				6C02647C24857192002EE69A /* PBXTargetDependency */,
 			);
 			name = "plum-demoTests";
+			packageProductDependencies = (
+				6C6FE3D62485972900709EAF /* SnapshotTesting */,
+			);
 			productName = "plum-demoTests";
 			productReference = 6C02647A24857192002EE69A /* plum-demoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -201,6 +206,9 @@
 				Base,
 			);
 			mainGroup = 6C02645B2485718F002EE69A;
+			packageReferences = (
+				6C6FE3D52485972900709EAF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			productRefGroup = 6C0264652485718F002EE69A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -501,6 +509,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6C6FE3D52485972900709EAF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.7.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6C6FE3D62485972900709EAF /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C6FE3D52485972900709EAF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6C02645C2485718F002EE69A /* Project object */;
 }

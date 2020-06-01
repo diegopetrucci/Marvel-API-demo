@@ -3,7 +3,7 @@ import XCTest
 import struct SwiftUI.Color
 @testable import plum_demo
 
-final class SuperheroListSnapshotTests: XCTestCase {
+final class MySquadViewSnapshotTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
@@ -11,7 +11,7 @@ final class SuperheroListSnapshotTests: XCTestCase {
     }
 
     func test_default() {
-        let superheroes: [Superhero] = [
+        let members: [Superhero] = [
             .fixture(),
             .fixture(),
             .fixture(),
@@ -23,10 +23,8 @@ final class SuperheroListSnapshotTests: XCTestCase {
         ]
 
         assertSnapshot(
-            matching: SuperheroList(
-                superheroes: superheroes,
-                cellBackgroundColor: Color(red: 54 / 255, green: 59 / 255, blue: 69 / 255)
-            ),
+            matching: MySquadView(members: members)
+                .background(Color(red: 54 / 255, green: 59 / 255, blue: 69 / 255)),
             as: .image()
         )
     }

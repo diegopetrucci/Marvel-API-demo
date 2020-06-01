@@ -18,6 +18,8 @@
 		6C02648C248590C2002EE69A /* SuperheroList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648B248590C2002EE69A /* SuperheroList.swift */; };
 		6C02648E248590D4002EE69A /* SuperheroCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648D248590D4002EE69A /* SuperheroCell.swift */; };
 		6C026490248590FB002EE69A /* Superhero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648F248590FB002EE69A /* Superhero.swift */; };
+		6C6A386C2485A7230047474C /* MySquadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386B2485A7230047474C /* MySquadView.swift */; };
+		6C6A386E2485AC5F0047474C /* MySquadViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */; };
 		6C6FE3D72485972900709EAF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6FE3D62485972900709EAF /* SnapshotTesting */; };
 		6C6FE3DA2485976600709EAF /* SuperheroCellSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6FE3D92485976600709EAF /* SuperheroCellSnapshotTests.swift */; };
 		6C6FE3DC2485986400709EAF /* SnapshotTesting+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6FE3DB2485986400709EAF /* SnapshotTesting+SwiftUI.swift */; };
@@ -52,6 +54,8 @@
 		6C02648B248590C2002EE69A /* SuperheroList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroList.swift; sourceTree = "<group>"; };
 		6C02648D248590D4002EE69A /* SuperheroCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroCell.swift; sourceTree = "<group>"; };
 		6C02648F248590FB002EE69A /* Superhero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Superhero.swift; sourceTree = "<group>"; };
+		6C6A386B2485A7230047474C /* MySquadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadView.swift; sourceTree = "<group>"; };
+		6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadViewSnapshotTests.swift; sourceTree = "<group>"; };
 		6C6FE3D92485976600709EAF /* SuperheroCellSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroCellSnapshotTests.swift; sourceTree = "<group>"; };
 		6C6FE3DB2485986400709EAF /* SnapshotTesting+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnapshotTesting+SwiftUI.swift"; sourceTree = "<group>"; };
 		6C6FE3DD248598E000709EAF /* SuperheroListSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroListSnapshotTests.swift; sourceTree = "<group>"; };
@@ -142,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				6C026489248590A3002EE69A /* RootView.swift */,
+				6C6A386B2485A7230047474C /* MySquadView.swift */,
 				6C02648B248590C2002EE69A /* SuperheroList.swift */,
 				6C02648D248590D4002EE69A /* SuperheroCell.swift */,
 				6C6FE3D82485974900709EAF /* SnapshotTests */,
@@ -153,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				6C6FE3DF2485997700709EAF /* RootViewSnapshotTests.swift */,
+				6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */,
 				6C6FE3DD248598E000709EAF /* SuperheroListSnapshotTests.swift */,
 				6C6FE3D92485976600709EAF /* SuperheroCellSnapshotTests.swift */,
 			);
@@ -286,6 +292,7 @@
 				6C026490248590FB002EE69A /* Superhero.swift in Sources */,
 				6C02648A248590A3002EE69A /* RootView.swift in Sources */,
 				6C0264682485718F002EE69A /* AppDelegate.swift in Sources */,
+				6C6A386C2485A7230047474C /* MySquadView.swift in Sources */,
 				6C02646A2485718F002EE69A /* SceneDelegate.swift in Sources */,
 				6C02648C248590C2002EE69A /* SuperheroList.swift in Sources */,
 				6C02646C2485718F002EE69A /* ContentView.swift in Sources */,
@@ -303,6 +310,7 @@
 				6C6FE3DE248598E000709EAF /* SuperheroListSnapshotTests.swift in Sources */,
 				6C6FE3E02485997700709EAF /* RootViewSnapshotTests.swift in Sources */,
 				6C6FE3DC2485986400709EAF /* SnapshotTesting+SwiftUI.swift in Sources */,
+				6C6A386E2485AC5F0047474C /* MySquadViewSnapshotTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

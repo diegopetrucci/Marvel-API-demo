@@ -22,7 +22,10 @@ final class ContentViewSnapshotTests: XCTestCase {
         ]
 
         assertSnapshot(
-            matching: ContentView(superheroes: superheroes),
+            matching: ContentView(
+                superheroes: superheroes,
+                mySquadMembers: superheroes
+            ),
             as: .image()
         )
     }

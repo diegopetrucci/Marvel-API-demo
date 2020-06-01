@@ -15,8 +15,13 @@ Unit and snapshot tests are located in the same folder as to features. There's a
 For bigger codebases, there's an argument to be made to create a separate target to make the engineer able to run snapshot tests independently from unit. They run fast in this demo app, so I've found no need to do so at the moment.
 
 # To explain
-* 
+* no localization
 
+# TODO
+* move swift preview assets to that folder
+* extract default spacing 16 to constant
+* extract background color into environment
+* odd spacing issues (added by the scrollview?)
 
 # Bugs
 * navigation bar should be color-able

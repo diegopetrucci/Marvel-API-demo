@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,6 +18,7 @@
 		6C02648C248590C2002EE69A /* SuperheroList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648B248590C2002EE69A /* SuperheroList.swift */; };
 		6C02648E248590D4002EE69A /* SuperheroCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648D248590D4002EE69A /* SuperheroCell.swift */; };
 		6C026490248590FB002EE69A /* Superhero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648F248590FB002EE69A /* Superhero.swift */; };
+		6C026495248593E9002EE69A /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 6C026494248593E9002EE69A /* SnapshotTesting */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C026495248593E9002EE69A /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -151,6 +153,9 @@
 			dependencies = (
 			);
 			name = "plum-demo";
+			packageProductDependencies = (
+				6C026494248593E9002EE69A /* SnapshotTesting */,
+			);
 			productName = "plum-demo";
 			productReference = 6C0264642485718F002EE69A /* plum-demo.app */;
 			productType = "com.apple.product-type.application";
@@ -201,6 +206,9 @@
 				Base,
 			);
 			mainGroup = 6C02645B2485718F002EE69A;
+			packageReferences = (
+				6C026493248593E9002EE69A /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			productRefGroup = 6C0264652485718F002EE69A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -501,6 +509,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6C026493248593E9002EE69A /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.7.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6C026494248593E9002EE69A /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C026493248593E9002EE69A /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 6C02645C2485718F002EE69A /* Project object */;
 }

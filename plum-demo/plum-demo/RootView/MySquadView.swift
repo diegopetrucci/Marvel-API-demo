@@ -4,12 +4,12 @@ struct MySquadView: View {
     let members: [Superhero]
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("My Squad")
-                    .foregroundColor(.white)
-                    .font(Font.system(size: 20))
-                    .fontWeight(.semibold)
+        VStack(alignment: .leading, spacing: 16) {
+            Text("My Squad")
+                .foregroundColor(.white)
+                .font(Font.system(size: 20))
+                .fontWeight(.semibold)
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(members, id: \.self) { member in
                         VStack(spacing: 4) {
@@ -24,10 +24,10 @@ struct MySquadView: View {
                                 .lineLimit(2)
                                 .multilineTextAlignment(.center)
                         }
-                        // I've chosen here not to set a maxmium width
-                        // to avoid problems when the user has
-                        // set a bigger text size
-                        .frame(idealWidth: 64)
+                            // I've chosen here not to set a maxmium width
+                            // to avoid problems when the user has
+                            // set a bigger text size
+                            .frame(idealWidth: 64)
                     }
                 }
             }

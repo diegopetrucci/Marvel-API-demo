@@ -2,7 +2,7 @@ import SnapshotTesting
 import XCTest
 @testable import plum_demo
 
-final class ContentViewSnapshotTests: XCTestCase {
+final class RootContainerViewSnapshotTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
@@ -22,7 +22,7 @@ final class ContentViewSnapshotTests: XCTestCase {
         ]
 
         assertSnapshot(
-            matching: ContentView(
+            matching: RootContainerView(
                 superheroes: superheroes,
                 mySquadMembers: superheroes
             ),

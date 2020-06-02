@@ -28,6 +28,11 @@ For bigger codebases, there's an argument to be made to create a separate target
 #### Code comments
 I tend not to like code comments, as they usually mean some logic is overly complicated and could be either broken down into smaller parts or rewritten altoghether. However, there are some exceptions, like dealing with an external API and having to explain its behaviour. For example, considering HealthKit, one might introduce a layer to simplify it or to make it more generic, and in these case I've found code comments to be of great help. We can change our code to make it clearer, so less need of a comment, but we cannot change what we receive from our dependencies, so more need for explanations.
 
+#### Git strategy
+This project has been developed in something that might resemble git-flow, however I do think there are improvements to it that can be made. In my experience long-lived feature branches tend to eventually become a nightmare to merge back due to conflicts, and continuously merging from the main branch pollutes the branch history. Hence, I prefer to merge small and often, even if that means merging incomplete features. This strategy definitely makes it easier for the owner of the changes to be faster, and with less overhead, and at the same time the reviewer's job is eased by smaller PRs. There are, however, downsides to this, like having to hide incomplete code behind feature switches and the possibility of having it linger theoretically forever as the work might be forgotten or deprioritised. I've especially noticed the latter, but I do think that at the end of the day it might be a smaller price to pay compared to the alternatives.
+
+I also tend to push many working commits for a specific branch/PR. While it might make the PR page longer to read, it helps a lot with being able to revert to previous changes or drop some. And in addition to that, I prefer to squash the changes on a PR, so that the tree history remains clean (and in any case the PR history is kept in the commit description). 
+
 # To explain
 * no localization
 

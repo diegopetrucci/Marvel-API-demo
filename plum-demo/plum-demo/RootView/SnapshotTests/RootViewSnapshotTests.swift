@@ -27,7 +27,8 @@ final class RootViewSnapshotTests: XCTestCase {
                 superheroes: superheroes,
                 mySquadMembers: superheroes,
                 backgroundColor: Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255)
-            ),
+            )
+                .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255)),
             as: .image()
         )
     }

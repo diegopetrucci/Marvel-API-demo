@@ -30,7 +30,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             Superhero.fixture()
         ]
 
-        let contentView = ContentView( // TODO
+        let contentView = RootContainerView( // TODO
             superheroes: superheroes,
             mySquadMembers: squadMembers
         )

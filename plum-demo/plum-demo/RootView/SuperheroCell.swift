@@ -7,6 +7,9 @@ struct SuperheroCell: View {
     var body: some View {
         HStack(spacing: 16) {
             Image(uiImage: superhero.image)
+                // This is to prevent NavigationView to
+                // override the Image's content color
+                .renderingMode(.original)
                 .resizable()
                 .frame(width: 80, height: 80)
                 .clipShape(Circle())

@@ -4,7 +4,7 @@ struct RootView: View {
     let superheroes: [Superhero]
     let mySquadMembers: [Superhero]
     let backgroundColor: Color
-
+    
     var body: some View {
         ScrollView {
             Image(uiImage: UIImage(named: "marvel_logo")!) // TODO
@@ -18,10 +18,11 @@ struct RootView: View {
                 .background(backgroundColor)
             SuperheroList(
                 superheroes: superheroes,
+                backgroundColor: backgroundColor,
                 cellBackgroundColor: Color(red: 54 / 255, green: 59 / 255, blue: 69 / 255)
             )
-                .background(backgroundColor)
         }
+        .background(backgroundColor)
     }
 }
 

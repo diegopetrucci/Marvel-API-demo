@@ -41,7 +41,16 @@ I also tend to push many working commits for a specific branch/PR. While it migh
 * extract default spacing 16 to constant
 * extract background color into environment
 * odd spacing issues (added by the scrollview?)
+* highlighted states (buttons, cells, etc.)
+* shadows
+* /255 colors
+* fix hero detail button width in bigger phones
+* fix hero detail hero name leading 
+* fix navigation color in hero detail
+* add white margin to last appearances image
+* add scrollview to detail view
 
 # Bugs
 * navigation bar should be color-able
 * the divider just below the marvel logo does not go edge to edge
+* navigation link pushes twice https://stackoverflow.com/questions/57946197/navigationlink-on-swiftui-pushes-view-twice

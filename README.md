@@ -64,6 +64,22 @@ Currently, `Remote` is not being tested. This is due to time constraints and to 
 
 UI tests are missing, too, due to time constraints. To be honest I have never set up UI tests infrastructure from scratch — it might take long, or not, I do not know. I've had experience in adding new tests similar to pre-existing ones and modifiying others, but not yet setting them up. I would love to learn how to do it, but in fairness to the constraints of the project (I can't take too much time to solve it!) I've decided to skip them.
 
+## External libraries
+This project uses the Swift Package Manager to import third-party dependencies. I've found the SPM to be pretty easy to use, despite some quirks and limitations.
+
+On to the libraries.
+
+#### Then
+A micro-library that helps a lot with unidirectional data flow. It solves the problem of having to change just one (or a few) property in an object but not wanting to manually re-populate the entirety of the fields. This is especially useful when returning a new state, based on the previous one and an event, in the reducers.
+
+There was no strict need to import this, I'm just using one function, but I like to sort of "give back" by not importing the code directly.
+
+#### Disk
+While networking, or at least what it's needed for this kind of project, is relative simple to write manually, I cannot say the same for writing to disk, as it is full of gotchas and edge cases. While this demo has quite a few unit and snapshot tests for it's core logic, I do not believe writing unit tests for the low-level intricacies of persisting to disk is a good use of time for the scope of the project. Hence, I've decided to use `Disk` to simplify this. In any case the persistance layer is abstracted by the various `DataProvider`s, so if need be we can move to different libraries.
+
+#### SnapshotTesting
+[PointFree](https://github.com/pointfreeco/swift-snapshot-testing)'s snapshot testing library. I use it because it's simple and yet powerful enough for my needs. It currently does not support SwiftUI but it was quite simple to add that capability (see `SnapshotTesting+SwiftUI`)
+
 ## To explain
 * no localization
 

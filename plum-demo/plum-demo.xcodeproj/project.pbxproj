@@ -36,6 +36,8 @@
 		6C5586A324884CB1004D9480 /* CharacterResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5586A224884CB1004D9480 /* CharacterResponse.swift */; };
 		6C5586A5248853F6004D9480 /* CharacterResponse+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5586A4248853F6004D9480 /* CharacterResponse+Fixture.swift */; };
 		6C5586AD24885691004D9480 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 6C5586AC24885691004D9480 /* Then */; };
+		6C5586B0248859CF004D9480 /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5586AF248859CF004D9480 /* Feedback.swift */; };
+		6C5586B2248859E6004D9480 /* Publishers+System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5586B1248859E6004D9480 /* Publishers+System.swift */; };
 		6C6A386C2485A7230047474C /* MySquadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386B2485A7230047474C /* MySquadView.swift */; };
 		6C6A386E2485AC5F0047474C /* MySquadViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */; };
 		6C6FE3D72485972900709EAF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6FE3D62485972900709EAF /* SnapshotTesting */; };
@@ -100,6 +102,8 @@
 		6C55869F24883648004D9480 /* ComicDTO+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ComicDTO+Fixture.swift"; sourceTree = "<group>"; };
 		6C5586A224884CB1004D9480 /* CharacterResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterResponse.swift; sourceTree = "<group>"; };
 		6C5586A4248853F6004D9480 /* CharacterResponse+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterResponse+Fixture.swift"; sourceTree = "<group>"; };
+		6C5586AF248859CF004D9480 /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
+		6C5586B1248859E6004D9480 /* Publishers+System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+System.swift"; sourceTree = "<group>"; };
 		6C6A386B2485A7230047474C /* MySquadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadView.swift; sourceTree = "<group>"; };
 		6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadViewSnapshotTests.swift; sourceTree = "<group>"; };
 		6C6FE3D92485976600709EAF /* SuperheroCellSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroCellSnapshotTests.swift; sourceTree = "<group>"; };
@@ -240,6 +244,7 @@
 		6C55868324881207004D9480 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				6C5586AE248859AE004D9480 /* Feedback */,
 				6C5586852488122E004D9480 /* Misc.swift */,
 				6C55868B2488150D004D9480 /* Fixtures */,
 			);
@@ -279,6 +284,15 @@
 				6C55869024882132004D9480 /* CharacterDetailDTO.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		6C5586AE248859AE004D9480 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				6C5586AF248859CF004D9480 /* Feedback.swift */,
+				6C5586B1248859E6004D9480 /* Publishers+System.swift */,
+			);
+			path = Feedback;
 			sourceTree = "<group>";
 		};
 		6C6FE3D82485974900709EAF /* SnapshotTests */ = {
@@ -394,6 +408,7 @@
 			packageReferences = (
 				6C6FE3D52485972900709EAF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				6C55867D248807AD004D9480 /* XCRemoteSwiftPackageReference "CryptoSwift" */,
+				6C5586AB24885691004D9480 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 6C0264652485718F002EE69A /* Products */;
 			projectDirPath = "";
@@ -455,7 +470,9 @@
 				6CE7AEF22486E074000B8B41 /* PreviousIssueView.swift in Sources */,
 				6C55867A2487FA72004D9480 /* API.swift in Sources */,
 				6C55867C2487FDFD004D9480 /* Remote.swift in Sources */,
+				6C5586B0248859CF004D9480 /* Feedback.swift in Sources */,
 				6CE7AEF42486E12A000B8B41 /* HeroDetail.swift in Sources */,
+				6C5586B2248859E6004D9480 /* Publishers+System.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

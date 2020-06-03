@@ -97,6 +97,7 @@ While networking, or at least what it's needed for this kind of project, is rela
 * add white margin to last appearances image
 * add scrollview to detail view
 * automatic retrying of failed calls?
+* pagination?
 
 # Bugs
 * navigation bar should be color-able

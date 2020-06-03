@@ -143,10 +143,10 @@ struct RemoteFixture: RemoteProtocol {
         self.type = type
     }
 
-    func load<T: Decodable>(from url: URL, jsonDecoder: JSONDecoder) -> AnyPublisher<T, RemoteError> {
+    func load<T: Decodable>(from request: URLRequest, jsonDecoder: JSONDecoder) -> AnyPublisher<T, RemoteError> {
         switch type {
         case .characters:
-            let characters: [Character] = [.fixture(), .fixture(), .fixture()]
+            let characters: [CharacterDTO] = [.fixture(), .fixture(), .fixture()]
 
             return Just(characters as? T)
                 .compactMap(identity)

@@ -3,16 +3,22 @@ import Combine
 import class UIKit.UIImage
 
 protocol RemoteProtocol {
-    func load<T: Decodable>(from url: URL, jsonDecoder: JSONDecoder) -> AnyPublisher<T, RemoteError>
+    func load<T: Decodable>(from request: URLRequest, jsonDecoder: JSONDecoder) -> AnyPublisher<T, RemoteError>
     func loadData(from imageURL: URL) -> AnyPublisher<Data, RemoteError>
 }
 
 struct Remote: RemoteProtocol {
+    private let urlSession: URLSession
+
+    init(urlSession: URLSession = URLSession.shared) {
+        self.urlSession = urlSession
+    }
+
     func load<T: Decodable>(
-        from url: URL,
+        from request: URLRequest,
         jsonDecoder: JSONDecoder // TODO add back = JSONDecoder()
     ) -> AnyPublisher<T, RemoteError> {
-        URLSession.shared.dataTaskPublisher(for: URLRequest(url: url))
+        urlSession.dataTaskPublisher(for: request)
             .mapError { RemoteError.error($0.localizedDescription) }
             .tryMap(validStatusCode)
             .decode(type: T.self, decoder: jsonDecoder)
@@ -22,7 +28,7 @@ struct Remote: RemoteProtocol {
     }
 
     func loadData(from imageURL: URL) -> AnyPublisher<Data, RemoteError> {
-        URLSession.shared.dataTaskPublisher(for: URLRequest(url: imageURL))
+        urlSession.dataTaskPublisher(for: URLRequest(url: imageURL))
             .mapError { RemoteError.error($0.localizedDescription) }
             .tryMap(validStatusCode)
             .mapError { ($0 as? RemoteError) ?? .unknown } // TODO what is this error

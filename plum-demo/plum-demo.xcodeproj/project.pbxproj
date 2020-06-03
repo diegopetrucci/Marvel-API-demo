@@ -18,6 +18,7 @@
 		6C02648C248590C2002EE69A /* SuperheroList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648B248590C2002EE69A /* SuperheroList.swift */; };
 		6C02648E248590D4002EE69A /* SuperheroCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648D248590D4002EE69A /* SuperheroCell.swift */; };
 		6C026490248590FB002EE69A /* Superhero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648F248590FB002EE69A /* Superhero.swift */; };
+		6C55867F248807AD004D9480 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6C55867E248807AD004D9480 /* CryptoSwift */; };
 		6C6A386C2485A7230047474C /* MySquadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386B2485A7230047474C /* MySquadView.swift */; };
 		6C6A386E2485AC5F0047474C /* MySquadViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */; };
 		6C6FE3D72485972900709EAF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6FE3D62485972900709EAF /* SnapshotTesting */; };
@@ -92,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C55867F248807AD004D9480 /* CryptoSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +236,9 @@
 			dependencies = (
 			);
 			name = "plum-demo";
+			packageProductDependencies = (
+				6C55867E248807AD004D9480 /* CryptoSwift */,
+			);
 			productName = "plum-demo";
 			productReference = 6C0264642485718F002EE69A /* plum-demo.app */;
 			productType = "com.apple.product-type.application";
@@ -611,6 +616,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6C55867D248807AD004D9480 /* XCRemoteSwiftPackageReference "CryptoSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/krzyzanowskim/CryptoSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.1;
+			};
+		};
 		6C6FE3D52485972900709EAF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing.git";
@@ -622,6 +635,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6C55867E248807AD004D9480 /* CryptoSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C55867D248807AD004D9480 /* XCRemoteSwiftPackageReference "CryptoSwift" */;
+			productName = CryptoSwift;
+		};
 		6C6FE3D62485972900709EAF /* SnapshotTesting */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6C6FE3D52485972900709EAF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;

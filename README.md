@@ -14,10 +14,43 @@ The code is organized via a number of smaller PRs, to be read sequentially. I've
 
 Smaller PRs for me mean less code to be evaluated, and even better if they only pertain a specific domain — for example, some UI changes or a backend model. This, however, increases the possiblity of the reviewer losing sense of the big picture. In my experience this is not a big problem if the app's architecture is standardized, or close to, but in case it's not it would be very helpful to have a chat about the architecture first, and when implemented, a catchup overview to fill in possible holes in the reviewer's context. Obviously this all depends on the size of the change, a 300 lines change is not the same as this project, where concepts like reactive programming and state machines might be introduced.
 
+Another note on the PRs: I've gone with UI first instead of setting up the infrastructure (FSMs, networking, persistence, etc) immediately. For this particular project it's mostly because I did not want to pollute the PRs too much, but in general I quite like to go UI first as it forces me to think about what the views need, and not more than that — if the actual backend response contains more information, well, the view models have to strip it and map it. This is obviously truer for bigger responses that are not necesseraly geared towards UI, but if there is a backend-for-fronted-like middleware between the two this tends to be less applicable.  
+
 
 ## Technical explanations
-#### Stubs, SwiftUI Previews, and #if DEBUGs
 
+#### Xcode project structure
+Files on Xcode are divided by UI, data provider, networking, persistance, and utils:
+
+* UI: views, view models, view-specific objects (to map DTOs), and tests
+* DataProvider: data provider (mediator between network and persistance), tests
+* Networking: DTOs and responses, the marvel-specific API, a generic object (Remote) that interfaces with URLSession, and tests
+* Persistance: persisters to wrap Disk API, tests
+* Utilites: various helpers
+#### Networking
+Networking should be pretty much self-explanatory. It is set up to be as light as possible, with the usual protocol-first approach. `Remote` takes care of the `URLSession` API, errors, and decoding the result — all very coincise thanks to Combine.
+
+Downloading images, too, is done in a native way, and it uses a little helper wrapper `AsyncImage` to fetch the image upon request. It does not support cancelling, but that can be added in a future revision.
+
+I have not added support to automatic retrying if the network is unreachable, but it shouln't be a massive effort due to the nature of the architecture.
+
+#### Persistance
+While networking is pretty much "clean", as in it does not introduce external libraries, I've chosen to do it for persistance to disk. I use the aptly named `Disk` library, and not Realm, just because I wanted the lightest possible dependency while still being able to avoid the many edge cases of persisting data to disk.
+
+Speaking of Realm, I am not sure if the API is still the same, but I tried it when I was learning iOS development and it was forcing upon the client to use `class`es instead of `struct`s. Various problems with, one, mutating the same object from different places, and two, trying to read the same object from different threads have burned into my soul the importance of value types and the avoidance of race conditions. I did not really what those terms meant at the time, but I intuitevely got the pain associated with them. :)
+
+#### State machines and unidirectional data flow
+I've already briefly touched on this in the intro, but it might be worth a few more words.
+
+State machines to me are one of those ideas that after being exposed to them they kind of make you go like "wow, how did I live before this". Maybe it's due to not having had a computer science background, so the term and the ideas were new to me until they got introduced in my previous codebase. I enjoy a lot being able to craft a state in such a way that changes can happen only so far as to make _correct_ states, making incorrect one impossibles to reach (bugs aside…). Apple does _some_ of this in its code examples when it uses enums to represent view states, but more can be done.
+
+Unidirectional data flow, too, is really nice to work with. Just like state machines it feel incredibly restrictive at first, but that goes away with experience. Having only one place where state can be changed, the View Model, means containing a good variety of bugs that would have happened otherwise.
+
+SwiftUI generally works well with these two, but it does break down when having to switch over enums and working with optionals. However support for both is coming soon, so the ugly workarounds that I had to implement for them to work are luckly getting deprecated shortly.
+
+Regarding the concrete implementation of the FSMs and UDF, I have borrowed Vadym Bulavin's implementation, which while not extensive is good enough for a project this size. The PointFree guys have done some very good work on theirs, too, and it's interesting how they've decided to go with a single composable store (I do however wonder if it scales well with bigger apps, it would be nice to test it).  
+
+#### Stubs, SwiftUI Previews, and #if DEBUGs
 There are a lot of `if #DEBUG`s scattered in the code. They mainly serve the purpose of providing stub data (fixtures) for tests and SwiftUI Previews. Ideally, these should not live in the same target as the "live" code, but instead be stored in the unit tests target. However, due to SwiftUI Previews not following this principle, we cannot really do that for now — hence, they being declared right next to the object.
 
 #### Tests next to (actually, inside!) the features
@@ -31,12 +64,34 @@ I tend not to like code comments, as they usually mean some logic is overly comp
 #### Git strategy
 This project has been developed in something that might resemble git-flow, however I do think there are improvements to it that can be made. In my experience long-lived feature branches tend to eventually become a nightmare to merge back due to conflicts, and continuously merging from the main branch pollutes the branch history. Hence, I prefer to merge small and often, even if that means merging incomplete features. This strategy definitely makes it easier for the owner of the changes to be faster, and with less overhead, and at the same time the reviewer's job is eased by smaller PRs. There are, however, downsides to this, like having to hide incomplete code behind feature switches and the possibility of having it linger theoretically forever as the work might be forgotten or deprioritised. I've especially noticed the latter, but I do think that at the end of the day it might be a smaller price to pay compared to the alternatives.
 
-I also tend to push many working commits for a specific branch/PR. While it might make the PR page longer to read, it helps a lot with being able to revert to previous changes or drop some. And in addition to that, I prefer to squash the changes on a PR, so that the tree history remains clean (and in any case the PR history is kept in the commit description). 
+I also tend to push many working commits for a specific branch/PR. While it might make the PR page longer to read, it helps a lot with being able to revert to previous changes or drop some. And in addition to that, I prefer to squash the changes on a PR, so that the tree history remains clean (and in any case the PR history is kept in the commit description).
 
-# To explain
+## What is missing
+#### Tests
+Currently, `Remote` is not being tested. This is due to time constraints and to the fact that I've not yet delved into mocking `URLSession` for Combine.
+
+UI tests are missing, too, due to time constraints. To be honest I have never set up UI tests infrastructure from scratch — it might take long, or not, I do not know. I've had experience in adding new tests similar to pre-existing ones and modifiying others, but not yet setting them up. I would love to learn how to do it, but in fairness to the constraints of the project (I can't take too much time to solve it!) I've decided to skip them.
+
+## External libraries
+This project uses the Swift Package Manager to import third-party dependencies. I've found the SPM to be pretty easy to use, despite some quirks and limitations.
+
+On to the libraries.
+
+#### Then
+A micro-library that helps a lot with unidirectional data flow. It solves the problem of having to change just one (or a few) property in an object but not wanting to manually re-populate the entirety of the fields. This is especially useful when returning a new state, based on the previous one and an event, in the reducers.
+
+There was no strict need to import this, I'm just using one function, but I like to sort of "give back" by not importing the code directly.
+
+#### Disk
+While networking, or at least what it's needed for this kind of project, is relative simple to write manually, I cannot say the same for writing to disk, as it is full of gotchas and edge cases. While this demo has quite a few unit and snapshot tests for it's core logic, I do not believe writing unit tests for the low-level intricacies of persisting to disk is a good use of time for the scope of the project. Hence, I've decided to use `Disk` to simplify this. In any case the persistance layer is abstracted by the various `DataProvider`s, so if need be we can move to different libraries.
+
+#### SnapshotTesting
+[PointFree](https://github.com/pointfreeco/swift-snapshot-testing)'s snapshot testing library. I use it because it's simple and yet powerful enough for my needs. It currently does not support SwiftUI but it was quite simple to add that capability (see `SnapshotTesting+SwiftUI`)
+
+## To explain
 * no localization
 
-# TODO
+## TODO
 * move swift preview assets to that folder
 * extract default spacing 16 to constant
 * extract background color into environment
@@ -49,8 +104,11 @@ I also tend to push many working commits for a specific branch/PR. While it migh
 * fix navigation color in hero detail
 * add white margin to last appearances image
 * add scrollview to detail view
+* automatic retrying of failed calls?
+* pagination
 
 # Bugs
 * navigation bar should be color-able
 * the divider just below the marvel logo does not go edge to edge
 * navigation link pushes twice https://stackoverflow.com/questions/57946197/navigationlink-on-swiftui-pushes-view-twice
+* if image not found image is shown, it gets truncated

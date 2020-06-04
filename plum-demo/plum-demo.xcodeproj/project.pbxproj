@@ -43,6 +43,7 @@
 		6C5586B2248859E6004D9480 /* Publishers+System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5586B1248859E6004D9480 /* Publishers+System.swift */; };
 		6C6A386C2485A7230047474C /* MySquadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386B2485A7230047474C /* MySquadView.swift */; };
 		6C6A386E2485AC5F0047474C /* MySquadViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */; };
+		6C6DDFAD248995F1000AD7A0 /* Disk in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6DDFAC248995F1000AD7A0 /* Disk */; };
 		6C6FE3D72485972900709EAF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6FE3D62485972900709EAF /* SnapshotTesting */; };
 		6C6FE3DA2485976600709EAF /* SuperheroCellSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6FE3D92485976600709EAF /* SuperheroCellSnapshotTests.swift */; };
 		6C6FE3DC2485986400709EAF /* SnapshotTesting+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6FE3DB2485986400709EAF /* SnapshotTesting+SwiftUI.swift */; };
@@ -137,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6C55867F248807AD004D9480 /* CryptoSwift in Frameworks */,
+				6C6DDFAD248995F1000AD7A0 /* Disk in Frameworks */,
 				6C5586AD24885691004D9480 /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -368,6 +370,7 @@
 			packageProductDependencies = (
 				6C55867E248807AD004D9480 /* CryptoSwift */,
 				6C5586AC24885691004D9480 /* Then */,
+				6C6DDFAC248995F1000AD7A0 /* Disk */,
 			);
 			productName = "plum-demo";
 			productReference = 6C0264642485718F002EE69A /* plum-demo.app */;
@@ -426,6 +429,7 @@
 				6C6FE3D52485972900709EAF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				6C55867D248807AD004D9480 /* XCRemoteSwiftPackageReference "CryptoSwift" */,
 				6C5586AB24885691004D9480 /* XCRemoteSwiftPackageReference "Then" */,
+				6C6DDFAB248995F1000AD7A0 /* XCRemoteSwiftPackageReference "Disk" */,
 			);
 			productRefGroup = 6C0264652485718F002EE69A /* Products */;
 			projectDirPath = "";
@@ -785,6 +789,14 @@
 				minimumVersion = 2.6.0;
 			};
 		};
+		6C6DDFAB248995F1000AD7A0 /* XCRemoteSwiftPackageReference "Disk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:saoudrizwan/Disk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.4;
+			};
+		};
 		6C6FE3D52485972900709EAF /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing.git";
@@ -805,6 +817,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C5586AB24885691004D9480 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
+		};
+		6C6DDFAC248995F1000AD7A0 /* Disk */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C6DDFAB248995F1000AD7A0 /* XCRemoteSwiftPackageReference "Disk" */;
+			productName = Disk;
 		};
 		6C6FE3D62485972900709EAF /* SnapshotTesting */ = {
 			isa = XCSwiftPackageProductDependency;

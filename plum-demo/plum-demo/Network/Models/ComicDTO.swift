@@ -1,5 +1,9 @@
+import struct Foundation.URL
+
 struct ComicDTO {
-    let name: String
+    let id: Int
+    let title: String
+    let thumbnail: ThumbnailDTO
 }
 
 extension ComicDTO: Equatable, Decodable {}

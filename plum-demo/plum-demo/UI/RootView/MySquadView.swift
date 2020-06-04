@@ -13,8 +13,7 @@ struct MySquadView: View {
                 HStack(spacing: 8) {
                     ForEach(members, id: \.self) { member in
                         VStack(spacing: 4) {
-                            Image(uiImage: member.image)
-                                .resizable()
+                            AsyncImageView(viewModel: AsyncImageViewModel(url: member.imageURL, api: MarvelAPI(remote: Remote())), contentMode: .fill) // TODO
                                 .frame(width: 64, height: 64)
                                 .clipShape(Circle())
                             Text(member.name)
@@ -23,6 +22,7 @@ struct MySquadView: View {
                                 .fontWeight(.semibold)
                                 .lineLimit(2)
                                 .multilineTextAlignment(.center)
+                            Spacer()
                         }
                             // I've chosen here not to set a maxmium width
                             // to avoid problems when the user has

@@ -1,8 +1,13 @@
 import SwiftUI
+import class Combine.AnyCancellable
 
 struct RootContainerView: View {
-    var superheroes: [Superhero]
-    var mySquadMembers: [Superhero]
+    @State var superheroes: [Superhero] = []
+//    @State var mySquadMembers: [Superhero] = [] // TODO
+    var mySquadMembers: [Superhero] { superheroes } // TODO remove
+    @State var cancellables = Set<AnyCancellable>()
+
+    var api: API
 
     var body: some View {
         NavigationView {
@@ -20,6 +25,23 @@ struct RootContainerView: View {
                 .navigationBarTitle("")
                 .navigationBarHidden(true)
         }
+        .onAppear {
+            self.api.characters()
+                .map { characters -> [Superhero] in
+                    return characters.map { character in // TODO remove this mapping from there
+                        Superhero(
+                            id: character.id,
+                            imageURL: character.thumbnail.url,
+                            name: character.name,
+                            description: character.description
+                        )
+                    }
+            }
+            .receive(on: RunLoop.main)
+            .replaceError(with: [])
+            .assign(to: \.superheroes, on: self)
+            .store(in: &self.cancellables)
+        }
     }
 }
 
@@ -35,12 +57,7 @@ struct RootContainerView_Previews: PreviewProvider {
                 Superhero.fixture(),
                 Superhero.fixture()
             ],
-            mySquadMembers: [
-                Superhero.fixture(),
-                Superhero.fixture(),
-                Superhero.fixture(),
-                Superhero.fixture()
-            ]
+            api: MarvelAPI(remote: Remote()) // TODO fixtures
         )
     }
 }

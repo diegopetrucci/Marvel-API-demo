@@ -9,43 +9,46 @@ struct HeroAppearancesView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            Text("Last appeared in")
-                .foregroundColor(.white)
-                .font(Font.system(size: 20))
-                .fontWeight(.semibold)
-                .alignmentGuide(.leading) { d in d[.leading] } // TODO: this is not working
-            HStack(spacing: 16) { // TODO if there is only one
+            if appearances.count > 0 {
+                Text("Last appeared in")
+                    .foregroundColor(.white)
+                    .font(Font.system(size: 20))
+                    .fontWeight(.semibold)
+                    .alignmentGuide(.leading) { d in d[.leading] } // TODO: this is not working
+            }
+            HStack(alignment: .center, spacing: 16) {
                 if appearances.count > 0 {
-//                    optionalOrFallbackView(
-//                        condition: appearances.first,
-//                        desiredView: PreviousIssueView,
-//                        fallbackView: EmptyView
-//                    )
                     PreviousIssueView(appearance: appearances.first!) // TODO
                 }
-                if appearances.second != nil {
+
+                if appearances.second.isNotNil {
                     PreviousIssueView(appearance: appearances.second!) // TODO
                 }
             }
-//            if appearances.count > 2 {
-//                ZStack {
-//                    Rectangle()
-//                        .frame(width: .infinity, height: 20) // TODO
-//                    Text("and \(appearances.count - 2) other comic\(appearances.count > 3 ? "s" : "")") // TODO pragmatically there should be two strings here, not all languages behave like english with plurals
-//                    .foregroundColor(.white)
-//                    .font(Font.system(size: 17))
-//                    .fontWeight(.regular)
-//                }
-//            }
+
+            if appearances.count > 2 {
+                Text(moreComicsText(for: appearances.count))
+                    .foregroundColor(.white)
+                    .font(Font.system(size: 17))
+                    .fontWeight(.regular)
+            }
         }
     }
 }
 
-extension Array {
-    var second: Element? {
-        self.count > 1
-            ? self[1]
-            : nil
+extension HeroAppearancesView {
+    // This is an oversimplified scenario, but at
+    // least it tries to cater to languages where
+    // plurar might be more complex than adding an `s`
+    func moreComicsText(for count: Int) -> String {
+        switch count {
+        case 3:
+            return "and 1 other comic"
+        case 3...:
+            return "and \(count - 2) other comics"
+        default:
+            fatalError("This is an impossible state")
+        }
     }
 }
 

@@ -13,8 +13,8 @@ final class HeroDetailContainerViewSnapshotTests: XCTestCase {
     func test_loaded() {
         assertSnapshot(
             matching: HeroDetailContainerView(
-                heroDetail: .fixture(),
-                appearances: [.fixture(), .fixture(), .fixture()]
+                superhero: .fixture(),
+                api: APIFixture()
             )
                 .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255)),
             as: .image()

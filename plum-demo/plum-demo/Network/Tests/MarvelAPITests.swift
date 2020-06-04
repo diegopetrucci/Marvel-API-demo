@@ -47,13 +47,13 @@ final class MarvelAPITests: XCTestCase {
             )
     }
 
-    func test_fetchCharacterDetail_successful() {
-        let remote = RemoteFixture(type: .characterDetail)
+    func test_fetchComics_successful() {
+        let remote = RemoteFixture(type: .comics)
         let api = MarvelAPI(remote: remote)
 
         let expectation = XCTestExpectation(description: "Publisher completed.")
 
-        let _ = api.characterDetail(for: 3)
+        let _ = api.comics(for: 3)
             .sink(
                 receiveCompletion: { completion in
                     switch completion {
@@ -63,20 +63,20 @@ final class MarvelAPITests: XCTestCase {
                         expectation.fulfill()
                     }
                 },
-                receiveValue: { receivedCharacterDetail in
-                    XCTAssertEqual(receivedCharacterDetail, .fixture())
+                receiveValue: { receivedComics in
+                    XCTAssertEqual(receivedComics, [.fixture(), .fixture(), .fixture()])
                 }
             )
     }
 
-    func test_fetchCharacterDetail_failed() {
+    func test_fetchComics_failed() {
         let error = RemoteError.unknown
         let remote = RemoteFixture(type: .error(error))
         let api = MarvelAPI(remote: remote)
 
         let expectation = XCTestExpectation(description: "Publisher errored out (as expected).")
 
-        let _ = api.characterDetail(for: 3)
+        let _ = api.comics(for: 3)
             .sink(
                 receiveCompletion: { completion in
                     switch completion {
@@ -133,58 +133,5 @@ final class MarvelAPITests: XCTestCase {
                     XCTAssertNil(receivedImage)
                 }
         )
-    }
-}
-
-struct RemoteFixture: RemoteProtocol {
-    private let type: FixtureType
-
-    init(type: FixtureType) {
-        self.type = type
-    }
-
-    func load<T: Decodable>(from request: URLRequest, jsonDecoder: JSONDecoder) -> AnyPublisher<T, RemoteError> {
-        switch type {
-        case .characters:
-            let characters: [CharacterDTO] = [.fixture(), .fixture(), .fixture()]
-
-            return Just(characters as? T)
-                .compactMap(identity)
-                .setFailureType(to: RemoteError.self)
-                .eraseToAnyPublisher()
-        case .characterDetail:
-            return Just(CharacterDetail.fixture() as? T)
-                .compactMap(identity)
-                .setFailureType(to: RemoteError.self)
-                .eraseToAnyPublisher()
-        case let .error(error):
-            return Fail<T, RemoteError>(error: error)
-                .eraseToAnyPublisher()
-        case .image:
-            fatalError("Please use `loadData(imageURL:)` instead.")
-        }
-    }
-
-    func loadData(from imageURL: URL) -> AnyPublisher<Data, RemoteError> {
-        switch type {
-        case .image:
-            return Just(UIImage.fixture(for: Bundle(for: MarvelAPITests.self)))
-                .map { $0.pngData() }
-                .compactMap(identity)
-                .setFailureType(to: RemoteError.self)
-                .eraseToAnyPublisher()
-        case let .error(error):
-            return Fail<Data, RemoteError>(error: error)
-                .eraseToAnyPublisher()
-        case .characters, .characterDetail:
-            fatalError("Please use `load(url:jsonDecoder:)` instead.")
-        }
-    }
-
-    enum FixtureType {
-        case characters
-        case characterDetail
-        case image
-        case error(RemoteError)
     }
 }

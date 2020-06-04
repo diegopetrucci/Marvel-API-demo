@@ -19,6 +19,14 @@ Another note on the PRs: I've gone with UI first instead of setting up the infra
 
 ## Technical explanations
 
+#### Xcode project structure
+Files on Xcode are divided by UI, data provider, networking, persistance, and utils:
+
+* UI: views, view models, view-specific objects (to map DTOs), and tests
+* DataProvider: data provider (mediator between network and persistance), tests
+* Networking: DTOs and responses, the marvel-specific API, a generic object (Remote) that interfaces with URLSession, and tests
+* Persistance: persisters to wrap Disk API, tests
+* Utilites: various helpers
 #### Networking
 Networking should be pretty much self-explanatory. It is set up to be as light as possible, with the usual protocol-first approach. `Remote` takes care of the `URLSession` API, errors, and decoding the result — all very coincise thanks to Combine.
 
@@ -97,9 +105,10 @@ While networking, or at least what it's needed for this kind of project, is rela
 * add white margin to last appearances image
 * add scrollview to detail view
 * automatic retrying of failed calls?
-* pagination?
+* pagination
 
 # Bugs
 * navigation bar should be color-able
 * the divider just below the marvel logo does not go edge to edge
 * navigation link pushes twice https://stackoverflow.com/questions/57946197/navigationlink-on-swiftui-pushes-view-twice
+* if image not found image is shown, it gets truncated

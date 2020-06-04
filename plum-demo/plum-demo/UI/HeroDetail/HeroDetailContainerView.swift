@@ -1,15 +1,16 @@
 import SwiftUI
+import class Combine.AnyCancellable
 
 struct HeroDetailContainerView: View {
-    let heroDetail: HeroDetail
-    let appearances: [Appearance]
+    @State var appearances: [Appearance] = []
 
-    init(
-        heroDetail: HeroDetail,
-        appearances: [Appearance]
-    ) {
-        self.heroDetail = heroDetail
-        self.appearances = appearances
+    @State private var cancellabels = Set<AnyCancellable>()
+    private let superhero: Superhero
+    private let api: API
+
+    init(superhero: Superhero, api: API) {
+        self.superhero = superhero
+        self.api = api
 
         // This is what I've found so far to achieve
         // navigation as close to the spec. It is very clearly
@@ -19,20 +20,33 @@ struct HeroDetailContainerView: View {
     }
 
     var body: some View {
-        HeroDetailView(
-            heroDetail: heroDetail,
-            appearances: appearances
-        )
+        HeroDetailView(superhero: superhero, appearances: appearances)
+            .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255))
             .navigationBarTitle("", displayMode: .inline)
             .navigationBarHidden(false)
+        .onAppear {
+            self.api.comics(for: self.superhero.id)
+                .map { comics -> [Appearance] in
+                    comics.map { comic -> Appearance in
+                        Appearance(
+                            imageURL: comic.thumbnail.url,
+                            title: comic.title
+                        )
+                    }
+                }
+            .receive(on: RunLoop.main)
+            .replaceError(with: [])
+            .assign(to: \.appearances, on: self)
+            .store(in: &self.cancellabels)
+        }
     }
 }
 
 struct HeroDetailContainerView_Previews: PreviewProvider {
     static var previews: some View {
         HeroDetailContainerView(
-            heroDetail: .fixture(),
-            appearances: [.fixture(), .fixture(), .fixture()]
+            superhero: .fixture(),
+            api: MarvelAPI(remote: Remote())
         )
     }
 }

@@ -5,14 +5,13 @@ struct PreviousIssueView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 8) {
-            Image(uiImage: appearance.image) // TODO
-                .resizable()
-                .aspectRatio(contentMode: .fit)
+            AsyncImageView(viewModel: AsyncImageViewModel(url: appearance.imageURL, api: MarvelAPI(remote: Remote()))) // TODO
                 .frame(idealWidth: 136, idealHeight: 192)
             Text(appearance.title) // TODO
                 .foregroundColor(.white)
                 .font(Font.system(size: 13))
                 .fontWeight(.semibold)
+            Spacer()
         }
     }
 }
@@ -21,7 +20,7 @@ struct PreviousIssueView_Previews: PreviewProvider {
     static var previews: some View {
         PreviousIssueView(
             appearance: Appearance(
-                image: UIImage(named: "a_bomb_header")!,
+                imageURL: .fixture(),
                 title: "Hulk (2008) #55"
             )
         )

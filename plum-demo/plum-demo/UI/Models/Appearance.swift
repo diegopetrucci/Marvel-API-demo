@@ -1,15 +1,18 @@
 import class SwiftUI.UIImage
+import struct Foundation.URL
 
 struct Appearance {
-    let image: UIImage
+    let imageURL: URL?
     let title: String
 }
+
+extension Appearance: Equatable, Hashable {}
 
 #if DEBUG
 extension Appearance {
     static func fixture() -> Self {
         .init(
-            image: UIImage(named: "a_bomb_header")!,
+            imageURL: .fixture(),
             title: "Hulk (2008) #55"
         )
     }

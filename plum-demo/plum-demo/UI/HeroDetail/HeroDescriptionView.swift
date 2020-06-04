@@ -1,11 +1,11 @@
 import SwiftUI
 
 struct HeroDescriptionView: View {
-    let heroDetail: HeroDetail
+   let superhero: Superhero
 
     var body: some View {
         VStack(spacing: 16) {
-            Text(heroDetail.name)
+            Text(superhero.name)
                 .foregroundColor(.white)
                 .font(Font.system(size: 34))
                 .fontWeight(.bold)
@@ -24,19 +24,18 @@ struct HeroDescriptionView: View {
                 .background(Color(red: 243 / 255, green: 12 / 255, blue: 11 / 255))
                 .cornerRadius(5)
                 .shadow(radius: 10)
-            Text(heroDetail.description)
+            Text(superhero.description)
                 .foregroundColor(.white)
                 .font(Font.system(size: 17))
                 .fontWeight(.regular)
                 .alignmentGuide(.leading) { d in d[.leading] }
         }
-        .padding(.horizontal, 16)
     }
 }
 
 struct HeroDescriptionView_Previews: PreviewProvider {
     static var previews: some View {
-        HeroDescriptionView(heroDetail: .fixture())
+        HeroDescriptionView(superhero: .fixture())
             .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255))
     }
 }

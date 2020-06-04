@@ -24,7 +24,7 @@ final class RootContainerViewSnapshotTests: XCTestCase {
         assertSnapshot(
             matching: RootContainerView(
                 superheroes: superheroes,
-                mySquadMembers: superheroes
+                api: APIFixture()
             ),
             as: .image()
         )

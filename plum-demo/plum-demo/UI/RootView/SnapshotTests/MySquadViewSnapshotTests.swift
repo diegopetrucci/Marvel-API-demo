@@ -24,7 +24,8 @@ final class MySquadViewSnapshotTests: XCTestCase {
 
         assertSnapshot(
             matching: MySquadView(members: members)
-                .background(Color(red: 54 / 255, green: 59 / 255, blue: 69 / 255)),
+                .background(Color(red: 54 / 255, green: 59 / 255, blue: 69 / 255))
+                .frame(width: 500, height: 200),
             as: .image()
         )
     }

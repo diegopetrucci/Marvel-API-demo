@@ -13,7 +13,8 @@ final class HeroAppearancesViewSnapshotTests: XCTestCase {
     func test_loaded() {
         assertSnapshot(
             matching: HeroAppearancesView(appearances: [.fixture(), .fixture(), .fixture()])
-                .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255)),
+                .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255))
+                .frame(height: 200),
             as: .image()
         )
     }

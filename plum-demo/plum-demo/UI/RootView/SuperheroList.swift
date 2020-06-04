@@ -9,9 +9,9 @@ struct SuperheroList: View {
         VStack(spacing: 16) {
             ForEach(superheroes, id: \.self) { superhero in
                 NavigationLink(
-                    destination: HeroDetailContainerView(
-                        heroDetail: .fixture(), // TODO
-                        appearances: [.fixture(), .fixture(), .fixture()] // TODO
+                    destination: HeroDetailContainerView( // TODO this should be injected
+                        superhero: superhero,
+                        api: MarvelAPI(remote: Remote()) // TODO
                     )
                         .background(self.backgroundColor)
                         // Ignoring the bottom safe area to make sure

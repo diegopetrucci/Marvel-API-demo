@@ -13,7 +13,7 @@ import class SwiftUI.UIImage
 
 protocol API {
     func characters() -> AnyPublisher<[CharacterDTO], APIError>
-    func characterDetail(for characterID: Int) -> AnyPublisher<CharacterDetailDTO, APIError>
+    func comics(for characterID: Int) -> AnyPublisher<[ComicDTO], APIError>
     func image(for url: URL) -> AnyPublisher<UIImage?, Never> // TODO should it be optional?
 }
 
@@ -27,7 +27,7 @@ struct MarvelAPI: API {
     }
 
     func characters() -> AnyPublisher<[CharacterDTO], APIError> {
-        let responsePublisher: AnyPublisher<CharacterResponse, RemoteError> = remote.load(
+        let responsePublisher: AnyPublisher<Response<CharacterDTO>, RemoteError> = remote.load(
             from: URLRequest(url: url(forPath: "characters")),
             jsonDecoder: jsonDecoder
         )
@@ -38,8 +38,14 @@ struct MarvelAPI: API {
             .eraseToAnyPublisher()
     }
 
-    func characterDetail(for characterID: Int) -> AnyPublisher<CharacterDetailDTO, APIError> {
-        remote.load(from: URLRequest(url: url(forPath: "characters/\(characterID)")), jsonDecoder: jsonDecoder)
+    func comics(for characterID: Int) -> AnyPublisher<[ComicDTO], APIError> {
+        let responsePublisher: AnyPublisher<Response<ComicDTO>, RemoteError> = remote.load(
+            from: URLRequest(url: url(forPath: "characters/\(characterID)/comics")),
+            jsonDecoder: jsonDecoder
+        )
+
+        return responsePublisher
+            .map { $0.data.results }
             .mapError(APIError.remote)
             .eraseToAnyPublisher()
     }
@@ -55,10 +61,6 @@ struct MarvelAPI: API {
 extension MarvelAPI {
     // TODO should this be tested?
     private func url(forPath path: String) -> URL {
-        let publicKey = "9f7401a37030ff8f9733156fa55b5155"
-        let privateKey = "de78daf2480c1a2aed929863b3d81a4a7023bdde"
-        let baseURL = URL(string: "https://gateway.marvel.com/v1/public/")!
-
         let url = URL(string: path, relativeTo: baseURL)!
         var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)!
 
@@ -73,6 +75,12 @@ extension MarvelAPI {
 
         return urlComponents.url!
     }
+}
+
+extension MarvelAPI {
+    private var publicKey: String { "9f7401a37030ff8f9733156fa55b5155" }
+    private var privateKey: String { "de78daf2480c1a2aed929863b3d81a4a7023bdde" }
+    private var baseURL: URL { URL(string: "https://gateway.marvel.com/v1/public/")! }
 }
 
 enum APIError: Error {

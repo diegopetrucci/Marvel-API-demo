@@ -6,7 +6,16 @@ struct SuperheroCell: View {
 
     var body: some View {
         HStack(spacing: 16) {
-            AsyncImageView(viewModel: AsyncImageViewModel(url: superhero.imageURL, api: MarvelAPI(remote: Remote())), contentMode: .fill) // TODO
+            AsyncImageView(
+                viewModel: AsyncImageViewModel(
+                    url: superhero.imageURL,
+                    dataProvider: ImageProvider(
+                        api: MarvelAPI(remote: Remote()),
+                        persister: ImagePersister()
+                    ).imageDataProviding(superhero.imageURL)
+                ),
+                contentMode: .fill
+            ) // TODO
                 .frame(width: 44, height: 44)
                 .clipShape(Circle())
             Text(superhero.name)

@@ -19,6 +19,11 @@ extension AsyncImageView {
                 .renderingMode(.original)
                 .resizable()
                 .aspectRatio(contentMode: contentMode)
+        case let .persisted(image: image):
+            return Image(uiImage: image)
+                .renderingMode(.original)
+                .resizable()
+                .aspectRatio(contentMode: contentMode)
         case .failed, .idle, .loading:
             return Image(uiImage: AsyncImageViewModel.placeholder)
                 .renderingMode(.original)

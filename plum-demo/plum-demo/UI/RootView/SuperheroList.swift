@@ -11,7 +11,10 @@ struct SuperheroList: View {
                 NavigationLink(
                     destination: HeroDetailContainerView( // TODO this should be injected
                         superhero: superhero,
-                        api: MarvelAPI(remote: Remote()) // TODO
+                        dataProviding: DataProvider(
+                            api: MarvelAPI(remote: Remote()),
+                            persister: Persister()
+                        ).appearancesDataProviding(superhero.id)
                     )
                         .background(self.backgroundColor)
                         // Ignoring the bottom safe area to make sure

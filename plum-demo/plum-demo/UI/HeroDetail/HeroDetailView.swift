@@ -6,7 +6,16 @@ struct HeroDetailView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            AsyncImageView(viewModel: AsyncImageViewModel(url: superhero.imageURL, api: MarvelAPI(remote: Remote())), contentMode: .fit) // TODO
+            AsyncImageView(
+                viewModel: AsyncImageViewModel(
+                    url: superhero.imageURL,
+                    dataProvider: ImageProvider(
+                        api: MarvelAPI(remote: Remote()),
+                        persister: ImagePersister()
+                    ).imageDataProviding(.fixture())
+                ),
+                contentMode: .fit
+            ) // TODO
             HeroDescriptionView(superhero: superhero)
              .padding(.horizontal, 16)
             HeroAppearancesView(appearances: appearances)

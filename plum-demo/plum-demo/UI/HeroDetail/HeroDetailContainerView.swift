@@ -1,16 +1,20 @@
 import SwiftUI
-import class Combine.AnyCancellable
+import class Combine.AnyCancellable // REMOVe
+import Combine // TODO
 
 struct HeroDetailContainerView: View {
     @State var appearances: [Appearance] = []
 
     @State private var cancellabels = Set<AnyCancellable>()
     private let superhero: Superhero
-    private let api: API
+    private let dataProviding: DataProviding<[Appearance], DataProvidingError>
 
-    init(superhero: Superhero, api: API) {
+    init(
+        superhero: Superhero,
+        dataProviding: DataProviding<[Appearance], DataProvidingError>
+    ) {
         self.superhero = superhero
-        self.api = api
+        self.dataProviding = dataProviding
 
         // This is what I've found so far to achieve
         // navigation as close to the spec. It is very clearly
@@ -24,20 +28,17 @@ struct HeroDetailContainerView: View {
             .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255))
             .navigationBarTitle("", displayMode: .inline)
             .navigationBarHidden(false)
-        .onAppear {
-            self.api.comics(for: self.superhero.id)
-                .map { comics -> [Appearance] in
-                    comics.map { comic -> Appearance in
-                        Appearance(
-                            imageURL: comic.thumbnail.url,
-                            title: comic.title
-                        )
-                    }
+            .onAppear {
+                self.dataProviding.fetch("\(self.superhero.id)" + "/appearances")
+                    .replaceError(with: [])
+                    .flatMap { _appearances -> AnyPublisher<[Appearance], Never> in
+                        self.dataProviding.persist(_appearances, "\(self.superhero.id)" + "/appearances")
+                            .map { _ in _appearances }
+                            .eraseToAnyPublisher()
                 }
-            .receive(on: RunLoop.main)
-            .replaceError(with: [])
-            .assign(to: \.appearances, on: self)
-            .store(in: &self.cancellabels)
+                .receive(on: RunLoop.main)
+                .assign(to: \.appearances, on: self)
+                .store(in: &self.cancellabels)
         }
     }
 }
@@ -46,7 +47,10 @@ struct HeroDetailContainerView_Previews: PreviewProvider {
     static var previews: some View {
         HeroDetailContainerView(
             superhero: .fixture(),
-            api: MarvelAPI(remote: Remote())
+            dataProviding: DataProvider(
+                api: MarvelAPI(remote: Remote()), // TODO fixture
+                persister: Persister() // TODO fixture
+            ).appearancesDataProvidingFixture(false)(Superhero.fixture().id)
         )
     }
 }

@@ -14,7 +14,7 @@ import class SwiftUI.UIImage
 protocol API {
     func characters() -> AnyPublisher<[CharacterDTO], APIError>
     func comics(for characterID: Int) -> AnyPublisher<[ComicDTO], APIError>
-    func image(for url: URL) -> AnyPublisher<UIImage?, Never> // TODO should it be optional?
+    func image(for url: URL) -> AnyPublisher<UIImage, APIError>
 }
 
 struct MarvelAPI: API {
@@ -50,10 +50,17 @@ struct MarvelAPI: API {
             .eraseToAnyPublisher()
     }
 
-    func image(for url: URL) -> AnyPublisher<UIImage?, Never> {
+    func image(for url: URL) -> AnyPublisher<UIImage, APIError> {
         remote.loadData(from: url)
-            .map(UIImage.init)
-            .replaceError(with: nil)
+            .mapError(APIError.remote)
+            .flatMap { data -> AnyPublisher<UIImage, APIError> in
+                guard let image = UIImage(data: data) else {
+                    return Fail<UIImage, APIError>(error: APIError.malformedData).eraseToAnyPublisher()
+                }
+
+                return Just(image)
+                    .setFailureType(to: APIError.self).eraseToAnyPublisher()
+            }
             .eraseToAnyPublisher()
     }
 }
@@ -85,6 +92,7 @@ extension MarvelAPI {
 
 enum APIError: Error {
     case remote(RemoteError)
+    case malformedData
 }
 
 extension APIError: Equatable {}

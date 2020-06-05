@@ -6,7 +6,7 @@ struct Appearance {
     let title: String
 }
 
-extension Appearance: Equatable, Hashable {}
+extension Appearance: Equatable, Hashable, Codable {}
 
 #if DEBUG
 extension Appearance {

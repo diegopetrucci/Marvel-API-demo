@@ -5,7 +5,15 @@ struct PreviousIssueView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 8) {
-            AsyncImageView(viewModel: AsyncImageViewModel(url: appearance.imageURL, api: MarvelAPI(remote: Remote()))) // TODO
+            AsyncImageView(
+                viewModel: AsyncImageViewModel(
+                    url: appearance.imageURL,
+                    dataProvider: ImageProvider(
+                        api: MarvelAPI(remote: Remote()),
+                        persister: ImagePersister()
+                    ).imageDataProviding(appearance.imageURL)
+                )
+            ) // TODO
                 .frame(idealWidth: 136, idealHeight: 192)
             Text(appearance.title) // TODO
                 .foregroundColor(.white)

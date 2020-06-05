@@ -11,7 +11,7 @@ final class AsyncImageViewModel: ObservableObject {
 
     init(
         url: URL?,
-        api: API
+        dataProvider: ImageProviding
     ) {
         self.state = State(
             status: .idle
@@ -22,7 +22,8 @@ final class AsyncImageViewModel: ObservableObject {
             reduce: Self.reduce,
             scheduler: RunLoop.main,
             feedbacks: [
-                Self.whenLoading(url: url, api: api),
+                Self.whenLoading(url: url, dataProvider: dataProvider),
+                Self.whenLoaded(url: url, dataProvider: dataProvider),
                 Self.userInput(input.eraseToAnyPublisher())
             ]
         )
@@ -40,21 +41,14 @@ extension AsyncImageViewModel {
 extension AsyncImageViewModel {
     private static func reduce(_ state: State, _ event: Event) -> State {
         switch event {
-        case .ui(.onAppear):
+        case .ui(.onAppear), .ui(.onDisappear):
             // if we already have an image loaded we keep the loaded state,
             // otherwise we go back to .idle to give it another chance to load
-            if case .loaded = state.status {
+            switch state.status {
+            case .loaded, .persisted:
                 return state
-            } else {
+            case .idle, .loading, .failed:
                 return state.with { $0.status = .loading }
-            }
-        case .ui(.onDisappear):
-            // if we already have an image loaded we keep the loaded state,
-            // otherwise we go back to .idle to give it another chance to load
-            if case .loaded = state.status {
-                return state
-            } else {
-                return state.with { $0.status = .idle }
             }
         case let .loaded(image):
             guard let image = image else { return state.with { $0.status = .failed(placeholder: Self.placeholder) } }
@@ -62,6 +56,10 @@ extension AsyncImageViewModel {
             return state.with { $0.status = .loaded(image: image) }
         case .failedToLoad:
             return state.with { $0.status = .failed(placeholder: Self.placeholder) }
+        case let .persisted(image):
+            guard let image = image else { return state.with { $0.status = .failed(placeholder: Self.placeholder) } }
+            
+            return state.with { $0.status = .persisted(image: image)}
         }
     }
 }
@@ -69,15 +67,31 @@ extension AsyncImageViewModel {
 extension AsyncImageViewModel {
     private static func whenLoading(
         url: URL?,
-        api: API
+        dataProvider: ImageProviding
     ) -> Feedback<State, Event> {
         Feedback { (state: State) -> AnyPublisher<Event, Never> in
             guard case .loading = state.status else { return Empty().eraseToAnyPublisher() }
 
             guard let url = url else { return Just(Event.failedToLoad).eraseToAnyPublisher() }
 
-            return api.image(for: url)
+            return dataProvider.fetch(url.absoluteString)
                 .map(Event.loaded)
+                .replaceError(with: .failedToLoad)
+                .eraseToAnyPublisher()
+        }
+    }
+
+    private static func whenLoaded(
+        url: URL?,
+        dataProvider: ImageProviding
+    ) -> Feedback<State, Event> {
+        Feedback { (state: State) -> AnyPublisher<Event, Never> in
+            guard case let .loaded(image) = state.status else { return Empty().eraseToAnyPublisher() }
+
+            guard let url = url else { return Just(Event.failedToLoad).eraseToAnyPublisher() }
+
+            return dataProvider.persist(image, url.absoluteString)
+                .map { _ in Event.persisted(image) }
                 .replaceError(with: .failedToLoad)
                 .eraseToAnyPublisher()
         }
@@ -95,16 +109,6 @@ extension AsyncImageViewModel {
 extension AsyncImageViewModel {
     struct State: Then {
         var status: Status
-
-        // Note: workaround of SwiftUI views not supporting
-        // if-lets or switches
-        var image: UIImage {
-            if case let .loaded(image) = status {
-                return image
-            } else {
-                fatalError("This should never be called, the view is misconfigured.")
-            }
-        }
     }
 
     enum Status: Equatable {
@@ -112,12 +116,14 @@ extension AsyncImageViewModel {
         case loading
         case loaded(image: UIImage)
         case failed(placeholder: UIImage)
+        case persisted(image: UIImage)
     }
 
     enum Event {
         case ui(UI)
         case loaded(UIImage?)
         case failedToLoad
+        case persisted(UIImage?)
 
         enum UI {
             case onAppear
@@ -129,7 +135,7 @@ extension AsyncImageViewModel {
 // TODO remove?
 extension AsyncImageViewModel {
     static var placeholder: UIImage {
-        UIImage(named: "superhero_stub")!
+        UIImage(named: "thumbnail_placeholder")!
     }
 }
 
@@ -138,7 +144,10 @@ extension AsyncImageViewModel {
     static func fixture() -> AsyncImageViewModel {
         AsyncImageViewModel.init(
             url: .fixture(),
-            api: MarvelAPI(remote: Remote()) // TODO fixture
+            dataProvider: ImageProvider(
+                api: MarvelAPI(remote: Remote()), // TODO fixture
+                persister: ImagePersister() // TODO fixture()
+            ).imageDataProviding(.fixture())
         )
     }
 }

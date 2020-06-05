@@ -20,6 +20,16 @@
 		6C026490248590FB002EE69A /* Superhero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648F248590FB002EE69A /* Superhero.swift */; };
 		6C094787248983250097CDD8 /* Remote+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C094786248983250097CDD8 /* Remote+Fixture.swift */; };
 		6C0947892489835E0097CDD8 /* API+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0947882489835E0097CDD8 /* API+Fixture.swift */; };
+		6C51CCD8248AD28400B69902 /* SuperheroesDataProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCD7248AD28400B69902 /* SuperheroesDataProviding.swift */; };
+		6C51CCDA248AD5EE00B69902 /* AppearancesDataProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCD9248AD5EE00B69902 /* AppearancesDataProviding.swift */; };
+		6C51CCDC248AE45900B69902 /* ImageDataProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCDB248AE45900B69902 /* ImageDataProviding.swift */; };
+		6C51CCDF248AFE2200B69902 /* ImageDataProvidingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCDE248AFE2200B69902 /* ImageDataProvidingTests.swift */; };
+		6C51CCE3248B019B00B69902 /* SuperheroesPersister+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCE2248B019B00B69902 /* SuperheroesPersister+Fixture.swift */; };
+		6C51CCE5248B027200B69902 /* AppearancePersister+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCE4248B027200B69902 /* AppearancePersister+Fixture.swift */; };
+		6C51CCE6248B055F00B69902 /* ImagePersister+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCE0248AFF7300B69902 /* ImagePersister+Fixture.swift */; };
+		6C51CCE8248B0C3000B69902 /* SuperheroesDataProvidingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCE7248B0C3000B69902 /* SuperheroesDataProvidingTests.swift */; };
+		6C51CCEA248B0E5900B69902 /* AppearancesDataProvidingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCE9248B0E5900B69902 /* AppearancesDataProvidingTests.swift */; };
+		6C51CCED248B0FB500B69902 /* AsyncImageViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCEC248B0FB500B69902 /* AsyncImageViewSnapshotTests.swift */; };
 		6C55867A2487FA72004D9480 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5586792487FA72004D9480 /* API.swift */; };
 		6C55867C2487FDFD004D9480 /* Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C55867B2487FDFD004D9480 /* Remote.swift */; };
 		6C55867F248807AD004D9480 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6C55867E248807AD004D9480 /* CryptoSwift */; };
@@ -44,12 +54,17 @@
 		6C6A386C2485A7230047474C /* MySquadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386B2485A7230047474C /* MySquadView.swift */; };
 		6C6A386E2485AC5F0047474C /* MySquadViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */; };
 		6C6DDFAD248995F1000AD7A0 /* Disk in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6DDFAC248995F1000AD7A0 /* Disk */; };
+		6C6DDFB024899655000AD7A0 /* Persister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6DDFAF24899655000AD7A0 /* Persister.swift */; };
+		6C6DDFB224899706000AD7A0 /* ImagePersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6DDFB124899706000AD7A0 /* ImagePersister.swift */; };
+		6C6DDFB52489972A000AD7A0 /* PersisterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6DDFB42489972A000AD7A0 /* PersisterTests.swift */; };
+		6C6DDFB724899750000AD7A0 /* ImagePersisterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6DDFB624899750000AD7A0 /* ImagePersisterTests.swift */; };
+		6C6DDFBB24899859000AD7A0 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6DDFBA24899859000AD7A0 /* DataProvider.swift */; };
 		6C6FE3D72485972900709EAF /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6FE3D62485972900709EAF /* SnapshotTesting */; };
 		6C6FE3DA2485976600709EAF /* SuperheroCellSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6FE3D92485976600709EAF /* SuperheroCellSnapshotTests.swift */; };
 		6C6FE3DC2485986400709EAF /* SnapshotTesting+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6FE3DB2485986400709EAF /* SnapshotTesting+SwiftUI.swift */; };
 		6C6FE3DE248598E000709EAF /* SuperheroListSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6FE3DD248598E000709EAF /* SuperheroListSnapshotTests.swift */; };
 		6C6FE3E02485997700709EAF /* RootViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6FE3DF2485997700709EAF /* RootViewSnapshotTests.swift */; };
-		6C6FE3E324859AE000709EAF /* ContentViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6FE3E224859AE000709EAF /* ContentViewSnapshotTests.swift */; };
+		6C6FE3E324859AE000709EAF /* RootContainerViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6FE3E224859AE000709EAF /* RootContainerViewSnapshotTests.swift */; };
 		6C82334F2486F31D00D51F5B /* HeroDetailContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82334E2486F31D00D51F5B /* HeroDetailContainerView.swift */; };
 		6C8233522486F69A00D51F5B /* PreviousIssueViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8233512486F69A00D51F5B /* PreviousIssueViewSnapshotTests.swift */; };
 		6C8233542486F75300D51F5B /* HeroAppearancesViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C8233532486F75300D51F5B /* HeroAppearancesViewSnapshotTests.swift */; };
@@ -92,6 +107,16 @@
 		6C02648F248590FB002EE69A /* Superhero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Superhero.swift; sourceTree = "<group>"; };
 		6C094786248983250097CDD8 /* Remote+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+Fixture.swift"; sourceTree = "<group>"; };
 		6C0947882489835E0097CDD8 /* API+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Fixture.swift"; sourceTree = "<group>"; };
+		6C51CCD7248AD28400B69902 /* SuperheroesDataProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroesDataProviding.swift; sourceTree = "<group>"; };
+		6C51CCD9248AD5EE00B69902 /* AppearancesDataProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearancesDataProviding.swift; sourceTree = "<group>"; };
+		6C51CCDB248AE45900B69902 /* ImageDataProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataProviding.swift; sourceTree = "<group>"; };
+		6C51CCDE248AFE2200B69902 /* ImageDataProvidingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataProvidingTests.swift; sourceTree = "<group>"; };
+		6C51CCE0248AFF7300B69902 /* ImagePersister+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImagePersister+Fixture.swift"; sourceTree = "<group>"; };
+		6C51CCE2248B019B00B69902 /* SuperheroesPersister+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SuperheroesPersister+Fixture.swift"; sourceTree = "<group>"; };
+		6C51CCE4248B027200B69902 /* AppearancePersister+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppearancePersister+Fixture.swift"; sourceTree = "<group>"; };
+		6C51CCE7248B0C3000B69902 /* SuperheroesDataProvidingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroesDataProvidingTests.swift; sourceTree = "<group>"; };
+		6C51CCE9248B0E5900B69902 /* AppearancesDataProvidingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearancesDataProvidingTests.swift; sourceTree = "<group>"; };
+		6C51CCEC248B0FB500B69902 /* AsyncImageViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageViewSnapshotTests.swift; sourceTree = "<group>"; };
 		6C5586792487FA72004D9480 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		6C55867B2487FDFD004D9480 /* Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote.swift; sourceTree = "<group>"; };
 		6C55868124880FF6004D9480 /* MarvelAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelAPITests.swift; sourceTree = "<group>"; };
@@ -113,11 +138,16 @@
 		6C5586B1248859E6004D9480 /* Publishers+System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+System.swift"; sourceTree = "<group>"; };
 		6C6A386B2485A7230047474C /* MySquadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadView.swift; sourceTree = "<group>"; };
 		6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadViewSnapshotTests.swift; sourceTree = "<group>"; };
+		6C6DDFAF24899655000AD7A0 /* Persister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persister.swift; sourceTree = "<group>"; };
+		6C6DDFB124899706000AD7A0 /* ImagePersister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePersister.swift; sourceTree = "<group>"; };
+		6C6DDFB42489972A000AD7A0 /* PersisterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersisterTests.swift; sourceTree = "<group>"; };
+		6C6DDFB624899750000AD7A0 /* ImagePersisterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePersisterTests.swift; sourceTree = "<group>"; };
+		6C6DDFBA24899859000AD7A0 /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
 		6C6FE3D92485976600709EAF /* SuperheroCellSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroCellSnapshotTests.swift; sourceTree = "<group>"; };
 		6C6FE3DB2485986400709EAF /* SnapshotTesting+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SnapshotTesting+SwiftUI.swift"; sourceTree = "<group>"; };
 		6C6FE3DD248598E000709EAF /* SuperheroListSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroListSnapshotTests.swift; sourceTree = "<group>"; };
 		6C6FE3DF2485997700709EAF /* RootViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewSnapshotTests.swift; sourceTree = "<group>"; };
-		6C6FE3E224859AE000709EAF /* ContentViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewSnapshotTests.swift; sourceTree = "<group>"; };
+		6C6FE3E224859AE000709EAF /* RootContainerViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootContainerViewSnapshotTests.swift; sourceTree = "<group>"; };
 		6C82334E2486F31D00D51F5B /* HeroDetailContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroDetailContainerView.swift; sourceTree = "<group>"; };
 		6C8233512486F69A00D51F5B /* PreviousIssueViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviousIssueViewSnapshotTests.swift; sourceTree = "<group>"; };
 		6C8233532486F75300D51F5B /* HeroAppearancesViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroAppearancesViewSnapshotTests.swift; sourceTree = "<group>"; };
@@ -178,7 +208,9 @@
 				6C0264672485718F002EE69A /* AppDelegate.swift */,
 				6C0264692485718F002EE69A /* SceneDelegate.swift */,
 				6C5586922488349A004D9480 /* UI */,
+				6C6DDFB92489982C000AD7A0 /* DataProvider */,
 				6C5586782487FA61004D9480 /* Network */,
+				6C6DDFAE24899604000AD7A0 /* Persistance */,
 				6C55868324881207004D9480 /* Utils */,
 				6C02646D24857191002EE69A /* Assets.xcassets */,
 				6C02647224857192002EE69A /* LaunchScreen.storyboard */,
@@ -230,13 +262,30 @@
 			path = RootView;
 			sourceTree = "<group>";
 		};
+		6C51CCDD248AFE0C00B69902 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				6C51CCE7248B0C3000B69902 /* SuperheroesDataProvidingTests.swift */,
+				6C51CCE9248B0E5900B69902 /* AppearancesDataProvidingTests.swift */,
+				6C51CCDE248AFE2200B69902 /* ImageDataProvidingTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		6C51CCEB248B0F8F00B69902 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				6C51CCEC248B0FB500B69902 /* AsyncImageViewSnapshotTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 		6C5586782487FA61004D9480 /* Network */ = {
 			isa = PBXGroup;
 			children = (
 				6C5586932488351D004D9480 /* Models */,
 				6C5586792487FA72004D9480 /* API.swift */,
 				6C55867B2487FDFD004D9480 /* Remote.swift */,
-				6C5586A82488557B004D9480 /* AsyncImage */,
 				6C55868024880FDC004D9480 /* Tests */,
 			);
 			path = Network;
@@ -270,6 +319,9 @@
 				6C55869F24883648004D9480 /* ComicDTO+Fixture.swift */,
 				6C094786248983250097CDD8 /* Remote+Fixture.swift */,
 				6C0947882489835E0097CDD8 /* API+Fixture.swift */,
+				6C51CCE0248AFF7300B69902 /* ImagePersister+Fixture.swift */,
+				6C51CCE2248B019B00B69902 /* SuperheroesPersister+Fixture.swift */,
+				6C51CCE4248B027200B69902 /* AppearancePersister+Fixture.swift */,
 			);
 			path = Fixtures;
 			sourceTree = "<group>";
@@ -280,6 +332,7 @@
 				6C0264912485911F002EE69A /* Models */,
 				6C0264922485912F002EE69A /* RootView */,
 				6CE7AEEA2486BFE1000B8B41 /* HeroDetail */,
+				6C5586A82488557B004D9480 /* AsyncImage */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -301,6 +354,7 @@
 			children = (
 				6C5586A624885559004D9480 /* AsyncImageView.swift */,
 				6C5586A9248855A9004D9480 /* AsyncImageViewModel.swift */,
+				6C51CCEB248B0F8F00B69902 /* Tests */,
 			);
 			path = AsyncImage;
 			sourceTree = "<group>";
@@ -314,10 +368,41 @@
 			path = Feedback;
 			sourceTree = "<group>";
 		};
+		6C6DDFAE24899604000AD7A0 /* Persistance */ = {
+			isa = PBXGroup;
+			children = (
+				6C6DDFAF24899655000AD7A0 /* Persister.swift */,
+				6C6DDFB124899706000AD7A0 /* ImagePersister.swift */,
+				6C6DDFB32489970C000AD7A0 /* Tests */,
+			);
+			path = Persistance;
+			sourceTree = "<group>";
+		};
+		6C6DDFB32489970C000AD7A0 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				6C6DDFB42489972A000AD7A0 /* PersisterTests.swift */,
+				6C6DDFB624899750000AD7A0 /* ImagePersisterTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		6C6DDFB92489982C000AD7A0 /* DataProvider */ = {
+			isa = PBXGroup;
+			children = (
+				6C6DDFBA24899859000AD7A0 /* DataProvider.swift */,
+				6C51CCD7248AD28400B69902 /* SuperheroesDataProviding.swift */,
+				6C51CCD9248AD5EE00B69902 /* AppearancesDataProviding.swift */,
+				6C51CCDB248AE45900B69902 /* ImageDataProviding.swift */,
+				6C51CCDD248AFE0C00B69902 /* Tests */,
+			);
+			path = DataProvider;
+			sourceTree = "<group>";
+		};
 		6C6FE3D82485974900709EAF /* SnapshotTests */ = {
 			isa = PBXGroup;
 			children = (
-				6C6FE3E224859AE000709EAF /* ContentViewSnapshotTests.swift */,
+				6C6FE3E224859AE000709EAF /* RootContainerViewSnapshotTests.swift */,
 				6C6FE3DF2485997700709EAF /* RootViewSnapshotTests.swift */,
 				6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */,
 				6C6FE3DD248598E000709EAF /* SuperheroListSnapshotTests.swift */,
@@ -474,28 +559,36 @@
 				6C0264682485718F002EE69A /* AppDelegate.swift in Sources */,
 				6C5586862488122E004D9480 /* Misc.swift in Sources */,
 				6C5586AA248855A9004D9480 /* AsyncImageViewModel.swift in Sources */,
+				6C51CCD8248AD28400B69902 /* SuperheroesDataProviding.swift in Sources */,
 				6CE7AEF02486CDA0000B8B41 /* HeroAppearancesView.swift in Sources */,
 				6C6A386C2485A7230047474C /* MySquadView.swift in Sources */,
 				6C82334F2486F31D00D51F5B /* HeroDetailContainerView.swift in Sources */,
 				6C02646A2485718F002EE69A /* SceneDelegate.swift in Sources */,
 				6C02648C248590C2002EE69A /* SuperheroList.swift in Sources */,
+				6C51CCE5248B027200B69902 /* AppearancePersister+Fixture.swift in Sources */,
 				6C5586972488354E004D9480 /* ComicDTO.swift in Sources */,
 				6CE7AEEC2486BFF5000B8B41 /* HeroDetailView.swift in Sources */,
 				6CE7AEEE2486CB1A000B8B41 /* HeroDescriptionView.swift in Sources */,
+				6C6DDFB024899655000AD7A0 /* Persister.swift in Sources */,
 				6C02646C2485718F002EE69A /* RootContainerView.swift in Sources */,
 				6C55869524883532004D9480 /* ThumbnailDTO.swift in Sources */,
 				6C558688248814D8004D9480 /* UIIImage+Fixture.swift in Sources */,
 				6C5586A324884CB1004D9480 /* Response.swift in Sources */,
+				6C6DDFBB24899859000AD7A0 /* DataProvider.swift in Sources */,
 				6C55868A24881503004D9480 /* URL+Fixture.swift in Sources */,
 				6C02648E248590D4002EE69A /* SuperheroCell.swift in Sources */,
+				6C51CCDC248AE45900B69902 /* ImageDataProviding.swift in Sources */,
 				6CE7AEF62486E1B5000B8B41 /* Appearance.swift in Sources */,
 				6CE7AEF22486E074000B8B41 /* PreviousIssueView.swift in Sources */,
+				6C51CCE3248B019B00B69902 /* SuperheroesPersister+Fixture.swift in Sources */,
 				6C55867A2487FA72004D9480 /* API.swift in Sources */,
 				6C55867C2487FDFD004D9480 /* Remote.swift in Sources */,
+				6C51CCDA248AD5EE00B69902 /* AppearancesDataProviding.swift in Sources */,
 				6C5586A724885559004D9480 /* AsyncImageView.swift in Sources */,
 				6C5586B0248859CF004D9480 /* Feedback.swift in Sources */,
 				6CE7AEF42486E12A000B8B41 /* HeroDetail.swift in Sources */,
 				6C5586B2248859E6004D9480 /* Publishers+System.swift in Sources */,
+				6C6DDFB224899706000AD7A0 /* ImagePersister.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,8 +596,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C51CCEA248B0E5900B69902 /* AppearancesDataProvidingTests.swift in Sources */,
 				6C0947892489835E0097CDD8 /* API+Fixture.swift in Sources */,
-				6C6FE3E324859AE000709EAF /* ContentViewSnapshotTests.swift in Sources */,
+				6C51CCED248B0FB500B69902 /* AsyncImageViewSnapshotTests.swift in Sources */,
+				6C6DDFB52489972A000AD7A0 /* PersisterTests.swift in Sources */,
+				6C6FE3E324859AE000709EAF /* RootContainerViewSnapshotTests.swift in Sources */,
+				6C51CCE6248B055F00B69902 /* ImagePersister+Fixture.swift in Sources */,
+				6C6DDFB724899750000AD7A0 /* ImagePersisterTests.swift in Sources */,
 				6C6FE3DA2485976600709EAF /* SuperheroCellSnapshotTests.swift in Sources */,
 				6C8233542486F75300D51F5B /* HeroAppearancesViewSnapshotTests.swift in Sources */,
 				6C094787248983250097CDD8 /* Remote+Fixture.swift in Sources */,
@@ -518,9 +616,11 @@
 				6C55869D248835F0004D9480 /* CharacterDTO+Fixture.swift in Sources */,
 				6C8233582486F7FD00D51F5B /* HeroDetailViewSnapshotTests.swift in Sources */,
 				6C6FE3E02485997700709EAF /* RootViewSnapshotTests.swift in Sources */,
+				6C51CCE8248B0C3000B69902 /* SuperheroesDataProvidingTests.swift in Sources */,
 				6C6FE3DC2485986400709EAF /* SnapshotTesting+SwiftUI.swift in Sources */,
 				6C6A386E2485AC5F0047474C /* MySquadViewSnapshotTests.swift in Sources */,
 				6C82335A2486F83800D51F5B /* HeroDetailContainerViewSnapshotTests.swift in Sources */,
+				6C51CCDF248AFE2200B69902 /* ImageDataProvidingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

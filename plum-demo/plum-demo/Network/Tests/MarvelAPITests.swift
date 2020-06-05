@@ -14,7 +14,7 @@ final class MarvelAPITests: XCTestCase {
                 receiveCompletion: { completion in
                     switch completion {
                     case let .failure(error):
-                        fatalError(error.localizedDescription)
+                        XCTAssert(false, "\(error.localizedDescription)")
                     case .finished:
                         expectation.fulfill()
                     }
@@ -40,10 +40,10 @@ final class MarvelAPITests: XCTestCase {
                         XCTAssertEqual(APIError.remote(error), receivedError)
                         expectation.fulfill()
                     case .finished:
-                        fatalError("The publisher should have failed instead.")
+                        XCTAssert(false, "The publisher should have failed instead.")
                     }
             },
-                receiveValue: { _ in fatalError("The publisher should have failed instead.") }
+                receiveValue: { _ in XCTAssert(false, "The publisher should have failed instead.") }
             )
     }
 
@@ -58,7 +58,7 @@ final class MarvelAPITests: XCTestCase {
                 receiveCompletion: { completion in
                     switch completion {
                     case let .failure(error):
-                        fatalError(error.localizedDescription)
+                        XCTAssert(false, "\(error.localizedDescription)")
                     case .finished:
                         expectation.fulfill()
                     }
@@ -84,10 +84,10 @@ final class MarvelAPITests: XCTestCase {
                         XCTAssertEqual(APIError.remote(error), receivedError)
                         expectation.fulfill()
                     case .finished:
-                        fatalError("The publisher should have failed instead.")
+                        XCTAssert(false, "The publisher should have failed instead.")
                     }
             },
-                receiveValue: { _ in fatalError("The publisher should have failed instead.") }
+                receiveValue: { _ in XCTAssert(false, "The publisher should have failed instead.") }
             )
     }
 
@@ -117,20 +117,19 @@ final class MarvelAPITests: XCTestCase {
         let remote = RemoteFixture(type: .error(.unknown))
         let api = MarvelAPI(remote: remote)
 
-        let expectation = XCTestExpectation(description: "Publisher completed.")
+        let expectation = XCTestExpectation(description: "Publisher correctly errored out.")
 
         let _ = api.image(for: .fixture())
             .sink(
                 receiveCompletion: { completion in
                     switch completion {
-                    case let .failure(error):
-                        fatalError(error.localizedDescription)
-                    case .finished:
+                    case .failure:
                         expectation.fulfill()
+                    case .finished:
+                        XCTAssert(false, "The publisher should not be completing.")
                     }
                 },
-                receiveValue: { receivedImage in
-                    XCTAssertNil(receivedImage)
+                receiveValue: { _ in XCTAssertNil(false, "No image should be fetched.")
                 }
         )
     }

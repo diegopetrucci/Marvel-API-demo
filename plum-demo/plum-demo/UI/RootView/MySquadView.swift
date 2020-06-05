@@ -13,7 +13,16 @@ struct MySquadView: View {
                 HStack(spacing: 8) {
                     ForEach(members, id: \.self) { member in
                         VStack(spacing: 4) {
-                            AsyncImageView(viewModel: AsyncImageViewModel(url: member.imageURL, api: MarvelAPI(remote: Remote())), contentMode: .fill) // TODO
+                            AsyncImageView(
+                                viewModel: AsyncImageViewModel(
+                                    url: member.imageURL,
+                                    dataProvider: ImageProvider(
+                                        api: MarvelAPI(remote: Remote()),
+                                        persister: ImagePersister()
+                                    ).imageDataProviding(member.imageURL)
+                                ),
+                                contentMode: .fill
+                            ) // TODO
                                 .frame(width: 64, height: 64)
                                 .clipShape(Circle())
                             Text(member.name)

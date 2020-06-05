@@ -28,12 +28,14 @@ struct APIFixture: API {
         return Just(comics).setFailureType(to: APIError.self).eraseToAnyPublisher()
     }
 
-    func image(for url: URL) -> AnyPublisher<UIImage?, Never> {
-        let image: UIImage? = shouldReturnError
-            ? nil
-            : .fixture()
+    func image(for url: URL) -> AnyPublisher<UIImage, APIError> {
+        guard shouldReturnError.isFalse else {
+            return Fail<UIImage, APIError>(error: .malformedData).eraseToAnyPublisher()
+        }
 
-        return Just(image).eraseToAnyPublisher()
+        return Just(UIImage(named: "thumbnail_fixture")!) // TODO replace with api_fixture
+            .setFailureType(to: APIError.self)
+            .eraseToAnyPublisher()
     }
 
 

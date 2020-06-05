@@ -1,5 +1,6 @@
 import SwiftUI
-import class Combine.AnyCancellable
+import class Combine.AnyCancellable // todo remove
+import Combine // todo remove
 
 struct RootContainerView: View {
     @State var superheroes: [Superhero] = []
@@ -7,7 +8,7 @@ struct RootContainerView: View {
     var mySquadMembers: [Superhero] { superheroes } // TODO remove
     @State var cancellables = Set<AnyCancellable>()
 
-    var api: API
+    var dataProvider: DataProviding<[Superhero], DataProvidingError>
 
     var body: some View {
         NavigationView {
@@ -26,21 +27,16 @@ struct RootContainerView: View {
                 .navigationBarHidden(true)
         }
         .onAppear {
-            self.api.characters()
-                .map { characters -> [Superhero] in
-                    return characters.map { character in // TODO remove this mapping from there
-                        Superhero(
-                            id: character.id,
-                            imageURL: character.thumbnail.url,
-                            name: character.name,
-                            description: character.description
-                        )
-                    }
-            }
-            .receive(on: RunLoop.main)
-            .replaceError(with: [])
-            .assign(to: \.superheroes, on: self)
-            .store(in: &self.cancellables)
+            self.dataProvider.fetch("/superheroes")
+                .replaceError(with: [])
+                .flatMap { _superheroes -> AnyPublisher<[Superhero], Never> in
+                    self.dataProvider.persist(_superheroes, "/superheroes")
+                        .map { _ in _superheroes }
+                        .eraseToAnyPublisher()
+                }
+                .receive(on: RunLoop.main)
+                .assign(to: \.superheroes, on: self)
+                .store(in: &self.cancellables)
         }
     }
 }
@@ -57,7 +53,10 @@ struct RootContainerView_Previews: PreviewProvider {
                 Superhero.fixture(),
                 Superhero.fixture()
             ],
-            api: MarvelAPI(remote: Remote()) // TODO fixtures
+            dataProvider: DataProvider(
+                api: MarvelAPI(remote: Remote()), // TODO fixture
+                persister: Persister() // TODO fixture
+            ).superheroDataProvidingFixture(false)
         )
     }
 }

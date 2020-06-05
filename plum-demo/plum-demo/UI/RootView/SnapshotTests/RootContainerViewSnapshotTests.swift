@@ -24,7 +24,10 @@ final class RootContainerViewSnapshotTests: XCTestCase {
         assertSnapshot(
             matching: RootContainerView(
                 superheroes: superheroes,
-                api: APIFixture()
+                dataProvider: DataProvider(
+                    api: APIFixture(),
+                    persister: SuperheroPersisterFixture()
+                ).superheroDataProvidingFixture(false)
             ),
             as: .image()
         )

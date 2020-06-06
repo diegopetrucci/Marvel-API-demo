@@ -14,12 +14,12 @@ struct AsyncImageView: View {
 extension AsyncImageView {
     func image(for status: AsyncImageViewModel.Status) -> some View {
         switch status {
-        case let .loaded(image: image):
+        case let .loaded(image):
             return Image(uiImage: image)
                 .renderingMode(.original)
                 .resizable()
                 .aspectRatio(contentMode: contentMode)
-        case let .persisted(image: image):
+        case let .persisted(image):
             return Image(uiImage: image)
                 .renderingMode(.original)
                 .resizable()

@@ -12,10 +12,7 @@ final class SuperheroCellSnapshotTests: XCTestCase {
 
     func test_default() {
         assertSnapshot(
-            matching: SuperheroCell(
-                superhero: .fixture(),
-                backgroundColor: Color(red: 54 / 255, green: 59 / 255, blue: 69 / 255)
-            ),
+            matching: SuperheroCell(superhero: .fixture()),
             as: .image()
         )
     }

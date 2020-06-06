@@ -13,7 +13,7 @@ final class PreviousIssueViewSnapshotTests: XCTestCase {
     func test_loaded() {
         assertSnapshot(
             matching: PreviousIssueView(appearance: .fixture())
-                .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255))
+                .background(Colors.background)
             .frame(height: 500),
             as: .image()
         )

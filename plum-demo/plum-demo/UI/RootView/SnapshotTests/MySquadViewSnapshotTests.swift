@@ -11,8 +11,14 @@ final class MySquadViewSnapshotTests: XCTestCase {
     }
 
     func test_default() {
-        let members: [Superhero] = [
-            .fixture(),
+        let viewModel = MySquadViewModel(
+            dataProvider: DataProvider(
+                api: APIFixture(),
+                persister: MySquadPersisterFixture()
+            ).superheroDataProvidingFixture(false)
+        )
+
+        viewModel.state.status = .loaded([
             .fixture(),
             .fixture(),
             .fixture(),
@@ -20,11 +26,11 @@ final class MySquadViewSnapshotTests: XCTestCase {
             .fixture(),
             .fixture(),
             .fixture()
-        ]
+        ])
 
         assertSnapshot(
-            matching: MySquadView(members: members)
-                .background(Color(red: 54 / 255, green: 59 / 255, blue: 69 / 255))
+            matching: MySquadView(viewModel: viewModel)
+                .background(Colors.background)
                 .frame(width: 500, height: 200),
             as: .image()
         )

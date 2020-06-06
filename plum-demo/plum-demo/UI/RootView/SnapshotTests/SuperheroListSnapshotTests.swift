@@ -25,10 +25,9 @@ final class SuperheroListSnapshotTests: XCTestCase {
         assertSnapshot(
             matching: SuperheroList(
                 superheroes: superheroes,
-                backgroundColor: Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255),
-                cellBackgroundColor: Color(red: 54 / 255, green: 59 / 255, blue: 69 / 255)
+                mySquad: superheroes
             )
-                .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255)),
+                .background(Colors.background),
             as: .image()
         )
     }

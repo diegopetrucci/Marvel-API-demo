@@ -11,10 +11,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Create the SwiftUI view that provides the window contents.
         let contentView = RootContainerView(
-            dataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()),
-                persister: Persister()
-            ).superheroDataProviding
         )
 
         // Use a UIHostingController as window root view controller.

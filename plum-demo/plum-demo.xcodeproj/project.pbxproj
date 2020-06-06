@@ -30,6 +30,11 @@
 		6C51CCE8248B0C3000B69902 /* SuperheroesDataProvidingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCE7248B0C3000B69902 /* SuperheroesDataProvidingTests.swift */; };
 		6C51CCEA248B0E5900B69902 /* AppearancesDataProvidingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCE9248B0E5900B69902 /* AppearancesDataProvidingTests.swift */; };
 		6C51CCED248B0FB500B69902 /* AsyncImageViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCEC248B0FB500B69902 /* AsyncImageViewSnapshotTests.swift */; };
+		6C51CCF3248BB63700B69902 /* HeroDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCF2248BB63700B69902 /* HeroDetailViewModel.swift */; };
+		6C51CCF5248BCEBF00B69902 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCF4248BCEBF00B69902 /* RootViewModel.swift */; };
+		6C51CCF7248BE23300B69902 /* MySquadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCF6248BE23300B69902 /* MySquadViewModel.swift */; };
+		6C51CCF9248BE3B100B69902 /* MySquadDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCF8248BE3B100B69902 /* MySquadDataProvider.swift */; };
+		6C51CCFB248C512A00B69902 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCFA248C512900B69902 /* Colors.swift */; };
 		6C55867A2487FA72004D9480 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5586792487FA72004D9480 /* API.swift */; };
 		6C55867C2487FDFD004D9480 /* Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C55867B2487FDFD004D9480 /* Remote.swift */; };
 		6C55867F248807AD004D9480 /* CryptoSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6C55867E248807AD004D9480 /* CryptoSwift */; };
@@ -53,6 +58,7 @@
 		6C5586B2248859E6004D9480 /* Publishers+System.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5586B1248859E6004D9480 /* Publishers+System.swift */; };
 		6C6A386C2485A7230047474C /* MySquadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386B2485A7230047474C /* MySquadView.swift */; };
 		6C6A386E2485AC5F0047474C /* MySquadViewSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */; };
+		6C6BADEC248C5824004C64A2 /* MySquadPersister+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BADEA248C57D0004C64A2 /* MySquadPersister+Fixture.swift */; };
 		6C6DDFAD248995F1000AD7A0 /* Disk in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6DDFAC248995F1000AD7A0 /* Disk */; };
 		6C6DDFB024899655000AD7A0 /* Persister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6DDFAF24899655000AD7A0 /* Persister.swift */; };
 		6C6DDFB224899706000AD7A0 /* ImagePersister.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6DDFB124899706000AD7A0 /* ImagePersister.swift */; };
@@ -117,6 +123,11 @@
 		6C51CCE7248B0C3000B69902 /* SuperheroesDataProvidingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroesDataProvidingTests.swift; sourceTree = "<group>"; };
 		6C51CCE9248B0E5900B69902 /* AppearancesDataProvidingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearancesDataProvidingTests.swift; sourceTree = "<group>"; };
 		6C51CCEC248B0FB500B69902 /* AsyncImageViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageViewSnapshotTests.swift; sourceTree = "<group>"; };
+		6C51CCF2248BB63700B69902 /* HeroDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroDetailViewModel.swift; sourceTree = "<group>"; };
+		6C51CCF4248BCEBF00B69902 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
+		6C51CCF6248BE23300B69902 /* MySquadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadViewModel.swift; sourceTree = "<group>"; };
+		6C51CCF8248BE3B100B69902 /* MySquadDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadDataProvider.swift; sourceTree = "<group>"; };
+		6C51CCFA248C512900B69902 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Colors.swift; path = "plum-demo/Colors.swift"; sourceTree = SOURCE_ROOT; };
 		6C5586792487FA72004D9480 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		6C55867B2487FDFD004D9480 /* Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote.swift; sourceTree = "<group>"; };
 		6C55868124880FF6004D9480 /* MarvelAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelAPITests.swift; sourceTree = "<group>"; };
@@ -138,6 +149,7 @@
 		6C5586B1248859E6004D9480 /* Publishers+System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+System.swift"; sourceTree = "<group>"; };
 		6C6A386B2485A7230047474C /* MySquadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadView.swift; sourceTree = "<group>"; };
 		6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadViewSnapshotTests.swift; sourceTree = "<group>"; };
+		6C6BADEA248C57D0004C64A2 /* MySquadPersister+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MySquadPersister+Fixture.swift"; sourceTree = "<group>"; };
 		6C6DDFAF24899655000AD7A0 /* Persister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persister.swift; sourceTree = "<group>"; };
 		6C6DDFB124899706000AD7A0 /* ImagePersister.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePersister.swift; sourceTree = "<group>"; };
 		6C6DDFB42489972A000AD7A0 /* PersisterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersisterTests.swift; sourceTree = "<group>"; };
@@ -208,6 +220,7 @@
 				6C0264672485718F002EE69A /* AppDelegate.swift */,
 				6C0264692485718F002EE69A /* SceneDelegate.swift */,
 				6C5586922488349A004D9480 /* UI */,
+				6C51CCFA248C512900B69902 /* Colors.swift */,
 				6C6DDFB92489982C000AD7A0 /* DataProvider */,
 				6C5586782487FA61004D9480 /* Network */,
 				6C6DDFAE24899604000AD7A0 /* Persistance */,
@@ -254,7 +267,9 @@
 			children = (
 				6C02646B2485718F002EE69A /* RootContainerView.swift */,
 				6C026489248590A3002EE69A /* RootView.swift */,
+				6C51CCF4248BCEBF00B69902 /* RootViewModel.swift */,
 				6C6A386B2485A7230047474C /* MySquadView.swift */,
+				6C51CCF6248BE23300B69902 /* MySquadViewModel.swift */,
 				6C02648B248590C2002EE69A /* SuperheroList.swift */,
 				6C02648D248590D4002EE69A /* SuperheroCell.swift */,
 				6C6FE3D82485974900709EAF /* SnapshotTests */,
@@ -303,8 +318,8 @@
 			isa = PBXGroup;
 			children = (
 				6C5586AE248859AE004D9480 /* Feedback */,
-				6C5586852488122E004D9480 /* Misc.swift */,
 				6C55868B2488150D004D9480 /* Fixtures */,
+				6C5586852488122E004D9480 /* Misc.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -322,6 +337,7 @@
 				6C51CCE0248AFF7300B69902 /* ImagePersister+Fixture.swift */,
 				6C51CCE2248B019B00B69902 /* SuperheroesPersister+Fixture.swift */,
 				6C51CCE4248B027200B69902 /* AppearancePersister+Fixture.swift */,
+				6C6BADEA248C57D0004C64A2 /* MySquadPersister+Fixture.swift */,
 			);
 			path = Fixtures;
 			sourceTree = "<group>";
@@ -393,6 +409,7 @@
 				6C6DDFBA24899859000AD7A0 /* DataProvider.swift */,
 				6C51CCD7248AD28400B69902 /* SuperheroesDataProviding.swift */,
 				6C51CCD9248AD5EE00B69902 /* AppearancesDataProviding.swift */,
+				6C51CCF8248BE3B100B69902 /* MySquadDataProvider.swift */,
 				6C51CCDB248AE45900B69902 /* ImageDataProviding.swift */,
 				6C51CCDD248AFE0C00B69902 /* Tests */,
 			);
@@ -428,6 +445,7 @@
 			children = (
 				6C82334E2486F31D00D51F5B /* HeroDetailContainerView.swift */,
 				6CE7AEEB2486BFF5000B8B41 /* HeroDetailView.swift */,
+				6C51CCF2248BB63700B69902 /* HeroDetailViewModel.swift */,
 				6CE7AEED2486CB1A000B8B41 /* HeroDescriptionView.swift */,
 				6CE7AEEF2486CDA0000B8B41 /* HeroAppearancesView.swift */,
 				6CE7AEF12486E074000B8B41 /* PreviousIssueView.swift */,
@@ -554,6 +572,7 @@
 			files = (
 				6C55869124882132004D9480 /* CharacterDetailDTO.swift in Sources */,
 				6C026490248590FB002EE69A /* Superhero.swift in Sources */,
+				6C6BADEC248C5824004C64A2 /* MySquadPersister+Fixture.swift in Sources */,
 				6C55868F248820FD004D9480 /* CharacterDTO.swift in Sources */,
 				6C02648A248590A3002EE69A /* RootView.swift in Sources */,
 				6C0264682485718F002EE69A /* AppDelegate.swift in Sources */,
@@ -561,6 +580,8 @@
 				6C5586AA248855A9004D9480 /* AsyncImageViewModel.swift in Sources */,
 				6C51CCD8248AD28400B69902 /* SuperheroesDataProviding.swift in Sources */,
 				6CE7AEF02486CDA0000B8B41 /* HeroAppearancesView.swift in Sources */,
+				6C51CCF9248BE3B100B69902 /* MySquadDataProvider.swift in Sources */,
+				6C51CCF7248BE23300B69902 /* MySquadViewModel.swift in Sources */,
 				6C6A386C2485A7230047474C /* MySquadView.swift in Sources */,
 				6C82334F2486F31D00D51F5B /* HeroDetailContainerView.swift in Sources */,
 				6C02646A2485718F002EE69A /* SceneDelegate.swift in Sources */,
@@ -580,6 +601,8 @@
 				6C51CCDC248AE45900B69902 /* ImageDataProviding.swift in Sources */,
 				6CE7AEF62486E1B5000B8B41 /* Appearance.swift in Sources */,
 				6CE7AEF22486E074000B8B41 /* PreviousIssueView.swift in Sources */,
+				6C51CCF5248BCEBF00B69902 /* RootViewModel.swift in Sources */,
+				6C51CCFB248C512A00B69902 /* Colors.swift in Sources */,
 				6C51CCE3248B019B00B69902 /* SuperheroesPersister+Fixture.swift in Sources */,
 				6C55867A2487FA72004D9480 /* API.swift in Sources */,
 				6C55867C2487FDFD004D9480 /* Remote.swift in Sources */,
@@ -587,6 +610,7 @@
 				6C5586A724885559004D9480 /* AsyncImageView.swift in Sources */,
 				6C5586B0248859CF004D9480 /* Feedback.swift in Sources */,
 				6CE7AEF42486E12A000B8B41 /* HeroDetail.swift in Sources */,
+				6C51CCF3248BB63700B69902 /* HeroDetailViewModel.swift in Sources */,
 				6C5586B2248859E6004D9480 /* Publishers+System.swift in Sources */,
 				6C6DDFB224899706000AD7A0 /* ImagePersister.swift in Sources */,
 			);

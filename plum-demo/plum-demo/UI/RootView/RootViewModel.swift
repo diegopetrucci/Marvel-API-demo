@@ -1,29 +1,27 @@
 import Combine
-import class UIKit.UIImage
 import Foundation
 import Then
 
-final class AsyncImageViewModel: ObservableObject {
+final class RootViewModel: ObservableObject {
     @Published var state: State
 
     private var cancellables = Set<AnyCancellable>()
     private let input = PassthroughSubject<Event.UI, Never>()
 
-    init(
-        url: URL?,
-        dataProvider: ImageProviding
-    ) {
+    init(dataProvider: DataProviding<[Superhero], DataProvidingError>) {
         self.state = State(
             status: .idle
         )
+
+        let path = "/superheroes"
 
         Publishers.system(
             initial: state,
             reduce: Self.reduce,
             scheduler: RunLoop.main,
             feedbacks: [
-                Self.whenLoading(url: url, dataProvider: dataProvider),
-                Self.whenLoaded(url: url, dataProvider: dataProvider),
+                Self.whenLoading(path: path, dataProvider: dataProvider),
+                Self.whenLoaded(path: path, dataProvider: dataProvider),
                 Self.userInput(input.eraseToAnyPublisher())
             ]
         )
@@ -32,16 +30,16 @@ final class AsyncImageViewModel: ObservableObject {
     }
 }
 
-extension AsyncImageViewModel {
+extension RootViewModel {
     func send(event: Event.UI) {
         input.send(event)
     }
 }
 
-extension AsyncImageViewModel {
+extension RootViewModel {
     private static func reduce(_ state: State, _ event: Event) -> State {
         switch event {
-        case .ui(.onAppear), .ui(.onDisappear):
+        case .ui(.onAppear), .ui(.onDisappear): // TODO adapt description
             // if we already have an image loaded we keep the loaded state,
             // otherwise we go back to .idle to give it another chance to load
             switch state.status {
@@ -50,31 +48,27 @@ extension AsyncImageViewModel {
             case .idle, .loading, .failed:
                 return state.with { $0.status = .loading }
             }
-        case let .loaded(image):
-            guard let image = image else { return state.with { $0.status = .failed(placeholder: Self.placeholder) } }
-
-            return state.with { $0.status = .loaded(image: image) }
+        case let .loaded(superheroes):
+            return state.with { $0.status = .loaded(superheroes) }
         case .failedToLoad:
-            return state.with { $0.status = .failed(placeholder: Self.placeholder) }
-        case let .persisted(image):
-            guard let image = image else { return state.with { $0.status = .failed(placeholder: Self.placeholder) } }
-            
-            return state.with { $0.status = .persisted(image: image)}
+            return state.with {
+                $0.status = .failed
+            }
+        case let .persisted(superheroes):
+            return state.with { $0.status = .persisted(superheroes) }
         }
     }
 }
 
-extension AsyncImageViewModel {
+extension RootViewModel {
     private static func whenLoading(
-        url: URL?,
-        dataProvider: ImageProviding
+        path: String,
+        dataProvider: DataProviding<[Superhero], DataProvidingError>
     ) -> Feedback<State, Event> {
         Feedback { (state: State) -> AnyPublisher<Event, Never> in
             guard case .loading = state.status else { return Empty().eraseToAnyPublisher() }
 
-            guard let url = url else { return Just(Event.failedToLoad).eraseToAnyPublisher() }
-
-            return dataProvider.fetch(url.absoluteString)
+            return dataProvider.fetch(path)
                 .map(Event.loaded)
                 .replaceError(with: .failedToLoad)
                 .eraseToAnyPublisher()
@@ -82,16 +76,14 @@ extension AsyncImageViewModel {
     }
 
     private static func whenLoaded(
-        url: URL?,
-        dataProvider: ImageProviding
+        path: String,
+        dataProvider: DataProviding<[Superhero], DataProvidingError>
     ) -> Feedback<State, Event> {
         Feedback { (state: State) -> AnyPublisher<Event, Never> in
-            guard case let .loaded(image) = state.status else { return Empty().eraseToAnyPublisher() }
+            guard case let .loaded(superheroes) = state.status else { return Empty().eraseToAnyPublisher() }
 
-            guard let url = url else { return Just(Event.failedToLoad).eraseToAnyPublisher() }
-
-            return dataProvider.persist(image, url.absoluteString)
-                .map { _ in Event.persisted(image) }
+            return dataProvider.persist(superheroes, path)
+                .map { _ in Event.persisted(superheroes) }
                 .replaceError(with: .failedToLoad)
                 .eraseToAnyPublisher()
         }
@@ -106,7 +98,7 @@ extension AsyncImageViewModel {
     }
 }
 
-extension AsyncImageViewModel {
+extension RootViewModel {
     struct State: Then {
         var status: Status
     }
@@ -114,16 +106,16 @@ extension AsyncImageViewModel {
     enum Status: Equatable {
         case idle
         case loading
-        case loaded(image: UIImage)
-        case failed(placeholder: UIImage)
-        case persisted(image: UIImage)
+        case loaded([Superhero])
+        case failed
+        case persisted([Superhero])
     }
 
     enum Event {
         case ui(UI)
-        case loaded(UIImage?)
+        case loaded([Superhero])
         case failedToLoad
-        case persisted(UIImage?)
+        case persisted([Superhero])
 
         enum UI {
             case onAppear
@@ -132,22 +124,14 @@ extension AsyncImageViewModel {
     }
 }
 
-// TODO remove?
-extension AsyncImageViewModel {
-    static var placeholder: UIImage {
-        UIImage(named: "thumbnail_placeholder")!
-    }
-}
-
 #if DEBUG
-extension AsyncImageViewModel {
-    static func fixture() -> AsyncImageViewModel {
-        AsyncImageViewModel(
-            url: .fixture(),
-            dataProvider: ImageProvider(
+extension RootViewModel {
+    static func fixture() -> RootViewModel {
+        RootViewModel(
+            dataProvider: DataProvider(
                 api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: ImagePersister() // TODO fixture()
-            ).imageDataProviding(.fixture())
+                persister: Persister() // TODO fixture
+            ).superheroDataProvidingFixture(false)
         )
     }
 }

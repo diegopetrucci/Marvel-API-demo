@@ -22,13 +22,31 @@ final class RootViewSnapshotTests: XCTestCase {
             .fixture()
         ]
 
+        let viewModel = RootViewModel(
+            dataProvider: DataProvider(
+                api: APIFixture(),
+                persister: SuperheroPersisterFixture()
+            ).superheroDataProvidingFixture(false)
+        )
+
+        viewModel.state.status = .loaded(superheroes)
+
+        let mySquadViewModel = MySquadViewModel(
+            dataProvider: DataProvider(
+                api: APIFixture(),
+                persister: MySquadPersisterFixture()
+            ).superheroDataProvidingFixture(false)
+        )
+
+        mySquadViewModel.state.status = .loaded(superheroes)
+
         assertSnapshot(
             matching: RootView(
-                superheroes: superheroes,
-                mySquadMembers: superheroes,
-                backgroundColor: Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255)
+                viewModel: viewModel,
+                mySquadViewModel: mySquadViewModel,
+                mySquadMembers: superheroes
             )
-                .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255)),
+                .background(Colors.background),
             as: .image()
         )
     }

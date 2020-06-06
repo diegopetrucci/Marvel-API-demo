@@ -16,7 +16,7 @@ struct PreviousIssueView: View {
             ) // TODO
                 .frame(idealWidth: 136, idealHeight: 192)
             Text(appearance.title) // TODO
-                .foregroundColor(.white)
+                .foregroundColor(Colors.text)
                 .font(Font.system(size: 13))
                 .fontWeight(.semibold)
             Spacer()
@@ -32,6 +32,6 @@ struct PreviousIssueView_Previews: PreviewProvider {
                 title: "Hulk (2008) #55"
             )
         )
-            .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255))
+            .background(Colors.background)
     }
 }

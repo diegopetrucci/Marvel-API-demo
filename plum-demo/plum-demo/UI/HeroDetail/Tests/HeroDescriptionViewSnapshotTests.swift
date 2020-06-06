@@ -12,8 +12,13 @@ final class HeroDescriptionViewSnapshotTests: XCTestCase {
 
     func test_loaded() {
         assertSnapshot(
-            matching: HeroDescriptionView(superhero: .fixture())
-                .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255)),
+            matching: HeroDescriptionView(
+                superhero: .fixture(),
+                buttonText: "💪 Recruit to Squad",
+                buttonBackgroundColor: Colors.buttonBackground,
+                onButtonPress: {}
+            )
+                .background(Colors.background),
             as: .image()
         )
     }

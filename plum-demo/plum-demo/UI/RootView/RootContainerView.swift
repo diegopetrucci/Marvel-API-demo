@@ -3,21 +3,28 @@ import class Combine.AnyCancellable // todo remove
 import Combine // todo remove
 
 struct RootContainerView: View {
-    @State var superheroes: [Superhero] = []
-//    @State var mySquadMembers: [Superhero] = [] // TODO
-    var mySquadMembers: [Superhero] { superheroes } // TODO remove
-    @State var cancellables = Set<AnyCancellable>()
+    var mySquadMembers: [Superhero] = []
 
-    var dataProvider: DataProviding<[Superhero], DataProvidingError>
+    @State var cancellables = Set<AnyCancellable>()
 
     var body: some View {
         NavigationView {
             RootView(
-                superheroes: superheroes,
-                mySquadMembers: mySquadMembers,
-                backgroundColor: Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255)
+                viewModel: RootViewModel(
+                    dataProvider: DataProvider(
+                        api: MarvelAPI(remote: Remote()),
+                        persister: Persister()
+                    ).superheroDataProviding
+                ),
+                mySquadViewModel: MySquadViewModel(
+                    dataProvider: DataProvider(
+                        api: MarvelAPI(remote: Remote()),
+                        persister: Persister()
+                    ).mySquadDataProviding
+                ),
+                mySquadMembers: mySquadMembers
             )
-                .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255))
+                .background(Colors.background)
                 // Ignoring the bottom safe area to make sure
                 // the background color applies to that as well.
                 .edgesIgnoringSafeArea(.bottom)
@@ -26,37 +33,11 @@ struct RootContainerView: View {
                 .navigationBarTitle("")
                 .navigationBarHidden(true)
         }
-        .onAppear {
-            self.dataProvider.fetch("/superheroes")
-                .replaceError(with: [])
-                .flatMap { _superheroes -> AnyPublisher<[Superhero], Never> in
-                    self.dataProvider.persist(_superheroes, "/superheroes")
-                        .map { _ in _superheroes }
-                        .eraseToAnyPublisher()
-                }
-                .receive(on: RunLoop.main)
-                .assign(to: \.superheroes, on: self)
-                .store(in: &self.cancellables)
-        }
     }
 }
 
 struct RootContainerView_Previews: PreviewProvider {
     static var previews: some View {
-        RootContainerView(
-            superheroes: [
-                Superhero.fixture(),
-                Superhero.fixture(),
-                Superhero.fixture(),
-                Superhero.fixture(),
-                Superhero.fixture(),
-                Superhero.fixture(),
-                Superhero.fixture()
-            ],
-            dataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: Persister() // TODO fixture
-            ).superheroDataProvidingFixture(false)
-        )
+        RootContainerView()
     }
 }

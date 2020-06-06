@@ -11,7 +11,7 @@ struct HeroAppearancesView: View {
         VStack(spacing: 16) {
             if appearances.count > 0 {
                 Text("Last appeared in")
-                    .foregroundColor(.white)
+                    .foregroundColor(Colors.text)
                     .font(Font.system(size: 20))
                     .fontWeight(.semibold)
                     .alignmentGuide(.leading) { d in d[.leading] } // TODO: this is not working
@@ -28,7 +28,7 @@ struct HeroAppearancesView: View {
 
             if appearances.count > 2 {
                 Text(moreComicsText(for: appearances.count))
-                    .foregroundColor(.white)
+                    .foregroundColor(Colors.text)
                     .font(Font.system(size: 17))
                     .fontWeight(.regular)
             }
@@ -52,26 +52,11 @@ extension HeroAppearancesView {
     }
 }
 
-//// Workaround to SwiftUI not supporting optional-binding.
-//// There are a few good alternatives here https://twitter.com/diegopetrucci/status/1229028547743952896?s=21
-//// I'm just using this because I like it :)
-//func optionalOrFallbackView<T: View, U: View, V>(
-//    condition: Optional<V>,
-//    desiredView: (V) -> T,
-//    fallbackView: () -> U
-//) -> _ConditionalContent<T, U> {
-//    if let unwrapped = condition {
-//        return ViewBuilder.buildEither(first: desiredView(unwrapped))
-//    } else {
-//        return ViewBuilder.buildEither(second: fallbackView())
-//    }
-//}
-
 struct HeroAppearancesView_Previews: PreviewProvider {
     static var previews: some View {
         HeroAppearancesView(
             appearances: [.fixture(), .fixture(), .fixture()]
         )
-            .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255))
+            .background(Colors.background)
     }
 }

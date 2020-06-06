@@ -10,25 +10,9 @@ final class RootContainerViewSnapshotTests: XCTestCase {
     }
 
     func test_default() {
-        let superheroes: [Superhero] = [
-            .fixture(),
-            .fixture(),
-            .fixture(),
-            .fixture(),
-            .fixture(),
-            .fixture(),
-            .fixture(),
-            .fixture()
-        ]
-
         assertSnapshot(
-            matching: RootContainerView(
-                superheroes: superheroes,
-                dataProvider: DataProvider(
-                    api: APIFixture(),
-                    persister: SuperheroPersisterFixture()
-                ).superheroDataProvidingFixture(false)
-            ),
+            matching: RootContainerView()
+            .frame(height: 100),
             as: .image()
         )
     }

@@ -14,12 +14,9 @@ final class HeroDetailContainerViewSnapshotTests: XCTestCase {
         assertSnapshot(
             matching: HeroDetailContainerView(
                 superhero: .fixture(),
-                dataProviding: DataProvider(
-                    api: APIFixture(),
-                    persister: AppearancesPersisterFixture()
-                ).appearancesDataProvidingFixture(false)(Superhero.fixture().id)
+                mySquad: [.fixture(), .fixture(), .fixture()]
             )
-                .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255)),
+                .background(Colors.background),
             as: .image()
         )
     }

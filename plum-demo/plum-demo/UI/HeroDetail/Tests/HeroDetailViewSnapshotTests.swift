@@ -11,12 +11,31 @@ final class HeroDetailViewSnapshotTests: XCTestCase {
     }
 
     func test_loaded() {
+        let viewModel = HeroDetailViewModel(
+            superhero: .fixture(),
+            appearancesDataProvider: DataProvider(
+                api: MarvelAPI(remote: Remote()),
+                persister: Persister()
+            ).appearancesDataProvidingFixture(false)(3),
+            mySquadDataProvider: DataProvider(
+                api: MarvelAPI(remote: Remote()),
+                persister: Persister()
+            ).mySquadDataProvidingFixture(false)
+        )
+
+        let apperances: [Appearance] = [.fixture(), .fixture(), .fixture()]
+
+        viewModel.state = .init(
+            superhero: .fixture(),
+            appearances: apperances,
+            squad: [.fixture(), .fixture(), .fixture()],
+            status: .loaded(appearances: apperances)
+        )
+
         assertSnapshot(
             matching: HeroDetailView(
-                superhero: .fixture(),
-                appearances: [.fixture(), .fixture(), .fixture()]
-            )
-                .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255)),
+                viewModel: viewModel)
+                .background(Colors.background),
             as: .image()
         )
     }

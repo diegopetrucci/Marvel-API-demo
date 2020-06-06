@@ -2,7 +2,6 @@ import SwiftUI
 
 struct SuperheroCell: View {
     let superhero: Superhero
-    let backgroundColor: Color
 
     var body: some View {
         HStack(spacing: 16) {
@@ -19,23 +18,21 @@ struct SuperheroCell: View {
                 .frame(width: 44, height: 44)
                 .clipShape(Circle())
             Text(superhero.name)
-                .foregroundColor(.white)
+                .foregroundColor(Colors.text)
                 .font(Font.system(size: 17))
                 .fontWeight(.semibold)
             Spacer()
-            Image(uiImage: UIImage(named: "disclosure")!) // TODO
+            Image(uiImage: UIImage(named: "disclosure")!)
         }
         .padding(16)
-        .background(backgroundColor)
+        .background(Colors.cellBackground)
         .cornerRadius(8)
     }
 }
 
 struct SuperheroCell_Previews: PreviewProvider {
     static var previews: some View {
-        SuperheroCell(
-            superhero: .fixture(),
-            backgroundColor: Color(red: 54 / 255, green: 59 / 255, blue: 69 / 255)
-        )
+        SuperheroCell(superhero: .fixture())
+            .background(Colors.cellBackground)
     }
 }

@@ -1,24 +1,35 @@
 import SwiftUI
 
 struct HeroDetailView: View {
-    let superhero: Superhero
-    let appearances: [Appearance]
+    @ObservedObject var viewModel: HeroDetailViewModel
     
     var body: some View {
         VStack(spacing: 24) {
             AsyncImageView(
                 viewModel: AsyncImageViewModel(
-                    url: superhero.imageURL,
+                    url: viewModel.state.superhero.imageURL,
                     dataProvider: ImageProvider(
                         api: MarvelAPI(remote: Remote()),
                         persister: ImagePersister()
-                    ).imageDataProviding(.fixture())
+                    ).imageDataProviding(viewModel.state.superhero.imageURL)
                 ),
                 contentMode: .fit
             ) // TODO
-            HeroDescriptionView(superhero: superhero)
-             .padding(.horizontal, 16)
-            HeroAppearancesView(appearances: appearances)
+                // Setting `maxWidth` to `.inifinity`, which would be
+                // the desidered behaviour as per spec, crashes the app.
+                .frame(maxWidth: 300)
+            HeroDescriptionView(
+                superhero: viewModel.state.superhero,
+                buttonText: viewModel.state.isPartOfSquad
+                    ? "🔥 Fire from Squad"
+                    : "💪 Recruit to Squad",
+                buttonBackgroundColor: viewModel.state.isPartOfSquad
+                    ? Colors.buttonBackgroundInverted
+                    : Colors.buttonBackground,
+                onButtonPress: { self.viewModel.send(event: .onSquadButtonPress) }
+            )
+                .padding(.horizontal, 16)
+            HeroAppearancesView(appearances: viewModel.state.appearances)
                 .padding(.horizontal, 16)
             Spacer()
             // The following is, from what it seems so far, the only way
@@ -28,15 +39,35 @@ struct HeroDetailView: View {
                 Spacer()
             }
         }
+        .onAppear(perform: { self.viewModel.send(event: .onAppear) })
+        .onDisappear(perform: { self.viewModel.send(event: .onDisappear) })
     }
 }
 
 struct HeroDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        HeroDetailView(
+        let viewModel = HeroDetailViewModel(
             superhero: .fixture(),
-            appearances: [.fixture(), .fixture(), .fixture()]
+            appearancesDataProvider: DataProvider(
+                api: MarvelAPI(remote: Remote()), // TODO fixture
+                persister: Persister() // TODO fixture
+            ).appearancesDataProvidingFixture(false)(3),
+            mySquadDataProvider: DataProvider(
+                api: MarvelAPI(remote: Remote()), // TODO fixture
+                persister: Persister() // TODO fixture
+            ).mySquadDataProvidingFixture(false)
         )
-            .background(Color(red: 34 / 255, green: 37 / 255, blue: 43 / 255))
+
+        let apperances: [Appearance] = [.fixture(), .fixture(), .fixture()]
+
+        viewModel.state = .init(
+            superhero: .fixture(),
+            appearances: apperances,
+            squad: [.fixture(), .fixture(), .fixture()],
+            status: .loaded(appearances: apperances)
+        )
+
+        return HeroDetailView(viewModel: viewModel)
+            .background(Colors.background)
     }
 }

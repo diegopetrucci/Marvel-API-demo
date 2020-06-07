@@ -130,7 +130,7 @@
 		6C51CCF4248BCEBF00B69902 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		6C51CCF6248BE23300B69902 /* MySquadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadViewModel.swift; sourceTree = "<group>"; };
 		6C51CCF8248BE3B100B69902 /* MySquadDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySquadDataProvider.swift; sourceTree = "<group>"; };
-		6C51CCFA248C512900B69902 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Colors.swift; path = "plum-demo/Colors.swift"; sourceTree = SOURCE_ROOT; };
+		6C51CCFA248C512900B69902 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Colors.swift; path = "plum-demo/UI/Colors.swift"; sourceTree = SOURCE_ROOT; };
 		6C5586792487FA72004D9480 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		6C55867B2487FDFD004D9480 /* Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Remote.swift; sourceTree = "<group>"; };
 		6C55868124880FF6004D9480 /* MarvelAPITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarvelAPITests.swift; sourceTree = "<group>"; };
@@ -228,8 +228,6 @@
 				6C0264672485718F002EE69A /* AppDelegate.swift */,
 				6C0264692485718F002EE69A /* SceneDelegate.swift */,
 				6C5586922488349A004D9480 /* UI */,
-				6C51CCFA248C512900B69902 /* Colors.swift */,
-				6CDC1A76248D12A70073996B /* Spacing.swift */,
 				6C6DDFB92489982C000AD7A0 /* DataProvider */,
 				6C5586782487FA61004D9480 /* Network */,
 				6C6DDFAE24899604000AD7A0 /* Persistance */,
@@ -346,6 +344,8 @@
 				6C0264922485912F002EE69A /* RootView */,
 				6CE7AEEA2486BFE1000B8B41 /* HeroDetail */,
 				6C5586A82488557B004D9480 /* AsyncImage */,
+				6C51CCFA248C512900B69902 /* Colors.swift */,
+				6CDC1A76248D12A70073996B /* Spacing.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";

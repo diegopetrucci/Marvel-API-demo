@@ -1,2 +1,2 @@
-# Plum-interview-demo
-A solution for Plum's iOS take-home test in SwiftUI and Combine
+# Marvel API demo
+A simple master-detail client in SwiftUI and Combine

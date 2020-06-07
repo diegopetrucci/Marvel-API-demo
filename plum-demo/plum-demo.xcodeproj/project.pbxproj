@@ -268,7 +268,6 @@
 				6C026489248590A3002EE69A /* RootView.swift */,
 				6C51CCF4248BCEBF00B69902 /* RootViewModel.swift */,
 				6CDC1A79248D2A740073996B /* MySquad */,
-				6C51CCF6248BE23300B69902 /* MySquadViewModel.swift */,
 				6CDC1A78248D2A690073996B /* List */,
 				6C6FE3D82485974900709EAF /* SnapshotTests */,
 			);
@@ -422,9 +421,6 @@
 			children = (
 				6C6FE3E224859AE000709EAF /* RootContainerViewSnapshotTests.swift */,
 				6C6FE3DF2485997700709EAF /* RootViewSnapshotTests.swift */,
-				6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */,
-				6C6FE3DD248598E000709EAF /* SuperheroListSnapshotTests.swift */,
-				6C6FE3D92485976600709EAF /* SuperheroCellSnapshotTests.swift */,
 			);
 			path = SnapshotTests;
 			sourceTree = "<group>";
@@ -456,6 +452,7 @@
 			children = (
 				6C02648B248590C2002EE69A /* SuperheroList.swift */,
 				6C02648D248590D4002EE69A /* SuperheroCell.swift */,
+				6CDC1A83248D569B0073996B /* Tests */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -464,8 +461,27 @@
 			isa = PBXGroup;
 			children = (
 				6C6A386B2485A7230047474C /* MySquadView.swift */,
+				6C51CCF6248BE23300B69902 /* MySquadViewModel.swift */,
+				6CDC1A82248D56900073996B /* Tests */,
 			);
 			path = MySquad;
+			sourceTree = "<group>";
+		};
+		6CDC1A82248D56900073996B /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				6C6A386D2485AC5F0047474C /* MySquadViewSnapshotTests.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		6CDC1A83248D569B0073996B /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				6C6FE3DD248598E000709EAF /* SuperheroListSnapshotTests.swift */,
+				6C6FE3D92485976600709EAF /* SuperheroCellSnapshotTests.swift */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		6CE7AEEA2486BFE1000B8B41 /* HeroDetail */ = {

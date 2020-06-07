@@ -6,8 +6,8 @@ struct HeroDetailView: View {
     var body: some View {
         VStack(spacing: 24) {
             if viewModel.state.superhero.imageURL.isNotNil {
-                AsyncImageViewHack(
-                    viewModel: AsyncImageViewModelHack(
+                AsyncImageView(
+                    viewModel: AsyncImageViewModel(
                         url: viewModel.state.superhero.imageURL,
                         dataProvider: ImageProvider(
                             api: MarvelAPI(remote: Remote()),

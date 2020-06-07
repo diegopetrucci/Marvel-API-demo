@@ -85,7 +85,7 @@ struct HeroDetailView_Previews: PreviewProvider {
                 superheroName: "Name",
                 shouldPresent: .init(.constant(false)) ?? .constant(false)
             ),
-            status: .loaded(appearances: apperances)
+            status: .loaded
         )
 
         return HeroDetailView(viewModel: viewModel)

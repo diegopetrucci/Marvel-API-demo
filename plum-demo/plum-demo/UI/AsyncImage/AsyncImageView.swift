@@ -32,7 +32,10 @@ extension AsyncImageView {
             return AnyView(
                 // I would have preferred an EmptyView, but SwiftUI completely
                 // stops loading if we add that
-                 Text("")
+                Image(uiImage: AsyncImageViewModel.placeholder)
+                    .renderingMode(.original)
+                    .resizable()
+                    .aspectRatio(contentMode: contentMode)
             )
         case .failed:
             return AnyView(
@@ -51,7 +54,6 @@ struct AsyncImageView_Previews: PreviewProvider {
             api: MarvelAPI(remote: Remote()),
             persister: ImagePersister()
         ).imageDataProvidingFixture(false)(URL.fixture())
-
 
         return AsyncImageView(
             viewModel:

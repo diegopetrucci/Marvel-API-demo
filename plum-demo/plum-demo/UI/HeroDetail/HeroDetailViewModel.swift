@@ -77,7 +77,7 @@ extension HeroDetailViewModel {
             // otherwise we go back to .idle to give it another chance to load.
             // Note: this would probably have to change when pagination is implemented
             switch state.status {
-            case .loaded, .persisted:
+            case .loaded:
                 return state
             case .idle, .loading, .failed, .editingSquad:
                 return state.with { $0.status = .loading }
@@ -99,7 +99,7 @@ extension HeroDetailViewModel {
             }
 
             return state.with {
-                $0.status = .loaded(appearances: appearances)
+                $0.status = .loaded
                 $0.appearances = appearances
                 $0.squad = squad
             }
@@ -108,23 +108,17 @@ extension HeroDetailViewModel {
                 $0.status = .failed
                 $0.appearances = []
             }
-        case let .persistedAppearances(appearances):
-             guard appearances.isNotEmpty else {
+        case .persistedAppearances:
+            guard state.appearances.isNotEmpty else {
                 return state.with {
                     $0.status = .failed
-                    $0.appearances = appearances
+                    $0.appearances = []
                 }
              }
 
-            return state.with {
-                $0.status = .persisted(appearances: appearances)
-                $0.appearances = appearances
-            }
-        case let .persistedSquad(newSquad):
-            return state.with {
-                $0.squad = newSquad
-                $0.status = .loaded(appearances: state.appearances)
-            }
+             return state.with { $0.status = .loading }
+        case .persistedSquad:
+            return state.with { $0.status = .loaded }
         }
     }
 }
@@ -166,10 +160,13 @@ extension HeroDetailViewModel {
         dataProvider: DataProviding<[Appearance], DataProvidingError>
     ) -> Feedback<State, Event> {
         Feedback { (state: State) -> AnyPublisher<Event, Never> in
-            guard case let .loaded(appearances) = state.status else { return Empty().eraseToAnyPublisher() }
+            guard
+                case .loaded = state.status,
+                state.appearances.isNotEmpty
+            else { return Empty().eraseToAnyPublisher() }
 
-            return dataProvider.persist(appearances, apperancesPath)
-                .map { _ in Event.persistedAppearances(appearances) }
+            return dataProvider.persist(state.appearances, apperancesPath)
+                .map { _ in Event.persistedAppearances }
                 .replaceError(with: .failedToLoad)
                 .eraseToAnyPublisher()
         }
@@ -203,7 +200,7 @@ extension HeroDetailViewModel {
             }
 
             return dataProvider.persist(newSquad, mySquadPath)
-                .map { _ in Event.persistedSquad(newSquad) }
+                .map { _ in Event.persistedSquad }
                 .replaceError(with: .failedToLoad)
                 .eraseToAnyPublisher()
         }
@@ -256,9 +253,8 @@ extension HeroDetailViewModel {
     enum Status: Equatable {
         case idle
         case loading
-        case loaded(appearances: [Appearance])
+        case loaded
         case failed
-        case persisted(appearances: [Appearance])
         case editingSquad
         // Uncomment to test out the Alert
 //        case removingFromSquad
@@ -268,8 +264,8 @@ extension HeroDetailViewModel {
         case ui(UI)
         case loaded([Appearance], squad: [Superhero])
         case failedToLoad
-        case persistedAppearances([Appearance])
-        case persistedSquad([Superhero])
+        case persistedAppearances
+        case persistedSquad
 
         enum UI {
             case onSquadButtonPress

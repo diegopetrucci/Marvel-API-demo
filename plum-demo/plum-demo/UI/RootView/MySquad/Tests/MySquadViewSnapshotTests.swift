@@ -10,7 +10,7 @@ final class MySquadViewSnapshotTests: XCTestCase {
         record = false
     }
 
-    func test_default() {
+    func test_idle() {
         let viewModel = MySquadViewModel(
             dataProvider: DataProvider(
                 api: APIFixture(),
@@ -18,7 +18,50 @@ final class MySquadViewSnapshotTests: XCTestCase {
             ).superheroDataProvidingFixture(false)
         )
 
-        viewModel.state.status = .loaded([
+        viewModel.state.status = .idle
+
+        assertSnapshot(
+            matching: MySquadView(
+                viewModel: viewModel,
+                destinationView: { _, _ in EmptyView() }
+            )
+                .background(Colors.background)
+                .frame(width: 500, height: 200),
+            as: .image()
+        )
+    }
+
+    func test_loading() {
+        let viewModel = MySquadViewModel(
+            dataProvider: DataProvider(
+                api: APIFixture(),
+                persister: MySquadPersisterFixture()
+            ).superheroDataProvidingFixture(false)
+        )
+
+        viewModel.state.status = .loading
+
+        assertSnapshot(
+            matching: MySquadView(
+                viewModel: viewModel,
+                destinationView: { _, _ in EmptyView() }
+            )
+                .background(Colors.background)
+                .frame(width: 500, height: 200),
+            as: .image()
+        )
+    }
+
+    func test_loaded() {
+        let viewModel = MySquadViewModel(
+            dataProvider: DataProvider(
+                api: APIFixture(),
+                persister: MySquadPersisterFixture()
+            ).superheroDataProvidingFixture(false)
+        )
+
+        viewModel.state.status = .loaded
+        viewModel.state.squad = [
             .fixture(),
             .fixture(),
             .fixture(),
@@ -26,7 +69,28 @@ final class MySquadViewSnapshotTests: XCTestCase {
             .fixture(),
             .fixture(),
             .fixture()
-        ])
+        ]
+
+        assertSnapshot(
+            matching: MySquadView(
+                viewModel: viewModel,
+                destinationView: { _, _ in EmptyView() }
+            )
+                .background(Colors.background)
+                .frame(width: 500, height: 200),
+            as: .image()
+        )
+    }
+
+    func test_failed() {
+        let viewModel = MySquadViewModel(
+            dataProvider: DataProvider(
+                api: APIFixture(),
+                persister: MySquadPersisterFixture()
+            ).superheroDataProvidingFixture(false)
+        )
+
+        viewModel.state.status = .failed
 
         assertSnapshot(
             matching: MySquadView(

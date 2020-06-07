@@ -7,14 +7,25 @@ struct HeroDetailContainerView: View {
     private let mySquadDataProvider: DataProviding<[Superhero], DataProvidingError>
     @State private var shouldPresentAlert = false
 
-    init(superhero: Superhero, mySquad: [Superhero]) {
+    init(
+        superhero: Superhero,
+        mySquad: [Superhero],
+        appearancesDataProvider: DataProviding<[Appearance], DataProvidingError>? = nil
+    ) {
         self.superhero = superhero
         self.mySquad = mySquad
 
-        self.appearancesDataProvider = DataProvider(
-            api: MarvelAPI(remote: Remote()),
-            persister: Persister()
-        ).appearancesDataProviding(superhero.id)
+        // Workaround to the fact that:
+        // 1. Having this injected is useful for testing
+        // 2. A default parameter cannot be in the init as it needs `superhero.id`
+        if let appearancesDataProvider = appearancesDataProvider {
+            self.appearancesDataProvider = appearancesDataProvider
+        } else {
+            self.appearancesDataProvider = DataProvider(
+                api: MarvelAPI(remote: Remote()),
+                persister: Persister()
+            ).appearancesDataProviding(superhero.id)
+        }
 
         self.mySquadDataProvider = DataProvider(
             api: MarvelAPI(remote: Remote()),

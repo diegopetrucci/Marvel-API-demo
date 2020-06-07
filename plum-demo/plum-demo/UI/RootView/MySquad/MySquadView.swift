@@ -7,23 +7,40 @@ struct MySquadView<Destination: View>: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            header(for: viewModel.state.status)
+            header()
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: Spacing.default / 2) {
-                    squadMembers(for: viewModel.state.status)
+                    ForEach(viewModel.state.squad, id: \.self) { member in
+                        NavigationLink(
+                            destination: self.destinationView(member, self.viewModel.state.squad)
+                                .background(Colors.background)
+                                // Ignoring the bottom safe area to make sure
+                                // the background color applies to that as well.
+                                .edgesIgnoringSafeArea(.bottom)
+                            ,
+                            tag: member.id,
+                            selection: self.$selectedMemberID,
+                            label: { self.navigationLinkLabel(for: member) }
+                        )
+                            .buttonStyle(PlainButtonStyle())
+                    }
                 }
             }
         }
+            // If you want to have fun try uncommenting this, the images in
+            // ScrollView start to flicker randomly when trying to go to
+            // a detail view.
+//        .id(UUID().uuidString)
         .onAppear { self.viewModel.send(event: .onAppear) }
         .onDisappear { self.viewModel.send(event: .onDisappear) }
     }
 }
 
 extension MySquadView {
-    func header(for status: MySquadViewModel.Status) -> some View {
-        switch status {
-        case let .loaded(squadMembers):
-            if squadMembers.isNotEmpty {
+    func header() -> some View {
+        switch viewModel.state.status {
+        case .loaded:
+            if viewModel.state.squad.isNotEmpty {
                 return AnyView(
                     Text("My Squad")
                         .foregroundColor(Colors.text)
@@ -32,57 +49,18 @@ extension MySquadView {
                 )
             } else {
                 return AnyView(
-                    EmptyView()
+                   Text("")
                 )
             }
-        case .idle, .loading:
+        case .idle, .loading, .failed:
             return AnyView(
-                EmptyView()
-            )
-        case .failed:
-            return AnyView(
-                Button(
-                    action: { self.viewModel.send(event: .retry) },
-                    label: {
-                        Text("Failed to load, tap to retry.")
-                            .foregroundColor(Colors.text)
-                            .font(Font.system(size: 17))
-                            .fontWeight(.semibold)
-                    }
-                )
+                Text("")
             )
         }
     }
 }
 
 extension MySquadView {
-    func squadMembers(
-        for status: MySquadViewModel.Status
-    ) -> some View {
-        switch status {
-        case let .loaded(squadMembers):
-            return AnyView(
-                ForEach(squadMembers, id: \.self) { member in
-                    NavigationLink(
-                        destination: self.destinationView(member, squadMembers)
-                            .background(Colors.background)
-                            // Ignoring the bottom safe area to make sure
-                            // the background color applies to that as well.
-                            .edgesIgnoringSafeArea(.bottom)
-                        ,
-                        tag: member.id,
-                        selection: self.$selectedMemberID,
-                        label: { self.navigationLinkLabel(for: member) }
-                    )
-                }
-            )
-        case .idle, .loading, .failed:
-            return AnyView(
-                EmptyView()
-            )
-        }
-    }
-
     func navigationLinkLabel(for member: Superhero) -> some View {
         Button(
             action: { self.selectedMemberID = member.id },
@@ -116,6 +94,7 @@ extension MySquadView {
                     .frame(idealWidth: 64)
         }
         )
+            .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -130,7 +109,7 @@ struct MySquadView_Previews: PreviewProvider {
         
         let supeheroes: [Superhero] = [.fixture(), .fixture(), .fixture()]
         
-        viewModel.state = .init(status: .loaded(supeheroes))
+        viewModel.state = .init(status: .loaded, squad: supeheroes)
         
         return MySquadView(
             viewModel: viewModel,

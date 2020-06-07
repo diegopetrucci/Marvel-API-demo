@@ -10,7 +10,7 @@ final class MySquadViewModel: ObservableObject {
     private let input = PassthroughSubject<Event.UI, Never>()
 
     init(dataProvider: DataProviding<[Superhero], DataProvidingError>) {
-        self.state = State(status: .idle)
+        self.state = State(status: .idle, squad: [])
 
         let path = "/mysquad"
 
@@ -42,7 +42,10 @@ extension MySquadViewModel {
         case .ui(.onDisappear):
             return state
         case let .loaded(superheroes):
-            return state.with { $0.status = .loaded(superheroes) }
+            return state.with {
+                $0.status = .loaded
+                $0.squad = superheroes
+            }
         case .failedToLoad:
             return state.with { $0.status = .failed }
         }
@@ -76,12 +79,13 @@ extension MySquadViewModel {
 extension MySquadViewModel {
     struct State: Then {
         var status: Status
+        var squad: [Superhero]
     }
 
     enum Status: Equatable {
         case idle
         case loading
-        case loaded([Superhero])
+        case loaded
         case failed
     }
 

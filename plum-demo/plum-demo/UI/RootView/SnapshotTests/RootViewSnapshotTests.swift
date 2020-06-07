@@ -10,6 +10,38 @@ final class RootViewSnapshotTests: XCTestCase {
         record = false
     }
 
+    func test_loading() {
+        let viewModel = RootViewModel(
+            dataProvider: DataProvider(
+                api: APIFixture(),
+                persister: SuperheroPersisterFixture()
+            ).superheroDataProvidingFixture(false)
+        )
+
+        viewModel.state.status = .loading
+
+        let mySquadViewModel = MySquadViewModel(
+            dataProvider: DataProvider(
+                api: APIFixture(),
+                persister: MySquadPersisterFixture()
+            ).superheroDataProvidingFixture(false)
+        )
+
+        mySquadViewModel.state.status = .loading
+
+        assertSnapshot(
+            matching: RootView(
+                viewModel: viewModel,
+                mySquadViewModel: mySquadViewModel,
+                mySquadMembers: [],
+                superheroDestinationView: { _, _ in EmptyView() },
+                mySquadDestinationView: { _, _ in EmptyView() }
+            )
+                .background(Colors.background),
+            as: .image()
+        )
+    }
+
     func test_loaded() {
         let superheroes: [Superhero] = [
             .fixture(),
@@ -29,7 +61,8 @@ final class RootViewSnapshotTests: XCTestCase {
             ).superheroDataProvidingFixture(false)
         )
 
-        viewModel.state.status = .loaded(superheroes)
+        viewModel.state.status = .loaded
+        viewModel.state.superheroes = superheroes
 
         let mySquadViewModel = MySquadViewModel(
             dataProvider: DataProvider(
@@ -38,7 +71,8 @@ final class RootViewSnapshotTests: XCTestCase {
             ).superheroDataProvidingFixture(false)
         )
 
-        mySquadViewModel.state.status = .loaded(superheroes)
+        mySquadViewModel.state.status = .loaded
+        mySquadViewModel.state.squad = superheroes
 
         assertSnapshot(
             matching: RootView(

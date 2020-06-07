@@ -21,50 +21,15 @@ struct RootView<Destination: View>: View {
             )
                 .padding(Spacing.default)
                 .background(Colors.background)
-            supeheroes(for: viewModel.state.status)
+            SuperheroList(
+                superheroes: viewModel.state.superheroes,
+                mySquad: mySquadMembers,
+                destinationView: superheroDestinationView
+            )
         }
         .background(Colors.background)
         .onAppear { self.viewModel.send(event: .onAppear) }
         .onDisappear { self.viewModel.send(event: .onDisappear) }
-    }
-}
-
-extension RootView {
-    func supeheroes(for status: RootViewModel.Status) -> some View {
-        switch status {
-        case let .loaded(superheroes):
-            return AnyView(
-                SuperheroList(
-                    superheroes: superheroes,
-                    mySquad: mySquadMembers,
-                    destinationView: superheroDestinationView
-                )
-            )
-        case let .persisted(superheroes):
-            return AnyView(
-                SuperheroList(
-                    superheroes: superheroes,
-                    mySquad: mySquadMembers,
-                    destinationView: superheroDestinationView
-                )
-            )
-        case .idle, .loading:
-            return AnyView(
-                EmptyView()
-            )
-        case .failed:
-            return AnyView(
-                Button(
-                    action: { self.viewModel.send(event: .retry) },
-                    label: {
-                        Text("Failed to load, tap to retry.")
-                            .foregroundColor(Colors.text)
-                            .font(Font.system(size: 17))
-                            .fontWeight(.semibold)
-                    }
-                )
-            )
-        }
     }
 }
 
@@ -83,7 +48,7 @@ struct RootView_Previews: PreviewProvider {
 
         let supeheroes: [Superhero] = [.fixture(), .fixture(), .fixture()]
 
-        viewModel.state = .init(status: .loaded(supeheroes))
+        viewModel.state = .init(status: .loaded, superheroes: supeheroes)
 
         let mySquadViewModel = MySquadViewModel(
             dataProvider: DataProvider(
@@ -94,7 +59,7 @@ struct RootView_Previews: PreviewProvider {
 
         let mySquadMembers: [Superhero] = [.fixture(), .fixture(), .fixture()]
 
-        mySquadViewModel.state = .init(status: .loaded(mySquadMembers))
+        mySquadViewModel.state = .init(status: .loaded, squad: mySquadMembers)
 
         return RootView(
             viewModel: viewModel,

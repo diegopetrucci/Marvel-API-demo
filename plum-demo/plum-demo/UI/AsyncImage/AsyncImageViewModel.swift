@@ -134,6 +134,6 @@ extension AsyncImageViewModel {
 
 extension AsyncImageViewModel {
     static var placeholder: UIImage {
-        UIImage(named: "thumbnail_placeholder")!
+        UIImage(named: "marvel_logo")!
     }
 }

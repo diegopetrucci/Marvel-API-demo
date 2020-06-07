@@ -165,7 +165,14 @@ UI tests are missing, too, due to time constraints. To be honest I have never se
 Everything else should be tested, unless I've accidentally missed it. There's also an integration test for the persistence layer, which probably belongs to another target (it's fast, though, so it's fine for now).
 
 #### Pagination
-TODO
+Sadly I was not able to complete pagination (or fetching more than the initial 20 characters) in time. However, adding it is not a herculean task to this structure. What is needed:
+
+* Add a view model UI event for it that is triggered once the displayed cell in SuperheroList is the last one
+* Either add a new status (`.fetchingNext`) to the ViewModel, or re-use `.loading`
+* Add a feedback that fetches the next `x` superheroes based on the current count
+* Adapt the API to accept a parameter of `offset` with the number of new heroes to fetch
+* Adapt the persister to write to disk the entirety of the superheroes array
+* Display the new array in the view
 
 TODO
 ## TODOs

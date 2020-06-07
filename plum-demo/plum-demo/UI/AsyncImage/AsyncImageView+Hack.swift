@@ -1,7 +1,7 @@
 import SwiftUI
 
-struct AsyncImageView: View {
-    @ObservedObject var viewModel: AsyncImageViewModel
+struct AsyncImageViewHack: View {
+    @ObservedObject var viewModel: AsyncImageViewModelHack
     var contentMode: ContentMode = .fit
 
     var body: some View {
@@ -11,8 +11,8 @@ struct AsyncImageView: View {
     }
 }
 
-extension AsyncImageView {
-    func image(for status: AsyncImageViewModel.Status) -> some View {
+extension AsyncImageViewHack {
+    func image(for status: AsyncImageViewModelHack.Status) -> some View {
         switch status {
         case let .loaded(image):
             return AnyView(
@@ -42,23 +42,5 @@ extension AsyncImageView {
                     .fontWeight(.semibold)
             )
         }
-    }
-}
-
-struct AsyncImageView_Previews: PreviewProvider {
-    static var previews: some View {
-        let provider = ImageProvider(
-            api: MarvelAPI(remote: Remote()),
-            persister: ImagePersister()
-        ).imageDataProvidingFixture(false)(URL.fixture())
-
-
-        return AsyncImageView(
-            viewModel:
-            .init(
-                url: .fixture(),
-                dataProvider: provider
-            )
-        )
     }
 }

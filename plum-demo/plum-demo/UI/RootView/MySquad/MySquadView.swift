@@ -9,7 +9,7 @@ struct MySquadView<Destination: View>: View {
         VStack(alignment: .leading, spacing: 16) {
             header(for: viewModel.state.status)
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+                HStack(spacing: Spacing.default / 2) {
                     squadMembers(for: viewModel.state.status)
                 }
             }
@@ -35,9 +35,21 @@ extension MySquadView {
                     EmptyView()
                 )
             }
-        case .idle, .loading, .failed:
+        case .idle, .loading:
             return AnyView(
                 EmptyView()
+            )
+        case .failed:
+            return AnyView(
+                Button(
+                    action: { self.viewModel.send(event: .retry) },
+                    label: {
+                        Text("Failed to load, tap to retry.")
+                            .foregroundColor(Colors.text)
+                            .font(Font.system(size: 17))
+                            .fontWeight(.semibold)
+                    }
+                )
             )
         }
     }

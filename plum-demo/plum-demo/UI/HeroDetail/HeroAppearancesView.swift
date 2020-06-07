@@ -8,7 +8,7 @@ struct HeroAppearancesView: View {
     let appearances: [Appearance]
 
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: Spacing.default) {
             if appearances.isNotEmpty {
                 Text("Last appeared in")
                     .foregroundColor(Colors.text)
@@ -16,7 +16,7 @@ struct HeroAppearancesView: View {
                     .fontWeight(.semibold)
                     .alignmentGuide(.leading) { d in d[.leading] } // Note: this is not working. A SwiftUI bug?
             }
-            HStack(alignment: .center, spacing: 16) {
+            HStack(alignment: .center, spacing: Spacing.default) {
                 if appearances.isNotEmpty {
                     // Unavoidable due to SwiftUI not supporting optional binding.
                     PreviousIssueView(appearance: appearances.first!)

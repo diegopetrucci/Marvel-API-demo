@@ -6,7 +6,7 @@ struct SuperheroList<Destination: View>: View {
     let destinationView: (Superhero, [Superhero]) -> Destination
 
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: Spacing.default) {
             ForEach(superheroes, id: \.self) { superhero in
                 NavigationLink(
                     destination: self.destinationView(superhero, self.mySquad)
@@ -17,7 +17,7 @@ struct SuperheroList<Destination: View>: View {
                     ,
                     label: {
                         SuperheroCell(superhero: superhero)
-                            .padding(.horizontal, 16)
+                            .padding(.horizontal, Spacing.default)
                     }
                 )
                     .buttonStyle(PlainButtonStyle())

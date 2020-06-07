@@ -4,7 +4,7 @@ struct PreviousIssueView: View {
     let appearance: Appearance
 
     var body: some View {
-        VStack(alignment: .center, spacing: 8) {
+        VStack(alignment: .center, spacing: Spacing.default / 2) {
             if appearance.imageURL.isNotNil {
                 AsyncImageView(
                     viewModel: AsyncImageViewModel(

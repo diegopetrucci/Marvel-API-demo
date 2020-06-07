@@ -37,8 +37,10 @@ extension MySquadViewModel {
 extension MySquadViewModel {
     private static func reduce(_ state: State, _ event: Event) -> State {
         switch event {
-        case .ui(.onAppear), .ui(.onDisappear):
+        case .ui(.onAppear), .ui(.retry):
             return state.with { $0.status = .loading }
+        case .ui(.onDisappear):
+            return state
         case let .loaded(superheroes):
             return state.with { $0.status = .loaded(superheroes) }
         case .failedToLoad:
@@ -89,6 +91,7 @@ extension MySquadViewModel {
         case failedToLoad
 
         enum UI {
+            case retry
             case onAppear
             case onDisappear
         }

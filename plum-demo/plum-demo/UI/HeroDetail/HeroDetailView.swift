@@ -6,8 +6,8 @@ struct HeroDetailView: View {
     var body: some View {
         VStack(spacing: 24) {
             if viewModel.state.superhero.imageURL.isNotNil {
-                AsyncImageView(
-                    viewModel: AsyncImageViewModel(
+                AsyncImageViewHack(
+                    viewModel: AsyncImageViewModelHack(
                         url: viewModel.state.superhero.imageURL,
                         dataProvider: ImageProvider(
                             api: MarvelAPI(remote: Remote()),
@@ -22,17 +22,23 @@ struct HeroDetailView: View {
             }
             HeroDescriptionView(
                 superhero: viewModel.state.superhero,
-                buttonText: viewModel.state.isPartOfSquad
-                    ? "🔥 Fire from Squad"
-                    : "💪 Recruit to Squad",
-                buttonBackgroundColor: viewModel.state.isPartOfSquad
-                    ? Colors.buttonBackgroundInverted
-                    : Colors.buttonBackground,
-                onButtonPress: { self.viewModel.send(event: .onSquadButtonPress) }
+                button: .init(
+                    text: viewModel.state.isPartOfSquad
+                        ? "🔥 Fire from Squad"
+                        : "💪 Recruit to Squad",
+                    backgroundColor: viewModel.state.isPartOfSquad
+                        ? Colors.buttonBackgroundInverted
+                        : Colors.buttonBackground,
+                    backgroundColorPressed: viewModel.state.isPartOfSquad
+                        ? Colors.buttonBackgroundInvertedPressed
+                        : Colors.buttonBackgroundPressed
+                    ,
+                    onPress: { self.viewModel.send(event: .onSquadButtonPress) }
+                )
             )
-                .padding(.horizontal, 16)
+                .padding(.horizontal, Spacing.default)
             HeroAppearancesView(appearances: viewModel.state.appearances)
-                .padding(.horizontal, 16)
+                .padding(.horizontal, Spacing.default)
             Spacer()
             // The following is, from what it seems so far, the only way
             // to make sure the parent VStack fills the full width.
@@ -43,13 +49,14 @@ struct HeroDetailView: View {
         }
         .onAppear(perform: { self.viewModel.send(event: .onAppear) })
         .onDisappear(perform: { self.viewModel.send(event: .onDisappear) })
-        .alert(isPresented: self.viewModel.state.alert.shouldPresent) { () -> Alert in
-            Alert(
-                title: Text(self.viewModel.state.alert.title),
-                primaryButton: .cancel(),
-                secondaryButton: .destructive(Text(self.viewModel.state.alert.removeButton))
-            )
-        }
+        // Uncomment to test Alert
+//        .alert(isPresented: self.viewModel.state.alert.shouldPresent) { () -> Alert in
+//            Alert(
+//                title: Text(self.viewModel.state.alert.title),
+//                primaryButton: .cancel(),
+//                secondaryButton: .destructive(Text(self.viewModel.state.alert.removeButton))
+//            )
+//        }
     }
 }
 

@@ -4,7 +4,7 @@ struct SuperheroCell: View {
     let superhero: Superhero
 
     var body: some View {
-        HStack(spacing: 16) {
+        HStack(spacing: Spacing.default) {
             if superhero.imageURL.isNotNil {
                 AsyncImageView(
                     viewModel: AsyncImageViewModel(
@@ -26,7 +26,7 @@ struct SuperheroCell: View {
             Spacer()
             Image(uiImage: UIImage(named: "disclosure")!)
         }
-        .padding(16)
+        .padding(Spacing.default)
         .background(Colors.cellBackground)
         .cornerRadius(8)
     }

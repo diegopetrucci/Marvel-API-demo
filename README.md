@@ -166,23 +166,16 @@ Everything else should be tested, unless I've accidentally missed it. There's al
 TODO
 
 TODO
-## TODO
+## TODOs
 * move swift preview assets to that folder
-* extract default spacing 16 to constant
-* extract background color into environment
 * odd spacing issues (added by the scrollview?)
-* highlighted states (buttons, cells, etc.)
 * shadows
-* /255 colors
-* fix hero detail button width in bigger phones
-* fix hero detail hero name leading 
+* fix hero detail button width in bigger phones — probable SwiftUI bug
+* fix hero detail hero name leading
 * fix navigation color in hero detail
 * add white margin to last appearances image
 * add scrollview to detail view
-* automatic retrying of failed calls?
-* pagination
-* add background color to scrollview
-* extract asyncimageview initialization into container views via a closure
+* extract asyncimageview initialization into container views via a closure (similar to presented views)
 
 
 # Bugs

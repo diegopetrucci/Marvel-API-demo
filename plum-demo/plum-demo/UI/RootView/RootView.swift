@@ -19,7 +19,7 @@ struct RootView<Destination: View>: View {
                 viewModel: mySquadViewModel,
                 destinationView: mySquadDestinationView
             )
-                .padding(16)
+                .padding(Spacing.default)
                 .background(Colors.background)
             supeheroes(for: viewModel.state.status)
         }

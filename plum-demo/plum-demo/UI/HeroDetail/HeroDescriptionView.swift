@@ -12,7 +12,7 @@ struct HeroDescriptionView: View {
                 .foregroundColor(Colors.text)
                 .font(Font.system(size: 34))
                 .fontWeight(.bold)
-                .alignmentGuide(.leading) { d in d[.leading] } // TODO: this is not working
+                .alignmentGuide(.leading) { d in d[.leading] } // Note: this is not working. A SwiftUI bug?
             Button(
                 action: { self.onButtonPress() },
                 label: {
@@ -30,7 +30,7 @@ struct HeroDescriptionView: View {
                 // a lot thicker to be able to "cover" for the fact that the internal
                 // button frame is not corner radius-ed. As far as I understand this
                 // might be a SwiftUI bug.
-                .border(Colors.buttonBorder)
+                .border(Colors.buttonBorder, width: 4)
                 .cornerRadius(10)
                 .shadow(radius: 10)
             Text(superhero.description)

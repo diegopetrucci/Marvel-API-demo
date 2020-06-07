@@ -39,15 +39,18 @@ extension RootViewModel {
 extension RootViewModel {
     private static func reduce(_ state: State, _ event: Event) -> State {
         switch event {
-        case .ui(.onAppear), .ui(.onDisappear): // TODO adapt description
-            // if we already have an image loaded we keep the loaded state,
-            // otherwise we go back to .idle to give it another chance to load
+        case .ui(.onAppear), .ui(.onDisappear):
+            // If we already have an superheroes we keep the loaded state,
+            // otherwise we go back to .idle to give it another chance to load.
+            // Note: this would probably have to change when pagination is implemented
             switch state.status {
             case .loaded, .persisted:
                 return state
             case .idle, .loading, .failed:
                 return state.with { $0.status = .loading }
             }
+        case .ui(.retry):
+                return state.with { $0.status = .loading }
         case let .loaded(superheroes):
             return state.with { $0.status = .loaded(superheroes) }
         case .failedToLoad:
@@ -120,19 +123,7 @@ extension RootViewModel {
         enum UI {
             case onAppear
             case onDisappear
+            case retry
         }
     }
 }
-
-#if DEBUG
-extension RootViewModel {
-    static func fixture() -> RootViewModel {
-        RootViewModel(
-            dataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: Persister() // TODO fixture
-            ).superheroDataProvidingFixture(false)
-        )
-    }
-}
-#endif

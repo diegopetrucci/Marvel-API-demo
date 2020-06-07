@@ -1,6 +1,6 @@
 import SnapshotTesting
 import XCTest
-import struct SwiftUI.Color
+import SwiftUI
 @testable import plum_demo
 
 final class RootViewSnapshotTests: XCTestCase {
@@ -44,7 +44,9 @@ final class RootViewSnapshotTests: XCTestCase {
             matching: RootView(
                 viewModel: viewModel,
                 mySquadViewModel: mySquadViewModel,
-                mySquadMembers: superheroes
+                mySquadMembers: superheroes,
+                superheroDestinationView: { _, _ in EmptyView() },
+                mySquadDestinationView: { _, _ in EmptyView() }
             )
                 .background(Colors.background),
             as: .image()

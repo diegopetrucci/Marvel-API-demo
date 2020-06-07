@@ -66,7 +66,6 @@ struct MarvelAPI: API {
 }
 
 extension MarvelAPI {
-    // TODO should this be tested?
     private func url(forPath path: String) -> URL {
         let url = URL(string: path, relativeTo: baseURL)!
         var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)!

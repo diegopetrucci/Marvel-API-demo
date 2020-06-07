@@ -5,17 +5,19 @@ struct PreviousIssueView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 8) {
-            AsyncImageView(
-                viewModel: AsyncImageViewModel(
-                    url: appearance.imageURL,
-                    dataProvider: ImageProvider(
-                        api: MarvelAPI(remote: Remote()),
-                        persister: ImagePersister()
-                    ).imageDataProviding(appearance.imageURL)
+            if appearance.imageURL.isNotNil {
+                AsyncImageView(
+                    viewModel: AsyncImageViewModel(
+                        url: appearance.imageURL,
+                        dataProvider: ImageProvider(
+                            api: MarvelAPI(remote: Remote()),
+                            persister: ImagePersister()
+                        ).imageDataProviding(appearance.imageURL!) // SwiftUI not supporting optional binding
+                    )
                 )
-            ) // TODO
-                .frame(idealWidth: 136, idealHeight: 192)
-            Text(appearance.title) // TODO
+                    .frame(idealWidth: 136, idealHeight: 192)
+            }
+            Text(appearance.title)
                 .foregroundColor(Colors.text)
                 .font(Font.system(size: 13))
                 .fontWeight(.semibold)

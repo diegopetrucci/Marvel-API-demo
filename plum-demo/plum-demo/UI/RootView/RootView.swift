@@ -1,19 +1,24 @@
 import SwiftUI
 
-struct RootView: View {
+struct RootView<Destination: View>: View {
     @ObservedObject var viewModel: RootViewModel
     let mySquadViewModel: MySquadViewModel
     let mySquadMembers: [Superhero]
+    let superheroDestinationView: (Superhero, [Superhero]) -> Destination
+    let mySquadDestinationView: (Superhero, [Superhero]) -> Destination
     
     var body: some View {
         ScrollView {
-            Image(uiImage: UIImage(named: "marvel_logo")!) // TODO
+            Image(uiImage: marvelLogo)
                 .resizable()
                 .frame(width: 80, height: 32)
                 .padding(6)
             Divider()
                 .background(Colors.divider)
-            MySquadView(viewModel: mySquadViewModel)
+            MySquadView(
+                viewModel: mySquadViewModel,
+                destinationView: mySquadDestinationView
+            )
                 .padding(16)
                 .background(Colors.background)
             supeheroes(for: viewModel.state.status)
@@ -31,30 +36,48 @@ extension RootView {
             return AnyView(
                 SuperheroList(
                     superheroes: superheroes,
-                    mySquad: mySquadMembers
+                    mySquad: mySquadMembers,
+                    destinationView: superheroDestinationView
                 )
             )
         case let .persisted(superheroes):
             return AnyView(
                 SuperheroList(
                     superheroes: superheroes,
-                    mySquad: mySquadMembers
+                    mySquad: mySquadMembers,
+                    destinationView: superheroDestinationView
                 )
             )
-        case .failed, .idle, .loading:
+        case .idle, .loading:
             return AnyView(
-                EmptyView() // TODO error state
+                EmptyView()
+            )
+        case .failed:
+            return AnyView(
+                Button(
+                    action: { self.viewModel.send(event: .retry) },
+                    label: {
+                        Text("Failed to load, tap to retry.")
+                            .foregroundColor(Colors.text)
+                            .font(Font.system(size: 17))
+                            .fontWeight(.semibold)
+                    }
+                )
             )
         }
     }
+}
+
+extension RootView {
+    var marvelLogo: UIImage { UIImage(named: "marvel_logo")! }
 }
 
 struct RootView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = RootViewModel(
             dataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: Persister() // TODO fixture
+                api: MarvelAPI(remote: Remote()),
+                persister: Persister()
             ).superheroDataProvidingFixture(false)
         )
 
@@ -64,8 +87,8 @@ struct RootView_Previews: PreviewProvider {
 
         let mySquadViewModel = MySquadViewModel(
             dataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: Persister() // TODO fixture
+                api: MarvelAPI(remote: Remote()),
+                persister: Persister()
             ).mySquadDataProvidingFixture(false)
         )
 
@@ -81,7 +104,9 @@ struct RootView_Previews: PreviewProvider {
                 Superhero.fixture(),
                 Superhero.fixture(),
                 Superhero.fixture()
-            ]
+            ],
+            superheroDestinationView: { _, _ in EmptyView() },
+            mySquadDestinationView: { _, _ in EmptyView() }
         )
             .background(Colors.background)
     }

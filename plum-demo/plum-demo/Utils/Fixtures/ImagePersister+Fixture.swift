@@ -1,8 +1,9 @@
 import Combine
 import class SwiftUI.UIImage
+import class Foundation.Bundle
 @testable import plum_demo
 
-struct ImagePersisterFixture: ImagePersisterProtocol {
+final class ImagePersisterFixture: ImagePersisterProtocol {
     private let shouldReturnError: Bool
 
     init(shouldReturnError: Bool = false) {
@@ -14,7 +15,13 @@ struct ImagePersisterFixture: ImagePersisterProtocol {
             return Fail<UIImage, PersisterError>(error: PersisterError.notDataToBeRetrieved).eraseToAnyPublisher()
         }
 
-        return Just(UIImage(named: "thumbnail_fixture")!) // TODO change to persister_fixture
+        let image = UIImage(
+            named: "persister_fixture",
+            in: Bundle(for: ImagePersisterFixture.self),
+            compatibleWith: nil
+        )!
+        
+        return Just(image)
             .setFailureType(to: PersisterError.self)
             .eraseToAnyPublisher()
     }

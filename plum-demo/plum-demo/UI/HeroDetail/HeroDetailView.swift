@@ -5,19 +5,21 @@ struct HeroDetailView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            AsyncImageView(
-                viewModel: AsyncImageViewModel(
-                    url: viewModel.state.superhero.imageURL,
-                    dataProvider: ImageProvider(
-                        api: MarvelAPI(remote: Remote()),
-                        persister: ImagePersister()
-                    ).imageDataProviding(viewModel.state.superhero.imageURL)
-                ),
-                contentMode: .fit
-            ) // TODO
-                // Setting `maxWidth` to `.inifinity`, which would be
-                // the desidered behaviour as per spec, crashes the app.
-                .frame(maxWidth: 300)
+            if viewModel.state.superhero.imageURL.isNotNil {
+                AsyncImageView(
+                    viewModel: AsyncImageViewModel(
+                        url: viewModel.state.superhero.imageURL,
+                        dataProvider: ImageProvider(
+                            api: MarvelAPI(remote: Remote()),
+                            persister: ImagePersister()
+                        ).imageDataProviding(viewModel.state.superhero.imageURL!) // SwiftUI not supporting optional binding
+                    ),
+                    contentMode: .fit
+                )
+                    // Setting `maxWidth` to `.inifinity`, which would be
+                    // the desidered behaviour as per spec, crashes the app.
+                    .frame(maxWidth: 300)
+            }
             HeroDescriptionView(
                 superhero: viewModel.state.superhero,
                 buttonText: viewModel.state.isPartOfSquad
@@ -41,6 +43,13 @@ struct HeroDetailView: View {
         }
         .onAppear(perform: { self.viewModel.send(event: .onAppear) })
         .onDisappear(perform: { self.viewModel.send(event: .onDisappear) })
+        .alert(isPresented: self.viewModel.state.alert.shouldPresent) { () -> Alert in
+            Alert(
+                title: Text(self.viewModel.state.alert.title),
+                primaryButton: .cancel(),
+                secondaryButton: .destructive(Text(self.viewModel.state.alert.removeButton))
+            )
+        }
     }
 }
 
@@ -48,13 +57,14 @@ struct HeroDetailView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = HeroDetailViewModel(
             superhero: .fixture(),
+            shouldPresentAlert: .constant(false),
             appearancesDataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: Persister() // TODO fixture
+                api: MarvelAPI(remote: Remote()),
+                persister: Persister()
             ).appearancesDataProvidingFixture(false)(3),
             mySquadDataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: Persister() // TODO fixture
+                api: MarvelAPI(remote: Remote()),
+                persister: Persister()
             ).mySquadDataProvidingFixture(false)
         )
 
@@ -64,6 +74,10 @@ struct HeroDetailView_Previews: PreviewProvider {
             superhero: .fixture(),
             appearances: apperances,
             squad: [.fixture(), .fixture(), .fixture()],
+            alert: HeroDetailViewModel.Alert(
+                superheroName: "Name",
+                shouldPresent: .init(.constant(false)) ?? .constant(false)
+            ),
             status: .loaded(appearances: apperances)
         )
 

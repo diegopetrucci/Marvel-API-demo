@@ -1,6 +1,6 @@
 import SnapshotTesting
 import XCTest
-import struct SwiftUI.Color
+import SwiftUI
 @testable import plum_demo
 
 final class MySquadViewSnapshotTests: XCTestCase {
@@ -29,7 +29,10 @@ final class MySquadViewSnapshotTests: XCTestCase {
         ])
 
         assertSnapshot(
-            matching: MySquadView(viewModel: viewModel)
+            matching: MySquadView(
+                viewModel: viewModel,
+                destinationView: { _, _ in EmptyView() }
+            )
                 .background(Colors.background)
                 .frame(width: 500, height: 200),
             as: .image()

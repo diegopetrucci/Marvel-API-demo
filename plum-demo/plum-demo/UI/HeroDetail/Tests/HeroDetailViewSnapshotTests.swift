@@ -1,6 +1,5 @@
 import XCTest
 import SnapshotTesting
-import struct SwiftUI.Color
 @testable import plum_demo
 
 final class HeroDetailViewSnapshotTests: XCTestCase {
@@ -13,6 +12,7 @@ final class HeroDetailViewSnapshotTests: XCTestCase {
     func test_loaded() {
         let viewModel = HeroDetailViewModel(
             superhero: .fixture(),
+            shouldPresentAlert: .constant(false),
             appearancesDataProvider: DataProvider(
                 api: MarvelAPI(remote: Remote()),
                 persister: Persister()
@@ -29,6 +29,7 @@ final class HeroDetailViewSnapshotTests: XCTestCase {
             superhero: .fixture(),
             appearances: apperances,
             squad: [.fixture(), .fixture(), .fixture()],
+            alert: .init(superheroName: "Name", shouldPresent: .constant(false)),
             status: .loaded(appearances: apperances)
         )
 

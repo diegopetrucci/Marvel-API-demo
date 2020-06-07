@@ -1,17 +1,15 @@
 import SwiftUI
 
-struct SuperheroList: View {
+struct SuperheroList<Destination: View>: View {
     let superheroes: [Superhero]
     let mySquad: [Superhero]
+    let destinationView: (Superhero, [Superhero]) -> Destination
 
     var body: some View {
         VStack(spacing: 16) {
             ForEach(superheroes, id: \.self) { superhero in
                 NavigationLink(
-                    destination: HeroDetailContainerView( // TODO this should be injected
-                        superhero: superhero,
-                        mySquad: self.mySquad
-                    )
+                    destination: self.destinationView(superhero, self.mySquad)
                         .background(Colors.background)
                         // Ignoring the bottom safe area to make sure
                         // the background color applies to that as well.
@@ -41,7 +39,8 @@ struct SuperheroList_Previews: PreviewProvider {
 
         return SuperheroList(
             superheroes: superheroes,
-            mySquad: superheroes
+            mySquad: superheroes,
+            destinationView: { _, _ in EmptyView() }
         )
             .background(Colors.background)
     }

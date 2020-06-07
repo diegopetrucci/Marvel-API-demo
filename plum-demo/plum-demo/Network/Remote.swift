@@ -16,7 +16,7 @@ struct Remote: RemoteProtocol {
 
     func load<T: Decodable>(
         from request: URLRequest,
-        jsonDecoder: JSONDecoder // TODO add back = JSONDecoder()
+        jsonDecoder: JSONDecoder
     ) -> AnyPublisher<T, RemoteError> {
         urlSession.dataTaskPublisher(for: request)
             .mapError { RemoteError.error($0.localizedDescription) }
@@ -31,7 +31,7 @@ struct Remote: RemoteProtocol {
         urlSession.dataTaskPublisher(for: URLRequest(url: imageURL))
             .mapError { RemoteError.error($0.localizedDescription) }
             .tryMap(validStatusCode)
-            .mapError { ($0 as? RemoteError) ?? .unknown } // TODO what is this error
+            .mapError { ($0 as? RemoteError) ?? .unknown }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
@@ -53,7 +53,7 @@ extension Remote {
 }
 
 enum RemoteError: Error {
-    case error(String) // TODO: make this case and `unknown` the same
+    case error(String)
     case statusCode(Int)
     case unknown
     case parsingError(String)

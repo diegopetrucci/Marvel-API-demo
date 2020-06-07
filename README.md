@@ -1,7 +1,7 @@
 # Plum-interview-demo
 
 ## General overview
-A solution for Plum's iOS take-home test in SwiftUI and Combine.
+A solution for Plum's iOS take-home test in SwiftUI and Combine. This is very much a work in progress, as convention and general practices are still up in the air for SwiftUI (and bugs are plently). I'm sure in a few weeks, when WWDC 2020 "airs", this project will look already kind of outdated — and that's great, techonology moves on and new ways of working are continously created.
 
 A general note before starting: while I've done the project using SwiftUI, and I've strived to write production-grade code, I would say the end result is not — SwiftUI is just not reay yet. Even in this relatively small project there are quite a few bugs that just wouldn't be there with UIKit (or even one of the already present declarative UI layers out there!). As an example, tapping members of the `My squad` list does pushes the user to the detail, but then it takes them back. I've tried using all permutations of `NavigationLink` (the only tool to push views) and yet it still does not work. I assume it has something to do with being embedded in a scroll view. Not even just bugs, but important APIs are missing too: there's no way of doing work in `viewWillAppear`, which would have suited this project a lot more making the UI transitions smoother.
 
@@ -38,6 +38,12 @@ Files on Xcode are divided by UI, data provider, networking, persistance, and ut
 
 1. As apparent when launching the app, the status bar is not colored by the background color. I've not found yet a satisfactory way of doing this in SwiftUI.
 2. As mentioned in the introduction, pushing to the HeroDetailView does not work when the user taps one of the `My squad` members. The problem seem to be [shared by many](https://stackoverflow.com/questions/57946197/navigationlink-on-swiftui-pushes-view-twice), and even trying the proposed solutions does not work. SwiftUI seems to be not ready to handle `ScrollView`s properly yet. This also seems to be messing up the avatars for the heroes in the section, as they lose the downloaded image. The code to fetch it and display it is shared between _all_ images (`AsyncImageView`), so it could very well be a SwiftUI bug.
+3. Adding a `ScrollView` to the `HeroDetail` screen makes it crash. I've not found yet a good solution to this, and I do believe it's a bug. Scroll views in SwiftUI are really really really buggy.
+4. Images are not displayed correctly all the time. Again, as the code to fetch them is shared, that is likely not the problem. Instead, it's probably a layout problem, as playing around with different (but not similar to the spec) layouts fixes the issue.
+5. Even though I've assigned a background color to _every single_ view, a white part still shows up when scrolling the root view. It looks again like it's a ScrollView issue. Have I mentioned how buggy they are?
+6. The button to remove a superhero from the squad looks odd. In specific it has an interal frame that does not have a `cornerRadius`, but the border has it. Doing the intuitive thing of applying a cornerRadius to the internal frame too makes the button shrink considerably ending up hugging the text. Another SwiftUI bug.
+7. It would be better for the UI changes to be triggerd in `viewWillAppear` and not `viewDidAppear`, as the reloading is apparent to the user. This is currently not possible with SwiftUI.
+         
 
 #### Data provider
 
@@ -68,7 +74,7 @@ SwiftUI generally works well with these two, but it does break down when having 
 Regarding the concrete implementation of the FSMs and UDF, I have borrowed Vadym Bulavin's implementation, which while not extensive is good enough for a project this size. The PointFree guys have done some very good work on theirs, too, and it's interesting how they've decided to go with a single composable store (I do however wonder if it scales well with bigger apps, it would be nice to test it).
 
 ##### A note on why all data is passed around in `Status`es
-I would normally structure `State`s to hold information, eg:
+I would normally structure `State`s to hold information, e.g:
 
 ```
 struct State {
@@ -95,11 +101,20 @@ if let superhero = viewModel.state.superhero {
 ```
 Fortunately support for it will come soon and this workarounds will be removed.
 
+#### Container views
+I've decided to go with one container view per screen, i.e. one for the root view and one for the detail. Every single UI component is then extracted into a subview (with a specific view model if necessary). Container build all children views, including the ones being pushed by navigaton (see next section). I do like this approach, but I'm sure it's not perfect — maybe there could be a single reducer/store a-la Pointfree, or maybe one per container view, maybe container views should not handle navigation, and so on. The exciting part of SwiftUI is that we're building all these conventions in real time and it's such an exhilarating thing.
+
+#### Abstracting Navigation and Coordinators
+SwiftUI harcodes the handling of navigation inside the views that are triggering it with `NavigationLink`. There's not too much that we can do to abstract it away, but at least we can avoid having the presenting view know about the presented view by having the latter injected in it via a closure. Destination views are built in container views, so single responsiblity principles are mantained. Another interesting solution [has been proposed](https://twitter.com/ilyapuchka/status/1254411158330773504) by my friend Ilya and I do feel like something like it might even be more suitable.
+
+Coordinators, I don't feel like there's much need for them in SwiftUI. Presenting and building a view is a lot simpler in SwiftUI than UIKit and it saves us a lot of boilerplate, and using coordinators seems like having a hammer and seeing every problem as a nail.
 
 #### Testing: stubs, SwiftUI Previews, and #if DEBUGs
 There are a lot of `if #DEBUG`s scattered in the code. They mainly serve the purpose of providing stub data (fixtures) for tests and SwiftUI Previews. Ideally, these should not live in the same target as the "live" code, but instead be stored in the unit tests target. However, due to SwiftUI Previews not following this principle, we cannot really do that for now — hence, they being declared right next to the object.
 
 Another concession that I had to make for testing purposes is having to make the view model's `state`s not private (I usually prefer to have it so `@Published private(set) state: State` as to avoid another object mutating it. I've been trying to find a way to avoid it but it gets… tricky. I will definitely explore this further in the future as it's really important.
+
+Lastly, I regrettably had to skip over testing `view model`s. Arguably this is the most important piece of code to be tested, as they power all the logic changes within the app. However, to keep with my self-imposed time limit of not going over the weekend something had to give. I haven't had the chance to write infrastructure for them yet, I need to explore further how to use test schedulers in Combine. What I would do, however, is this: set up the view model (with a test scheduler) and trigger a UI event (e.g: `viewDidAppear`). Then, check every state change to make sure it's the correct one. Then, trigger something else (e.g: `viewWillDisappear`) and repeat until satisfied.
 
 #### Tests next to (actually, inside!) the features
 Unit and snapshot tests are located in the same folder as to features. There's a good [explanation by Brandon Williams](https://kickstarter.engineering/why-you-should-co-locate-your-xcode-tests-c69f79211411?gi=fe48007b43d0) as to why this is useful. For me, it's just a matter of practicality — as the codebase grows, we tend to develop and stay on single feature for longer times, so it becomes increasingly harder to look for related files in different places. Tests still belong to different targets, however.
@@ -117,18 +132,11 @@ This project has been developed in something that might resemble git-flow, howev
 
 I also tend to push many working commits for a specific branch/PR. While it might make the PR page longer to read, it helps a lot with being able to revert to previous changes or drop some. And in addition to that, I prefer to squash the changes on a PR, so that the tree history remains clean (and in any case the PR history is kept in the commit description).
 
-## What is missing
-#### Tests
-Currently, `Remote` is not being tested. This is due to time constraints and to the fact that I've not yet delved into mocking `URLSession` for Combine.
-
-UI tests are missing, too, due to time constraints. To be honest I have never set up UI tests infrastructure from scratch — it might take long, or not, I do not know. I've had experience in adding new tests similar to pre-existing ones and modifiying others, but not yet setting them up. I would love to learn how to do it, but in fairness to the constraints of the project (I can't take too much time to solve it!) I've decided to skip them.
-
-Everything else should be tested, unless I've accidentally missed it. There's also an integration test for the persistance layer, which problably belongs to another target (it's fast, though, so it's fine for now).
-
-#### Miscellaneous
+## Miscellaneous
 1. I've chosen to have a single global enum that holds most colors. It would have probably better suited to be hosted in the `EnvironmentObject`, but I've not had time to delve into it yet. It would also make it possible for the colors to be dynamic, so tu sopport a design system and light and dark mode. I also think stuff like colors, and static dependencies, are a good use case for singletons — assuming there's little to none state, and it cannot be changed by the clients.
 2. The app does not support localization, as every string is hardcoded. Having an helper method to locate the appropriate string from language-specific string files would be a nice addition.
 3. Error states are not handles. However the infrastructure is already there (the view model's statuses) and it should be relatively trivial to show error messages, and retry affordances (triggering `.loading` again).
+4. The alert on the destructive action of removing a superhero from the user's squad is missing. I do have implemented it based on the unidirectional data flow principles, but unfortunately SwiftUI does not support yet triggering closures when tapping buttons on an alert. I hope this will come in future releases as being forced to pass in a `Binding` is not exactly ideal and mixes responsibility principles.
 
 ## External libraries
 This project uses the Swift Package Manager to import third-party dependencies. I've found the SPM to be pretty easy to use, despite some quirks and limitations.
@@ -146,6 +154,18 @@ While networking, or at least what it's needed for this kind of project, is rela
 #### SnapshotTesting
 [PointFree](https://github.com/pointfreeco/swift-snapshot-testing)'s snapshot testing library. I use it because it's simple and yet powerful enough for my needs. It currently does not support SwiftUI but it was quite simple to add that capability (see `SnapshotTesting+SwiftUI`)
 
+## What is missing and TODOs
+#### Tests
+Currently, `Remote` is not being tested. This is due to time constraints and to the fact that I've not yet delved into mocking `URLSession` for Combine.
+
+UI tests are missing, too, due to time constraints. To be honest I have never set up UI tests infrastructure from scratch — it might take long, or not, I do not know. I've had experience in adding new tests similar to pre-existing ones and modifiying others, but not yet setting them up. I would love to learn how to do it, but in fairness to the constraints of the project (I can't take too much time to solve it!) I've decided to skip them.
+
+Everything else should be tested, unless I've accidentally missed it. There's also an integration test for the persistance layer, which problably belongs to another target (it's fast, though, so it's fine for now).
+
+#### Pagination
+TODO
+
+TODO
 ## TODO
 * move swift preview assets to that folder
 * extract default spacing 16 to constant
@@ -162,6 +182,7 @@ While networking, or at least what it's needed for this kind of project, is rela
 * automatic retrying of failed calls?
 * pagination
 * add background color to scrollview
+* extract asyncimageview initialization into container views via a closure
 
 
 # Bugs

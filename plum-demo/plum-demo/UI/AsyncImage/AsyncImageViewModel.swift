@@ -132,23 +132,8 @@ extension AsyncImageViewModel {
     }
 }
 
-// TODO remove?
 extension AsyncImageViewModel {
     static var placeholder: UIImage {
         UIImage(named: "thumbnail_placeholder")!
     }
 }
-
-#if DEBUG
-extension AsyncImageViewModel {
-    static func fixture() -> AsyncImageViewModel {
-        AsyncImageViewModel(
-            url: .fixture(),
-            dataProvider: ImageProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: ImagePersister() // TODO fixture()
-            ).imageDataProviding(.fixture())
-        )
-    }
-}
-#endif

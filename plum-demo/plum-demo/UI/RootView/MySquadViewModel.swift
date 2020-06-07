@@ -94,16 +94,3 @@ extension MySquadViewModel {
         }
     }
 }
-
-#if DEBUG
-extension MySquadViewModel {
-    static func fixture() -> MySquadViewModel {
-        MySquadViewModel(
-            dataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: Persister() // TODO fixture
-            ).superheroDataProvidingFixture(false)
-        )
-    }
-}
-#endif

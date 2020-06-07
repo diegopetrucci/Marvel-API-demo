@@ -19,18 +19,13 @@ struct ImageProvider {
 }
 
 extension ImageProvider {
-    var imageDataProviding: (URL?) -> ImageProviding {
+    var imageDataProviding: (URL) -> ImageProviding {
         return { url in
             ImageProviding(
                 fetch: { path -> AnyPublisher<UIImage, ImageProvidingError> in
                     let persisterPublisher = self.persister.fetch(path: path)
                         .mapError(ImageProvidingError.error)
                         .eraseToAnyPublisher()
-
-                    guard let url = url else {
-                        return Fail<UIImage, ImageProvidingError>(error: .missingURL)
-                            .eraseToAnyPublisher()
-                    }
 
                     let api: AnyPublisher<UIImage, ImageProvidingError> = self.api.image(for: url)
                         .mapError(ImageProvidingError.error)
@@ -53,11 +48,10 @@ extension ImageProvider {
 
 enum ImageProvidingError: Error {
     case error(Error)
-    case missingURL // TODO this should not exist
 }
 
 #if DEBUG
-extension DataProvider {
+extension ImageProvider {
     var imageDataProvidingFixture: (_ shouldErrorOut: Bool) -> (_ url: URL?) -> ImageProviding {
         return { shouldErrorOut in
             return { url in

@@ -5,6 +5,7 @@ struct HeroDetailContainerView: View {
     private let mySquad: [Superhero]
     private let appearancesDataProvider: DataProviding<[Appearance], DataProvidingError>
     private let mySquadDataProvider: DataProviding<[Superhero], DataProvidingError>
+    @State private var shouldPresentAlert = false
 
     init(superhero: Superhero, mySquad: [Superhero]) {
         self.superhero = superhero
@@ -31,6 +32,7 @@ struct HeroDetailContainerView: View {
         HeroDetailView(
             viewModel: HeroDetailViewModel(
                 superhero: superhero,
+                shouldPresentAlert: $shouldPresentAlert,
                 appearancesDataProvider: appearancesDataProvider,
                 mySquadDataProvider: mySquadDataProvider
             )

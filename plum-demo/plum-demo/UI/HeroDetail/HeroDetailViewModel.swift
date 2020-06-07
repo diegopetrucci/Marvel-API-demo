@@ -2,6 +2,7 @@ import Combine
 import class UIKit.UIImage
 import Foundation
 import Then
+import struct SwiftUI.Binding
 
 final class HeroDetailViewModel: ObservableObject {
     @Published var state: State
@@ -11,6 +12,7 @@ final class HeroDetailViewModel: ObservableObject {
 
     init(
         superhero: Superhero,
+        shouldPresentAlert: Binding<Bool>,
         appearancesDataProvider: DataProviding<[Appearance], DataProvidingError>,
         mySquadDataProvider: DataProviding<[Superhero], DataProvidingError>
     ) {
@@ -18,6 +20,10 @@ final class HeroDetailViewModel: ObservableObject {
             superhero: superhero,
             appearances: [],
             squad: [],
+            alert: .init(
+                superheroName: superhero.name,
+                shouldPresent: shouldPresentAlert
+            ),
             status: .idle
         )
 
@@ -35,8 +41,20 @@ final class HeroDetailViewModel: ObservableObject {
                     apperancesDataProvider: appearancesDataProvider,
                     mySquadDataProvider: mySquadDataProvider
                 ),
-                Self.whenLoaded(path: appearancesPath, dataProvider: appearancesDataProvider),
-                Self.whenEditingSquad(mySquadPath: mySquadPath, dataProvider: mySquadDataProvider),
+                Self.whenLoaded(
+                    apperancesPath: appearancesPath,
+                    dataProvider: appearancesDataProvider
+                ),
+                Self.whenEditingSquad(
+                    mySquadPath: mySquadPath,
+                    shouldPresentAlert: shouldPresentAlert,
+                    dataProvider: mySquadDataProvider
+                ),
+                // Uncomment to test out the Alert
+//                Self.whenRemovingFromSquad(
+//                    mySquadPath: mySquadPath,
+//                    dataProvider: mySquadDataProvider
+//                ),
                 Self.userInput(input.eraseToAnyPublisher())
             ]
         )
@@ -55,13 +73,24 @@ extension HeroDetailViewModel {
     private static func reduce(_ state: State, _ event: Event) -> State {
         switch event {
         case .ui(.onAppear):
-            return state.with { $0.status = .loading } // TODO not repeat
+            // If we already have an superheroes we keep the loaded state,
+            // otherwise we go back to .idle to give it another chance to load.
+            // Note: this would probably have to change when pagination is implemented
+            switch state.status {
+            case .loaded, .persisted:
+                return state
+            case .idle, .loading, .failed, .editingSquad:
+                return state.with { $0.status = .loading }
+            // Uncomment to test out the Alert
+//            case .removingFromSquad:
+//                 return state.with { $0.status = .loading }
+            }
         case .ui(.onDisappear):
             return state
         case .ui(.onSquadButtonPress):
             return state.with { $0.status = .editingSquad }
         case let .loaded(appearances, squad):
-            guard appearances.count > 0 else { // TODO
+            guard appearances.isNotEmpty else {
                 return state.with {
                     $0.status = .failed
                     $0.appearances = appearances
@@ -80,7 +109,7 @@ extension HeroDetailViewModel {
                 $0.appearances = []
             }
         case let .persistedAppearances(appearances):
-             guard appearances.count > 0 else {
+             guard appearances.isNotEmpty else {
                 return state.with {
                     $0.status = .failed
                     $0.appearances = appearances
@@ -94,7 +123,7 @@ extension HeroDetailViewModel {
         case let .persistedSquad(newSquad):
             return state.with {
                 $0.squad = newSquad
-                $0.status = .loaded(appearances: state.appearances) //TODO?
+                $0.status = .loaded(appearances: state.appearances)
             }
         }
     }
@@ -133,13 +162,13 @@ extension HeroDetailViewModel {
     }
 
     private static func whenLoaded(
-        path: String, // TODO rename appearances path
+        apperancesPath: String,
         dataProvider: DataProviding<[Appearance], DataProvidingError>
     ) -> Feedback<State, Event> {
         Feedback { (state: State) -> AnyPublisher<Event, Never> in
             guard case let .loaded(appearances) = state.status else { return Empty().eraseToAnyPublisher() }
 
-            return dataProvider.persist(appearances, path)
+            return dataProvider.persist(appearances, apperancesPath)
                 .map { _ in Event.persistedAppearances(appearances) }
                 .replaceError(with: .failedToLoad)
                 .eraseToAnyPublisher()
@@ -148,6 +177,7 @@ extension HeroDetailViewModel {
 
     private static func whenEditingSquad(
         mySquadPath: String,
+        shouldPresentAlert: Binding<Bool>,
         dataProvider: DataProviding<[Superhero], DataProvidingError>
     ) -> Feedback<State, Event> {
         Feedback { (state: State) -> AnyPublisher<Event, Never> in
@@ -155,11 +185,16 @@ extension HeroDetailViewModel {
 
             let newSquad: [Superhero]
             if state.squad.contains(state.superhero) {
-                // TODO This would be better suited by a Set
+                // This would be better suited by a Set IMO
                 if let index = state.squad.firstIndex(of: state.superhero) {
                     var stateSquadCopy = state.squad
                     stateSquadCopy.remove(at: index)
                     newSquad = stateSquadCopy
+
+                    // The commented out code enables the alert to show.
+                    // Please see README for an explanation on
+                    // why it's not used, in the Misc section.
+//                    shouldPresentAlert.wrappedValue = true
                 } else {
                     newSquad = state.squad
                 }
@@ -169,10 +204,35 @@ extension HeroDetailViewModel {
 
             return dataProvider.persist(newSquad, mySquadPath)
                 .map { _ in Event.persistedSquad(newSquad) }
-                .replaceError(with: .failedToLoad) // TODO
+                .replaceError(with: .failedToLoad)
                 .eraseToAnyPublisher()
         }
     }
+
+    // Uncomment to test out the Alert
+
+//    private static func whenRemovingFromSquad(
+//        mySquadPath: String,
+//        dataProvider: DataProviding<[Superhero], DataProvidingError>
+//    ) -> Feedback<State, Event> {
+//        Feedback { (state: State) -> AnyPublisher<Event, Never> in
+//            guard case .removingFromSquad = state.status else { return Empty().eraseToAnyPublisher() }
+//
+//            var newSquad: [Superhero]
+//            // TODO This would be better suited by a Set
+//            if let index = state.squad.firstIndex(of: state.superhero) {
+//                newSquad = state.squad
+//                newSquad.remove(at: index)
+//            } else {
+//                newSquad = state.squad
+//            }
+//
+//            return dataProvider.persist(newSquad, mySquadPath)
+//                .map { _ in Event.persistedSquad(newSquad) }
+//                .replaceError(with: .failedToLoad)
+//                .eraseToAnyPublisher()
+//        }
+//    }
 
     private static func userInput(_ input: AnyPublisher<Event.UI, Never>) -> Feedback<State, Event> {
         Feedback(run: { _ in
@@ -189,6 +249,7 @@ extension HeroDetailViewModel {
         var appearances: [Appearance]
         var squad: [Superhero]
         var isPartOfSquad: Bool { squad.contains(superhero) }
+        var alert: Alert
         var status: Status
     }
 
@@ -199,6 +260,8 @@ extension HeroDetailViewModel {
         case failed
         case persisted(appearances: [Appearance])
         case editingSquad
+        // Uncomment to test out the Alert
+//        case removingFromSquad
     }
 
     enum Event {
@@ -216,20 +279,11 @@ extension HeroDetailViewModel {
     }
 }
 
-#if DEBUG
 extension HeroDetailViewModel {
-    static func fixture() -> HeroDetailViewModel {
-        HeroDetailViewModel(
-            superhero: .fixture(),
-            appearancesDataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: Persister() // TODO fixture
-            ).appearancesDataProvidingFixture(false)(3),
-            mySquadDataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: Persister() // TODO fixture
-            ).mySquadDataProvidingFixture(false)
-        )
+    struct Alert: Then {
+        let superheroName: String
+        var shouldPresent: Binding<Bool>
+        var title: String { "Remove \(superheroName) from the squad?" }
+        let removeButton = "Remove"
     }
 }
-#endif

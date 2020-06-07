@@ -35,8 +35,18 @@ extension AsyncImageView {
 
 struct AsyncImageView_Previews: PreviewProvider {
     static var previews: some View {
-        AsyncImageView(
-            viewModel: .fixture()
+        let provider = ImageProvider(
+            api: MarvelAPI(remote: Remote()),
+            persister: ImagePersister()
+        ).imageDataProvidingFixture(false)(URL.fixture())
+
+
+        return AsyncImageView(
+            viewModel:
+            .init(
+                url: .fixture(),
+                dataProvider: provider
+            )
         )
     }
 }

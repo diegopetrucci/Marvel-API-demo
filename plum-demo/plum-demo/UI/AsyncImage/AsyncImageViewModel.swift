@@ -24,18 +24,3 @@ class AsyncImageFetcher {
         .eraseToAnyPublisher()
     }
 }
-
-struct AsyncImageFetcherKey: EnvironmentKey {
-    static let defaultValue: AsyncImageFetcher = AsyncImageFetcher()
-}
-
-extension EnvironmentValues {
-    var imageFetcher: AsyncImageFetcher {
-        get {
-            return self[AsyncImageFetcherKey.self]
-        }
-        set {
-            self[AsyncImageFetcherKey.self] = newValue
-        }
-    }
-}

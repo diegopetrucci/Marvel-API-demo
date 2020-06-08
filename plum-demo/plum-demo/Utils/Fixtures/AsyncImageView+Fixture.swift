@@ -5,7 +5,7 @@ import Combine
 extension AsyncImageView {
     static func fixture() -> Self {
         AsyncImageView(
-            source: ImageProvider(
+            sourcePublisher: ImageProvider(
                 api: MarvelAPI(remote: Remote()),
                 persister: ImagePersister()
             )

@@ -20,7 +20,7 @@ struct RootView<Destination: View>: View {
                 destinationView: mySquadDestinationView,
                 asyncImageView: { url, placeholder, contentMode in
                     AsyncImageView(
-                        source: ImageProvider(
+                        sourcePublisher: ImageProvider(
                             api: MarvelAPI(remote: Remote()),
                             persister: ImagePersister()
                         ).imageDataProviding(url)
@@ -39,7 +39,7 @@ struct RootView<Destination: View>: View {
                 destinationView: superheroDestinationView,
                 asyncImageView: { url, placeholder, contentMode in
                     AsyncImageView(
-                        source: ImageProvider(
+                        sourcePublisher: ImageProvider(
                             api: MarvelAPI(remote: Remote()),
                             persister: ImagePersister()
                         ).imageDataProviding(url)

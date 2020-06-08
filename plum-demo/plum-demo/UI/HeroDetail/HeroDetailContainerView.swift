@@ -49,7 +49,7 @@ struct HeroDetailContainerView: View {
             ),
             asyncImageView: { url, placeholder, contentMode in
                 AsyncImageView(
-                    source: ImageProvider(
+                    sourcePublisher: ImageProvider(
                         api: MarvelAPI(remote: Remote()),
                         persister: ImagePersister()
                     ).imageDataProviding(url)

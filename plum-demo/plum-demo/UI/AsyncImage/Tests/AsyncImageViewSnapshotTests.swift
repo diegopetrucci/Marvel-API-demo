@@ -19,7 +19,7 @@ final class AsyncImageViewSnapshotTests: XCTestCase {
             .ignoreError()
 
         let view = AsyncImageView(
-            source: provider,
+            sourcePublisher: provider,
             placeholder: UIImage(named: "thumbnail_fixture")!
         )
 

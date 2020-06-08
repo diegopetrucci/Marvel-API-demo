@@ -6,15 +6,14 @@ struct SuperheroCell: View {
     var body: some View {
         HStack(spacing: Spacing.default) {
             if superhero.imageURL.isNotNil {
-                AsyncImageView(
-                    viewModel: AsyncImageViewModel(
-                        url: superhero.imageURL,
-                        dataProvider: ImageProvider(
-                            api: MarvelAPI(remote: Remote()),
-                            persister: ImagePersister()
-                        ).imageDataProviding(superhero.imageURL!) // SwiftUI not supporting optional binding
-                    ),
-                    contentMode: .fill
+                AsyncImage(
+                    source: ImageProvider(
+                        api: MarvelAPI(remote: Remote()),
+                        persister: ImagePersister()
+                    ).imageDataProviding(superhero.imageURL!)
+                        .fetch(superhero.imageURL!.absoluteString)
+                        .ignoreError(),
+                    placeholder: UIImage()
                 )
                     .frame(width: 44, height: 44)
                     .clipShape(Circle())

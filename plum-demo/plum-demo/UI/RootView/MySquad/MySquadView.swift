@@ -67,15 +67,14 @@ extension MySquadView {
             label: {
                 VStack(spacing: 4) {
                     if member.imageURL.isNotNil {
-                        AsyncImageView(
-                            viewModel: AsyncImageViewModel(
-                                url: member.imageURL,
-                                dataProvider: ImageProvider(
-                                    api: MarvelAPI(remote: Remote()),
-                                    persister: ImagePersister()
-                                ).imageDataProviding(member.imageURL!) // SwiftUI not supporting optional binding
-                            ),
-                            contentMode: .fill
+                        AsyncImage(
+                            source: ImageProvider(
+                                api: MarvelAPI(remote: Remote()),
+                                persister: ImagePersister()
+                            ).imageDataProviding(member.imageURL!)
+                                .fetch(member.imageURL!.absoluteString)
+                                .ignoreError(),
+                            placeholder: UIImage()
                         )
                             .frame(width: 64, height: 64)
                             .clipShape(Circle())

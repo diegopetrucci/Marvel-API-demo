@@ -6,15 +6,14 @@ struct HeroDetailView: View {
     var body: some View {
         VStack(spacing: 24) {
             if viewModel.state.superhero.imageURL.isNotNil {
-                AsyncImageView(
-                    viewModel: AsyncImageViewModel(
-                        url: viewModel.state.superhero.imageURL,
-                        dataProvider: ImageProvider(
-                            api: MarvelAPI(remote: Remote()),
-                            persister: ImagePersister()
-                        ).imageDataProviding(viewModel.state.superhero.imageURL!) // SwiftUI not supporting optional binding
-                    ),
-                    contentMode: .fit
+                AsyncImage(
+                    source: ImageProvider(
+                        api: MarvelAPI(remote: Remote()),
+                        persister: ImagePersister()
+                    ).imageDataProviding(viewModel.state.superhero.imageURL!)
+                        .fetch(viewModel.state.superhero.imageURL!.absoluteString)
+                        .ignoreError(),
+                    placeholder: UIImage()
                 )
                     // Setting `maxWidth` to `.inifinity`, which would be
                     // the desidered behaviour as per spec, crashes the app.

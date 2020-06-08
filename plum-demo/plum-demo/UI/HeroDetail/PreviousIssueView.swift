@@ -6,14 +6,14 @@ struct PreviousIssueView: View {
     var body: some View {
         VStack(alignment: .center, spacing: Spacing.default / 2) {
             if appearance.imageURL.isNotNil {
-                AsyncImageView(
-                    viewModel: AsyncImageViewModel(
-                        url: appearance.imageURL,
-                        dataProvider: ImageProvider(
-                            api: MarvelAPI(remote: Remote()),
-                            persister: ImagePersister()
-                        ).imageDataProviding(appearance.imageURL!) // SwiftUI not supporting optional binding
-                    )
+                AsyncImage(
+                    source: ImageProvider(
+                        api: MarvelAPI(remote: Remote()),
+                        persister: ImagePersister()
+                    ).imageDataProviding(appearance.imageURL!)
+                        .fetch(appearance.imageURL!.absoluteString)
+                        .ignoreError(),
+                    placeholder: UIImage()
                 )
                     .frame(idealWidth: 136, idealHeight: 192)
             }

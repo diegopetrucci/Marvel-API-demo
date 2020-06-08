@@ -1,3 +1,5 @@
+import Combine
+
 // Various little helpers
 
 // To avoid having to type `.compactMap { $0 }
@@ -35,5 +37,14 @@ extension Bool {
 extension Array {
     var isNotEmpty: Bool {
         !self.isEmpty
+    }
+}
+
+extension Publisher {
+    public func ignoreError() -> AnyPublisher<Output, Never> {
+        `catch` { _ in
+            Empty()
+        }
+        .eraseToAnyPublisher()
     }
 }

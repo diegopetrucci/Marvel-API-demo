@@ -79,10 +79,6 @@
 		6CDC1A74248D04200073996B /* HeroDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDC1A71248D04200073996B /* HeroDetail.swift */; };
 		6CDC1A75248D04200073996B /* Appearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDC1A72248D04200073996B /* Appearance.swift */; };
 		6CDC1A77248D12A70073996B /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDC1A76248D12A70073996B /* Spacing.swift */; };
-		6CDC1A7B248D32840073996B /* AsyncImageViewModel+Hack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDC1A7A248D32840073996B /* AsyncImageViewModel+Hack.swift */; };
-		6CDC1A7D248D33360073996B /* AsyncImageView+Hack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDC1A7C248D33360073996B /* AsyncImageView+Hack.swift */; };
-		6CDC1A7F248D45250073996B /* AsyncImageViewV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDC1A7E248D45250073996B /* AsyncImageViewV2.swift */; };
-		6CDC1A81248D45590073996B /* AsyncImageViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDC1A80248D45590073996B /* AsyncImageViewModelV2.swift */; };
 		6CE7AEEC2486BFF5000B8B41 /* HeroDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE7AEEB2486BFF5000B8B41 /* HeroDetailView.swift */; };
 		6CE7AEEE2486CB1A000B8B41 /* HeroDescriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE7AEED2486CB1A000B8B41 /* HeroDescriptionView.swift */; };
 		6CE7AEF02486CDA0000B8B41 /* HeroAppearancesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE7AEEF2486CDA0000B8B41 /* HeroAppearancesView.swift */; };
@@ -172,10 +168,6 @@
 		6CDC1A71248D04200073996B /* HeroDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroDetail.swift; sourceTree = "<group>"; };
 		6CDC1A72248D04200073996B /* Appearance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Appearance.swift; sourceTree = "<group>"; };
 		6CDC1A76248D12A70073996B /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
-		6CDC1A7A248D32840073996B /* AsyncImageViewModel+Hack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AsyncImageViewModel+Hack.swift"; sourceTree = "<group>"; };
-		6CDC1A7C248D33360073996B /* AsyncImageView+Hack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AsyncImageView+Hack.swift"; sourceTree = "<group>"; };
-		6CDC1A7E248D45250073996B /* AsyncImageViewV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageViewV2.swift; sourceTree = "<group>"; };
-		6CDC1A80248D45590073996B /* AsyncImageViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageViewModelV2.swift; sourceTree = "<group>"; };
 		6CE7AEEB2486BFF5000B8B41 /* HeroDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroDetailView.swift; sourceTree = "<group>"; };
 		6CE7AEED2486CB1A000B8B41 /* HeroDescriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroDescriptionView.swift; sourceTree = "<group>"; };
 		6CE7AEEF2486CDA0000B8B41 /* HeroAppearancesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeroAppearancesView.swift; sourceTree = "<group>"; };
@@ -366,10 +358,6 @@
 			children = (
 				6C5586A624885559004D9480 /* AsyncImageView.swift */,
 				6C5586A9248855A9004D9480 /* AsyncImageViewModel.swift */,
-				6CDC1A7C248D33360073996B /* AsyncImageView+Hack.swift */,
-				6CDC1A7A248D32840073996B /* AsyncImageViewModel+Hack.swift */,
-				6CDC1A7E248D45250073996B /* AsyncImageViewV2.swift */,
-				6CDC1A80248D45590073996B /* AsyncImageViewModelV2.swift */,
 				6C51CCEB248B0F8F00B69902 /* Tests */,
 			);
 			path = AsyncImage;
@@ -627,7 +615,6 @@
 				6C51CCF7248BE23300B69902 /* MySquadViewModel.swift in Sources */,
 				6C6A386C2485A7230047474C /* MySquadView.swift in Sources */,
 				6C82334F2486F31D00D51F5B /* HeroDetailContainerView.swift in Sources */,
-				6CDC1A81248D45590073996B /* AsyncImageViewModelV2.swift in Sources */,
 				6C02646A2485718F002EE69A /* SceneDelegate.swift in Sources */,
 				6CDC1A73248D04200073996B /* Superhero.swift in Sources */,
 				6C02648C248590C2002EE69A /* SuperheroList.swift in Sources */,
@@ -636,7 +623,6 @@
 				6C5586972488354E004D9480 /* ComicDTO.swift in Sources */,
 				6CE7AEEC2486BFF5000B8B41 /* HeroDetailView.swift in Sources */,
 				6CE7AEEE2486CB1A000B8B41 /* HeroDescriptionView.swift in Sources */,
-				6CDC1A7F248D45250073996B /* AsyncImageViewV2.swift in Sources */,
 				6CDC1A74248D04200073996B /* HeroDetail.swift in Sources */,
 				6C6DDFB024899655000AD7A0 /* Persister.swift in Sources */,
 				6C02646C2485718F002EE69A /* RootContainerView.swift in Sources */,
@@ -656,8 +642,6 @@
 				6C51CCDA248AD5EE00B69902 /* AppearancesDataProviding.swift in Sources */,
 				6C5586A724885559004D9480 /* AsyncImageView.swift in Sources */,
 				6C5586B0248859CF004D9480 /* Feedback.swift in Sources */,
-				6CDC1A7B248D32840073996B /* AsyncImageViewModel+Hack.swift in Sources */,
-				6CDC1A7D248D33360073996B /* AsyncImageView+Hack.swift in Sources */,
 				6C51CCF3248BB63700B69902 /* HeroDetailViewModel.swift in Sources */,
 				6C5586B2248859E6004D9480 /* Publishers+System.swift in Sources */,
 				6C6DDFB224899706000AD7A0 /* ImagePersister.swift in Sources */,

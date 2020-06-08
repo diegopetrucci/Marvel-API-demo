@@ -4,7 +4,7 @@ A master-detail client for the Marvel API in SwiftUI and Combine
 ## General overview
 This is very much a work in progress, as conventions and general practices are still up in the air for SwiftUI (and bugs are plenty). I'm sure in a few weeks, when WWDC 2020 "airs", this project will look already outdated — and that's great, technology moves on and new ways of working are continuously created.
 
-A general note before starting: while I've done the project using SwiftUI, and I've strived to write production-grade code, I would say the end result is not — SwiftUI is just not ready yet. Even in this relatively small project there are quite a few bugs that just wouldn't be there with UIKit (or even one of the already present declarative UI layers out there!). As an example, superhero photos in the `My squad` list appear and disappear seemingly randomly, and they sometimes flicker too. Or the main picture in the hero detail page does not ever load as `viewWillAppear` is never triggered. And let's not talk about `ScrollView`s :). Not even just bugs, but important APIs are missing too: there's no way of doing work in `viewWillAppear`, which would have suited this project a lot more making the UI transitions smoother.
+A general note before starting: while I've done the project using SwiftUI, and I've strived to write production-grade code, I would say the end result is not — SwiftUI is just not ready yet. Even in this relatively small project there are quite a few bugs that just wouldn't be there with UIKit (or even one of the already present declarative UI layers out there!). Not even just bugs, but important APIs are missing too: there's no way of doing work in `viewWillAppear`, which would have suited this project a lot more making the UI transitions smoother.
 
 This notwithstanding, I've enjoyed playing with it and with Combine. It is very clearly the way forward for a lot of UI work in the future, even if not all, and the ease of development is increased greatly. Combine, in particular, I believe to be more ready than SwiftUI — I would bet that its adoption is a lot faster than its cousin.
 
@@ -38,12 +38,9 @@ Files on Xcode are divided by UI, data provider, networking, persistence, and ut
 #### UI quirks
 
 * As apparent when launching the app, the status bar is not colored by the background color. I've not found yet a satisfactory way of doing this in SwiftUI.
-* Images in the `My Squad` section disappear when coming back from the detail view. I am not sure of what's the cause of this, as I've tried two approaches (or three, even, with AsyncImage v1, v2, and +hack). I would say probably a SwiftUI bug as when adding an `id` with the `.id()` modifier to the `ScrollView` the images start to flicker.
 * Even though I've assigned a background color to _every single_ view, a white part still shows up when scrolling the root view. It looks again like it's a ScrollView issue.
-* Adding a `ScrollView` to the `HeroDetail` screen makes it crash. I've not found yet a good solution to this, and I do believe it's a bug. Scroll views in SwiftUI are really really really buggy.
-4. Images are not displayed correctly all the time. Again, as the code to fetch them is shared, that is likely not the problem. One strong example is the hero detail screen where the `viewDidAppear` method is never called, while it is in every other instance.
-6. The button to remove a superhero from the squad looks odd. Specifically, it has an internal frame that does not have a `cornerRadius`, but the border has it. Doing the intuitive thing of applying a cornerRadius to the internal frame too makes the button shrink considerably ending up hugging the text. Another SwiftUI bug.
-7. It would be better for the UI changes to be triggered in `viewWillAppear` and not `viewDidAppear`, as the reloading is apparent to the user. This is currently not possible with SwiftUI.         
+* The button to remove a superhero from the squad looks odd. Specifically, it has an internal frame that does not have a `cornerRadius`, but the border has it. Doing the intuitive thing of applying a cornerRadius to the internal frame too makes the button shrink considerably ending up hugging the text. Another SwiftUI bug.
+*. It would be better for the UI changes to be triggered in `viewWillAppear` and not `viewDidAppear`, as the reloading is apparent to the user. This is currently not possible with SwiftUI.         
 
 #### Data provider
 
@@ -159,6 +156,5 @@ Sadly I was not able to complete pagination (or fetching more than the initial 2
 
 #### Bugs
 * status bar should be color-able
+* there's an odd scrollview artifact when scrolling
 * the divider just below the marvel logo does not go edge to edge
-* images in mysquad disappear after returning from the detail view
-* detail view often flashes because of the image being reloaded

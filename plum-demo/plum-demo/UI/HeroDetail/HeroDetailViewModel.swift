@@ -117,8 +117,11 @@ extension HeroDetailViewModel {
              }
 
              return state.with { $0.status = .loading }
-        case .persistedSquad:
-            return state.with { $0.status = .loaded }
+        case let .persistedSquad(newSquad):
+            return state.with {
+                $0.status = .loaded
+                $0.squad = newSquad
+            }
         }
     }
 }
@@ -200,7 +203,7 @@ extension HeroDetailViewModel {
             }
 
             return dataProvider.persist(newSquad, mySquadPath)
-                .map { _ in Event.persistedSquad }
+                .map { _ in Event.persistedSquad(newSquad) }
                 .replaceError(with: .failedToLoad)
                 .eraseToAnyPublisher()
         }
@@ -265,7 +268,7 @@ extension HeroDetailViewModel {
         case loaded([Appearance], squad: [Superhero])
         case failedToLoad
         case persistedAppearances
-        case persistedSquad
+        case persistedSquad([Superhero])
 
         enum UI {
             case onSquadButtonPress

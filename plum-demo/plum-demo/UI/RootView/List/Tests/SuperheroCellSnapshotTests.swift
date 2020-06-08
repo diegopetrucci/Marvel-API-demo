@@ -1,6 +1,5 @@
 import SnapshotTesting
 import XCTest
-import struct SwiftUI.Color
 @testable import plum_demo
 
 final class SuperheroCellSnapshotTests: XCTestCase {

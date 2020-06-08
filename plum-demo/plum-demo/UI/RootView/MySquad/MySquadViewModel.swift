@@ -10,7 +10,7 @@ final class MySquadViewModel: ObservableObject {
     private let input = PassthroughSubject<Event.UI, Never>()
 
     init(dataProvider: DataProviding<[Superhero], DataProvidingError>) {
-        self.state = State(status: .idle)
+        self.state = State(status: .idle, squad: [])
 
         let path = "/mysquad"
 
@@ -37,10 +37,15 @@ extension MySquadViewModel {
 extension MySquadViewModel {
     private static func reduce(_ state: State, _ event: Event) -> State {
         switch event {
-        case .ui(.onAppear), .ui(.onDisappear):
+        case .ui(.onAppear), .ui(.retry):
             return state.with { $0.status = .loading }
+        case .ui(.onDisappear):
+            return state
         case let .loaded(superheroes):
-            return state.with { $0.status = .loaded(superheroes) }
+            return state.with {
+                $0.status = .loaded
+                $0.squad = superheroes
+            }
         case .failedToLoad:
             return state.with { $0.status = .failed }
         }
@@ -74,12 +79,13 @@ extension MySquadViewModel {
 extension MySquadViewModel {
     struct State: Then {
         var status: Status
+        var squad: [Superhero]
     }
 
     enum Status: Equatable {
         case idle
         case loading
-        case loaded([Superhero])
+        case loaded
         case failed
     }
 
@@ -89,21 +95,9 @@ extension MySquadViewModel {
         case failedToLoad
 
         enum UI {
+            case retry
             case onAppear
             case onDisappear
         }
     }
 }
-
-#if DEBUG
-extension MySquadViewModel {
-    static func fixture() -> MySquadViewModel {
-        MySquadViewModel(
-            dataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: Persister() // TODO fixture
-            ).superheroDataProvidingFixture(false)
-        )
-    }
-}
-#endif

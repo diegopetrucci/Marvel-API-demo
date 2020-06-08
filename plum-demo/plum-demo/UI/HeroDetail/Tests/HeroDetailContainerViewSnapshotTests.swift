@@ -1,6 +1,5 @@
 import XCTest
 import SnapshotTesting
-import struct SwiftUI.Color
 @testable import plum_demo
 
 final class HeroDetailContainerViewSnapshotTests: XCTestCase {
@@ -14,7 +13,11 @@ final class HeroDetailContainerViewSnapshotTests: XCTestCase {
         assertSnapshot(
             matching: HeroDetailContainerView(
                 superhero: .fixture(),
-                mySquad: [.fixture(), .fixture(), .fixture()]
+                mySquad: [.fixture(), .fixture(), .fixture()],
+                appearancesDataProvider: DataProvider(
+                    api: APIFixture(),
+                    persister: AppearancesPersisterFixture()
+                ).appearancesDataProvidingFixture(false)(3)
             )
                 .background(Colors.background),
             as: .image()

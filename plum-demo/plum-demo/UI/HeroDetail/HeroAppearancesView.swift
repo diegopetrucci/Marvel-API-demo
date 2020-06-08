@@ -8,21 +8,23 @@ struct HeroAppearancesView: View {
     let appearances: [Appearance]
 
     var body: some View {
-        VStack(spacing: 16) {
-            if appearances.count > 0 {
+        VStack(spacing: Spacing.default) {
+            if appearances.isNotEmpty {
                 Text("Last appeared in")
                     .foregroundColor(Colors.text)
                     .font(Font.system(size: 20))
                     .fontWeight(.semibold)
-                    .alignmentGuide(.leading) { d in d[.leading] } // TODO: this is not working
+                    .alignmentGuide(.leading) { d in d[.leading] } // Note: this is not working. A SwiftUI bug?
             }
-            HStack(alignment: .center, spacing: 16) {
-                if appearances.count > 0 {
-                    PreviousIssueView(appearance: appearances.first!) // TODO
+            HStack(alignment: .center, spacing: Spacing.default) {
+                if appearances.isNotEmpty {
+                    // Unavoidable due to SwiftUI not supporting optional binding.
+                    PreviousIssueView(appearance: appearances.first!)
                 }
 
                 if appearances.second.isNotNil {
-                    PreviousIssueView(appearance: appearances.second!) // TODO
+                    // Unavoidable due to SwiftUI not supporting optional binding.
+                    PreviousIssueView(appearance: appearances.second!)
                 }
             }
 

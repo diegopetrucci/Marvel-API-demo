@@ -1,11 +1,7 @@
 import SwiftUI
-import class Combine.AnyCancellable // todo remove
-import Combine // todo remove
 
 struct RootContainerView: View {
     var mySquadMembers: [Superhero] = []
-
-    @State var cancellables = Set<AnyCancellable>()
 
     var body: some View {
         NavigationView {
@@ -22,7 +18,13 @@ struct RootContainerView: View {
                         persister: Persister()
                     ).mySquadDataProviding
                 ),
-                mySquadMembers: mySquadMembers
+                mySquadMembers: mySquadMembers,
+                superheroDestinationView: { superhero, mySquad in
+                    HeroDetailContainerView(superhero: superhero, mySquad: mySquad)
+                },
+                mySquadDestinationView: { superhero, mySquad in
+                    HeroDetailContainerView(superhero: superhero, mySquad: mySquad)
+                }
             )
                 .background(Colors.background)
                 // Ignoring the bottom safe area to make sure

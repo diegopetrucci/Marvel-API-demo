@@ -10,7 +10,8 @@ final class RootViewModel: ObservableObject {
 
     init(dataProvider: DataProviding<[Superhero], DataProvidingError>) {
         self.state = State(
-            status: .idle
+            status: .idle,
+            superheroes: []
         )
 
         let path = "/superheroes"
@@ -39,23 +40,30 @@ extension RootViewModel {
 extension RootViewModel {
     private static func reduce(_ state: State, _ event: Event) -> State {
         switch event {
-        case .ui(.onAppear), .ui(.onDisappear): // TODO adapt description
-            // if we already have an image loaded we keep the loaded state,
-            // otherwise we go back to .idle to give it another chance to load
+        case .ui(.onAppear), .ui(.onDisappear):
+            // If we already have an superheroes we keep the loaded state,
+            // otherwise we go back to .idle to give it another chance to load.
+            // Note: this would probably have to change when pagination is implemented
             switch state.status {
-            case .loaded, .persisted:
+            case .loaded:
                 return state
             case .idle, .loading, .failed:
                 return state.with { $0.status = .loading }
             }
+        case .ui(.retry):
+                return state.with { $0.status = .loading }
         case let .loaded(superheroes):
-            return state.with { $0.status = .loaded(superheroes) }
-        case .failedToLoad:
             return state.with {
-                $0.status = .failed
+                $0.status = .loaded
+                $0.superheroes = superheroes
             }
-        case let .persisted(superheroes):
-            return state.with { $0.status = .persisted(superheroes) }
+        case .failedToLoad:
+            return state.with { $0.status = .failed }
+        case .persisted:
+            return state.with {
+                $0.status = .loaded
+                $0.hasPersisted = true
+            }
         }
     }
 }
@@ -80,10 +88,13 @@ extension RootViewModel {
         dataProvider: DataProviding<[Superhero], DataProvidingError>
     ) -> Feedback<State, Event> {
         Feedback { (state: State) -> AnyPublisher<Event, Never> in
-            guard case let .loaded(superheroes) = state.status else { return Empty().eraseToAnyPublisher() }
+            guard
+                case .loaded = state.status,
+                state.hasPersisted.isFalse
+            else { return Empty().eraseToAnyPublisher() }
 
-            return dataProvider.persist(superheroes, path)
-                .map { _ in Event.persisted(superheroes) }
+            return dataProvider.persist(state.superheroes, path)
+                .map { _ in Event.persisted }
                 .replaceError(with: .failedToLoad)
                 .eraseToAnyPublisher()
         }
@@ -101,38 +112,27 @@ extension RootViewModel {
 extension RootViewModel {
     struct State: Then {
         var status: Status
+        var superheroes: [Superhero]
+        var hasPersisted: Bool = false
     }
 
     enum Status: Equatable {
         case idle
         case loading
-        case loaded([Superhero])
+        case loaded
         case failed
-        case persisted([Superhero])
     }
 
     enum Event {
         case ui(UI)
         case loaded([Superhero])
         case failedToLoad
-        case persisted([Superhero])
+        case persisted
 
         enum UI {
             case onAppear
             case onDisappear
+            case retry
         }
     }
 }
-
-#if DEBUG
-extension RootViewModel {
-    static func fixture() -> RootViewModel {
-        RootViewModel(
-            dataProvider: DataProvider(
-                api: MarvelAPI(remote: Remote()), // TODO fixture
-                persister: Persister() // TODO fixture
-            ).superheroDataProvidingFixture(false)
-        )
-    }
-}
-#endif

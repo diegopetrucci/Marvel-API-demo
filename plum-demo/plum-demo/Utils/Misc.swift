@@ -29,3 +29,11 @@ extension Bool {
         !self
     }
 }
+
+// Swift reads left to right, while the negation operator
+// reads right to left
+extension Array {
+    var isNotEmpty: Bool {
+        !self.isEmpty
+    }
+}

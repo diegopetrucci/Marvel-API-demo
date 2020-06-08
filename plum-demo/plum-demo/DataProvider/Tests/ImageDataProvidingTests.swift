@@ -20,7 +20,13 @@ final class ImageDataProvidingTests: XCTestCase {
                     XCTAssert(false, error.localizedDescription)
                 }
             }) { receivedImage in
-                XCTAssertEqual(UIImage(named: "thumbnail_fixture"), receivedImage) // TODO replace with api_fixture
+                let image = UIImage(
+                    named: "api_fixture",
+                    in: Bundle(for: ImageDataProvidingTests.self),
+                    compatibleWith: nil
+                )!
+
+                XCTAssertEqual(image, receivedImage)
         }
     }
 
@@ -41,7 +47,13 @@ final class ImageDataProvidingTests: XCTestCase {
                     XCTAssert(false, error.localizedDescription)
                 }
             }) { receivedImage in
-                XCTAssertEqual(UIImage(named: "thumbnail_fixture"), receivedImage) // TODO replace with persistance_fixture
+                let image = UIImage(
+                    named: "persister_fixture",
+                    in: Bundle(for: ImageDataProvidingTests.self),
+                    compatibleWith: nil
+                )!
+
+                XCTAssertEqual(image, receivedImage)
         }
     }
 

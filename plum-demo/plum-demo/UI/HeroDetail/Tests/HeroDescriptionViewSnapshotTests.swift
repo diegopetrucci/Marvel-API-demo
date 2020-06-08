@@ -1,6 +1,5 @@
 import XCTest
 import SnapshotTesting
-import struct SwiftUI.Color
 @testable import plum_demo
 
 final class HeroDescriptionViewSnapshotTests: XCTestCase {
@@ -14,9 +13,12 @@ final class HeroDescriptionViewSnapshotTests: XCTestCase {
         assertSnapshot(
             matching: HeroDescriptionView(
                 superhero: .fixture(),
-                buttonText: "💪 Recruit to Squad",
-                buttonBackgroundColor: Colors.buttonBackground,
-                onButtonPress: {}
+                button: .init(
+                    text: "💪 Recruit to Squad",
+                    backgroundColor: Colors.buttonBackground,
+                    backgroundColorPressed: Colors.buttonBackgroundPressed,
+                    onPress: {}
+                    )
             )
                 .background(Colors.background),
             as: .image()

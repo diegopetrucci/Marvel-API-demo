@@ -1,9 +1,10 @@
 import Combine
 import struct Foundation.URL
+import class Foundation.Bundle
 import class SwiftUI.UIImage
 @testable import plum_demo
 
-struct APIFixture: API {
+final class APIFixture: API {
     private let shouldReturnError: Bool
 
     init(shouldReturnError: Bool = false) {
@@ -33,7 +34,13 @@ struct APIFixture: API {
             return Fail<UIImage, APIError>(error: .malformedData).eraseToAnyPublisher()
         }
 
-        return Just(UIImage(named: "thumbnail_fixture")!) // TODO replace with api_fixture
+        let image = UIImage(
+            named: "api_fixture",
+            in: Bundle(for: APIFixture.self),
+            compatibleWith: nil
+        )!
+
+        return Just(image)
             .setFailureType(to: APIError.self)
             .eraseToAnyPublisher()
     }

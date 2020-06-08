@@ -2,20 +2,12 @@ import SwiftUI
 
 struct SuperheroCell: View {
     let superhero: Superhero
+    let asyncImageView: (_ url: URL, _ placeholder: UIImage, _ contentMode: ContentMode) -> AsyncImageView
 
     var body: some View {
         HStack(spacing: Spacing.default) {
             if superhero.imageURL.isNotNil {
-                AsyncImageView(
-                    viewModel: AsyncImageViewModel(
-                        url: superhero.imageURL,
-                        dataProvider: ImageProvider(
-                            api: MarvelAPI(remote: Remote()),
-                            persister: ImagePersister()
-                        ).imageDataProviding(superhero.imageURL!) // SwiftUI not supporting optional binding
-                    ),
-                    contentMode: .fill
-                )
+                asyncImageView(superhero.imageURL!, UIImage(), .fit)
                     .frame(width: 44, height: 44)
                     .clipShape(Circle())
             }
@@ -34,7 +26,10 @@ struct SuperheroCell: View {
 
 struct SuperheroCell_Previews: PreviewProvider {
     static var previews: some View {
-        SuperheroCell(superhero: .fixture())
+        SuperheroCell(
+            superhero: .fixture(),
+            asyncImageView: { _, _, _ in .fixture() }
+        )
             .background(Colors.cellBackground)
     }
 }

@@ -17,14 +17,38 @@ struct RootView<Destination: View>: View {
                 .background(Colors.divider)
             MySquadView(
                 viewModel: mySquadViewModel,
-                destinationView: mySquadDestinationView
+                destinationView: mySquadDestinationView,
+                asyncImageView: { url, placeholder, contentMode in
+                    AsyncImageView(
+                        sourcePublisher: ImageProvider(
+                            api: MarvelAPI(remote: Remote()),
+                            persister: ImagePersister()
+                        ).imageDataProviding(url)
+                            .fetch(url.absoluteString)
+                            .ignoreError(),
+                        placeholder: placeholder,
+                        contentMode: contentMode
+                    )
+                }
             )
                 .padding(Spacing.default)
                 .background(Colors.background)
             SuperheroList(
                 superheroes: viewModel.state.superheroes,
                 mySquad: mySquadMembers,
-                destinationView: superheroDestinationView
+                destinationView: superheroDestinationView,
+                asyncImageView: { url, placeholder, contentMode in
+                    AsyncImageView(
+                        sourcePublisher: ImageProvider(
+                            api: MarvelAPI(remote: Remote()),
+                            persister: ImagePersister()
+                        ).imageDataProviding(url)
+                            .fetch(url.absoluteString)
+                            .ignoreError(),
+                        placeholder: placeholder,
+                        contentMode: contentMode
+                    )
+                }
             )
         }
         .background(Colors.background)

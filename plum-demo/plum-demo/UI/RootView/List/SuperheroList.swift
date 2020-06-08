@@ -4,6 +4,7 @@ struct SuperheroList<Destination: View>: View {
     let superheroes: [Superhero]
     let mySquad: [Superhero]
     let destinationView: (Superhero, [Superhero]) -> Destination
+    let asyncImageView: (_ url: URL, _ placeholder: UIImage, _ contentMode: ContentMode) -> AsyncImageView
 
     var body: some View {
         VStack(spacing: Spacing.default) {
@@ -16,7 +17,10 @@ struct SuperheroList<Destination: View>: View {
                         .edgesIgnoringSafeArea(.bottom)
                     ,
                     label: {
-                        SuperheroCell(superhero: superhero)
+                        SuperheroCell(
+                            superhero: superhero,
+                            asyncImageView: self.asyncImageView
+                        )
                             .padding(.horizontal, Spacing.default)
                     }
                 )
@@ -40,7 +44,8 @@ struct SuperheroList_Previews: PreviewProvider {
         return SuperheroList(
             superheroes: superheroes,
             mySquad: superheroes,
-            destinationView: { _, _ in EmptyView() }
+            destinationView: { _, _ in EmptyView() },
+            asyncImageView: { _, _, _ in .fixture() }
         )
             .background(Colors.background)
     }

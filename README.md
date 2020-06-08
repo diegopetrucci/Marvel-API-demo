@@ -4,7 +4,7 @@ A master-detail client for the Marvel API in SwiftUI and Combine
 ## General overview
 This is very much a work in progress, as conventions and general practices are still up in the air for SwiftUI (and bugs are plenty). I'm sure in a few weeks, when WWDC 2020 "airs", this project will look already outdated — and that's great, technology moves on and new ways of working are continuously created.
 
-A general note before starting: while I've done the project using SwiftUI, and I've strived to write production-grade code, I would say the end result is not — SwiftUI is just not ready yet. Even in this relatively small project there are quite a few bugs that just wouldn't be there with UIKit (or even one of the already present declarative UI layers out there!). As an example, superhero photos in the `My squad` list appear and disappear seemingly randomly, and they sometimes flicker too. Or the main picture in the hero detail page does not ever load as `viewWillAppear` is never triggered. And let's not talk about `ScrollView`s :). Not even just bugs, but important APIs are missing too: there's no way of doing work in `viewWillAppear`, which would have suited this project a lot more making the UI transitions smoother.
+A general note before starting: while I've done the project using SwiftUI, and I've strived to write production-grade code, I would say the end result is not — SwiftUI is just not ready yet. Even in this relatively small project there are quite a few bugs that just wouldn't be there with UIKit (or even one of the already present declarative UI layers out there!). Not even just bugs, but important APIs are missing too: there's no way of doing work in `viewWillAppear`, which would have suited this project a lot more making the UI transitions smoother.
 
 This notwithstanding, I've enjoyed playing with it and with Combine. It is very clearly the way forward for a lot of UI work in the future, even if not all, and the ease of development is increased greatly. Combine, in particular, I believe to be more ready than SwiftUI — I would bet that its adoption is a lot faster than its cousin.
 
@@ -37,32 +37,29 @@ Files on Xcode are divided by UI, data provider, networking, persistence, and ut
 
 #### UI quirks
 
-1. As apparent when launching the app, the status bar is not colored by the background color. I've not found yet a satisfactory way of doing this in SwiftUI.
-2. As mentioned in the introduction, pushing to the HeroDetailView does not work when the user taps one of the `My squad` members. The problem seems to be [shared by many](https://stackoverflow.com/questions/57946197/navigationlink-on-swiftui-pushes-view-twice), and even trying the proposed solutions does not work. SwiftUI seems to be not ready to handle `ScrollView`s properly yet. This also seems to be messing up the avatars for the heroes in the section, as they lose the downloaded image. The code to fetch it and display it is shared between _all_ images (`AsyncImageView`), so it could very well be a SwiftUI bug.
-3. Adding a `ScrollView` to the `HeroDetail` screen makes it crash. I've not found yet a good solution to this, and I do believe it's a bug. Scroll views in SwiftUI are really really really buggy.
-4. Images are not displayed correctly all the time. Again, as the code to fetch them is shared, that is likely not the problem. Instead, it's probably a layout problem, as playing around with different (but not similar to the spec) layouts fixes the issue.
-5. Even though I've assigned a background color to _every single_ view, a white part still shows up when scrolling the root view. It looks again like it's a ScrollView issue. Have I mentioned how buggy they are?
-6. The button to remove a superhero from the squad looks odd. In specific it has an internal frame that does not have a `cornerRadius`, but the border has it. Doing the intuitive thing of applying a cornerRadius to the internal frame too makes the button shrink considerably ending up hugging the text. Another SwiftUI bug.
-7. It would be better for the UI changes to be triggered in `viewWillAppear` and not `viewDidAppear`, as the reloading is apparent to the user. This is currently not possible with SwiftUI.
-8. Images in the `My Squad` section disappear when coming back from the detail view. I am not sure of what's the cause of this, as I've tried two approaches (or three, even, with AsyncImage v1, v2, and +hack). Maybe a SwiftUI bug, a layout system quirk, or just my logic mistake.
-         
+* As apparent when launching the app, the status bar is not colored by the background color. I've not found yet a satisfactory way of doing this in SwiftUI.
+* Even though I've assigned a background color to _every single_ view, a white part still shows up when scrolling the root view. It looks again like it's a ScrollView issue.
+* The button to remove a superhero from the squad looks odd. Specifically, it has an internal frame that does not have a `cornerRadius`, but the border has it. Doing the intuitive thing of applying a cornerRadius to the internal frame too makes the button shrink considerably ending up hugging the text. Another SwiftUI bug.
+*. It would be better for the UI changes to be triggered in `viewWillAppear` and not `viewDidAppear`, as the reloading is apparent to the user. This is currently not possible with SwiftUI.         
 
 #### Data provider
 
 Data providers are modeled with Protocol witnessed, aka generic structs. A "base" one is created, `DataProvider`, to hold the API and persister, and all subsequent concrete implementations are created as computed properties using the API and the persister.
 Data providers orchestrate where the data should come from, and I've chosen to always favor the API over what is persisted, as the latter might be outdated. Different apps have different requirements so this might be rethought for other scenarios.
 
+I've found [Brent Simmons' approach](https://inessential.com/2020/05/18/why_netnewswire_is_fast) to be really cool, and I wish I would have done it: NetNewsWire compares hashes of the JSON responses to avoid having to parse them if no changes are found.
+
 #### Networking
 Networking should be pretty much self-explanatory. It is set up to be as light as possible, with the usual protocol-first approach. `Remote` takes care of the `URLSession` API, errors, and decoding the result — all very concise thanks to Combine.
 
-Downloading images, too, is done in a native way, and it uses a little helper wrapper `AsyncImage` to fetch the image upon request. It does not support canceling, but that can be added in a future revision.
+Downloading images, too, is done in a native way, and it uses a little helper wrapper `AsyncImage` to fetch the image upon request. It does not support canceling, but that can be added in a future revision by playing around with `viewDidDisappear` and triggering cancellation of the publishers/feedbacks.
 
-I have not added support to automatic retrying if the network is unreachable, but it shouldn't be a massive effort due to the nature of the architecture.
+I have not added support to automatic retrying if the network is unreachable, but it shouldn't be a massive effort due to the nature of the architecture. Most of the view models have `failed` states and Retry buttons can be shown there.
 
 #### Persistance
 While networking is pretty much "clean", as in it does not introduce external libraries, I've chosen to do it for persistence to disk. I use the aptly named `Disk` library, and not Realm, just because I wanted the lightest possible dependency while still being able to avoid the many edge cases of persisting data to disk.
 
-Speaking of Realm, I am not sure if the API is still the same, but I tried it when I was learning iOS development and it was forced upon the client to use `class`es instead of `struct`s. Various problems with, one, mutating the same object from different places, and two, trying to read the same object from different threads have burned into my soul the importance of value types and the avoidance of race conditions. I did not really what those terms meant at the time, but I intuitively got the pain associated with them. :)
+Speaking of Realm, I am not sure if the API is still the same, but I tried it when I was learning iOS development and it was forced upon the client to use `class`es instead of `struct`s. Various problems with, one, mutating the same object from different places, and two, trying to read the same object from different threads have burned into my soul the importance of value types and the avoidance of race conditions. I did not really know what those terms meant at that time, but I intuitively got the pain associated with them. :)
 
 #### State machines and unidirectional data flow
 I've already briefly touched on this in the intro, but it might be worth a few more words.
@@ -71,40 +68,12 @@ State machines to me are one of those ideas that after being exposed to them the
 
 Unidirectional data flow, too, is really nice to work with. Just like state machines, it feels incredibly restrictive at first, but that goes away with experience. Having only one place where the state can be changed, the View Model, means containing a good variety of bugs that would have happened otherwise.
 
-SwiftUI generally works well with these two, but it does break down when having to switch over enums and working with optionals. However support for both is coming soon, so the ugly workarounds that I had to implement for them to work are luckily getting deprecated shortly.
+SwiftUI generally works well with these two, but it does break down when having to switch over enums and working with optionals. However good support for both is coming soon, so the ugly workarounds that I had to implement for them to work are luckily getting deprecated shortly.
 
 Regarding the concrete implementation of the FSMs and UDF, I have borrowed Vadym Bulavin's implementation, which while not extensive is good enough for a project this size. The PointFree guys have done some very good work on theirs, too, and it's interesting how they've decided to go with a single composable store (I do however wonder if it scales well with bigger apps, it would be nice to test it).
 
-##### A note on why all data is passed around in `Status`es
-I would normally structure `State`s to hold information, e.g:
-
-```
-struct State {
-    var status: Status
-    var superhero: Superhero?
-}
-```
-Instead, I had to effectively pass any data change via `Status`es, making it look like this:
-
-```
-enum Status {
-    case idle
-    case loading
-    case loaded(Superhero)
-    case persisted(Superhero)
-}
-```
-I do not think that having this sprawl of statuses is the correct way of handling it. However, SwiftUI not (yet) having support for optional binding and means we cannot easily do something like
-
-```
-if let superhero = viewModel.state.superhero {
-    SuperheroView(with: superhero)
-}
-```
-Fortunately, support for it will come soon and these workarounds will be removed.
-
 #### Container views
-I've decided to go with one container view per screen, i.e. one for the root view and one for the detail. Every single UI component is then extracted into a subview (with a specific view model if necessary). Container builds all child views, including the ones being pushed by navigation (see next section). I do like this approach, but I'm sure it's not perfect — maybe there could be a single reducer/store a-la Pointfree, or maybe one per container view, maybe container views should not handle navigation, and so on. The exciting part of SwiftUI is that we're building all these conventions in real-time and it's such an exhilarating thing.
+I've decided to go with one container view per screen, i.e. one for the root view and one for the detail. Every single UI component is then extracted into a subview (with a specific view model if necessary). Containers build all the child views, including the ones being pushed by navigation (see next section). I do like this approach, but I'm sure it's not perfect — maybe there could be a single reducer/store a-la Pointfree, or maybe one per container view, maybe container views should not handle navigation, and so on. The exciting part of SwiftUI is that we're building all these conventions in real-time and it's such an exhilarating thing.
 
 #### Abstracting Navigation and Coordinators
 SwiftUI hardcodes the handling of navigation inside the views that are triggering it with `NavigationLink`. There's not too much that we can do to abstract it away, but at least we can avoid having the presenting view know about the presented view by having the latter injected in it via a closure. Destination views are built-in container views, so single responsibility principles are maintained. Another interesting solution [has been proposed](https://twitter.com/ilyapuchka/status/1254411158330773504) by my friend Ilya and I do feel like something like it might even be more suitable.
@@ -116,15 +85,13 @@ There are a lot of `if #DEBUG`s scattered in the code. They mainly serve the pur
 
 Another concession that I had to make for testing purposes is having to make the view model's `state`s not private (I usually prefer to have it so `@Published private(set) state: State` as to avoid another object mutating it. I've been trying to find a way to avoid it but it gets… tricky. I will definitely explore this further in the future as it's really important.
 
-Lastly, I regrettably had to skip over testing `view model`s. Arguably this is the most important piece of code to be tested, as they power all the logic changes within the app. However, to keep with my self-imposed time limit of not going over the weekend something had to give. I haven't had the chance to write infrastructure for them yet, I need to explore further how to use test schedulers in Combine. What I would do, however, is this: set up the view model (with a test scheduler) and trigger a UI event (e.g: `viewDidAppear`). Then, check every state change to make sure it's the correct one. Then, trigger something else (e.g: `viewWillDisappear`) and repeat until satisfied.
-
 #### Tests next to (actually, inside!) the features
 Unit and snapshot tests are located in the same folder as to features. There's a good [explanation by Brandon Williams](https://kickstarter.engineering/why-you-should-co-locate-your-xcode-tests-c69f79211411?gi=fe48007b43d0) as to why this is useful. For me, it's just a matter of practicality — as the codebase grows, we tend to develop and stay on a single feature for longer times, so it becomes increasingly harder to look for related files in different places. Tests still belong to different targets, however.
 
 For bigger codebases, there's an argument to be made to create a separate target to make the engineer able to run snapshot tests independently from the unit. They run fast in this demo app, so I've found no need to do so at the moment.
 
 #### Protocol witnesses
-A few of the generic interfaces, like data providers, are implemented using protocol witnesses. PW are how protocols are implemented under the hood, and by making the generic interface a struct we usually gain a bit of flexibility — no `Protocol … can only be used as a generic constraint because it has Self or associated type requirements` anymore, to start. I like them, I think they make life slightly easier, but they do take a while to get used and look a bit odd at first and have some drawbacks (unnamed function parameters, for example). Another benefit is IMO making testing easier: the API and persistence layers are not using them, and it's a lot harder to mock them, I had to resort to type erasure when building mocks (e.g. ` return Just(superheroes as! T)` in `SuperheroPersisterFixture`) There's an interesting talk on them by [Rob Napier](https://www.dotconferences.com/2016/01/rob-napier-beyond-crusty-real-world-protocols) from a few years ago, and a few episodes of [PointFree](https://www.pointfree.co/collections/protocol-witnesses).
+A few of the generic interfaces, like data providers, are implemented using protocol witnesses. PW are how protocols are implemented under the hood, and by making the generic interface a struct we usually gain a bit of flexibility — no `Protocol … can only be used as a generic constraint because it has Self or associated type requirements` anymore, to begin with. I like them, I think they make life slightly easier, but they do take a while to get used and look a bit odd at first and have some drawbacks (unnamed function parameters, for example). Another benefit is IMO making testing easier: the API and persistence layers are not using them [them = PW], and it's a lot harder to mock them, I had to resort to type erasure when building mocks (e.g. ` return Just(superheroes as! T)` in `SuperheroPersisterFixture`) There's an interesting talk on them by [Rob Napier](https://www.dotconferences.com/2016/01/rob-napier-beyond-crusty-real-world-protocols) from a few years ago, and a few episodes of [PointFree](https://www.pointfree.co/collections/protocol-witnesses).
 
 #### Code comments
 I tend not to like code comments, as they usually mean some logic is overly complicated and could be either broken down into smaller parts or rewritten altogether. However, there are some exceptions, like dealing with an external API and having to explain its behavior. For example, considering HealthKit, one might introduce a layer to simplify it or to make it more generic, and in these cases I've found code comments to be of great help. We can change our code to make it clearer, so less need for a comment, but we cannot change what we receive from our dependencies, so more need for explanations.
@@ -135,9 +102,9 @@ This project has been developed in something that might resemble git-flow, howev
 I also tend to push many working commits for a specific branch/PR. While it might make the PR page longer to read, it helps a lot with being able to revert to previous changes or drop some. And in addition to that, I prefer to squash the changes on a PR, so that the tree history remains clean (and in any case the PR history is kept in the commit description).
 
 ## Miscellaneous
-1. I've chosen to have a single global enum that holds most colors. It would have probably better suited to be hosted in the `EnvironmentObject`, but I've not had time to delve into it yet. It would also make it possible for the colors to be dynamic, so to support a design system and light and dark mode. I also think stuff like colors, and static dependencies, are a good use case for singletons — assuming there's little to none state, and it cannot be changed by the clients.
+1. I've chosen to have a single global enum that holds most colors and spacing. It would have probably better suited to be hosted in the `EnvironmentObject`, but I've not had time to delve into it yet. It would also make it possible for the colors to be dynamic, so to support a design system and light and dark mode. I also think stuff like colors, and static dependencies, are a good use case for singletons — assuming there's little to none state, and it cannot be changed by the clients.
 2. The app does not support localization, as every string is hardcoded. Having a helper method to locate the appropriate string from language-specific string files would be a nice addition.
-3. Error states are not handles. However the infrastructure is already there (the view model's statuses) and it should be relatively trivial to show error messages, and retry affordances (triggering `.loading` again).
+3. Error states are not handled in a few cases — however the infrastructure is already there (the view model's statuses) and it should be relatively trivial to show error messages, and retry affordances (triggering `.loading` again).
 4. The alert on the destructive action of removing a superhero from the user's squad is missing. I do have implemented it based on the unidirectional data flow principles, but unfortunately SwiftUI does not support yet triggering closures when tapping buttons on an alert. I hope this will come in future releases as being forced to pass in a `Binding` is not exactly ideal and mixes responsibility principles.
 
 ## External libraries
@@ -156,11 +123,13 @@ While networking, or at least what it's needed for this kind of project, is rela
 #### SnapshotTesting
 [PointFree](https://github.com/pointfreeco/swift-snapshot-testing)'s snapshot testing library. I use it because it's simple and yet powerful enough for my needs. It currently does not support SwiftUI but it was quite simple to add that capability (see `SnapshotTesting+SwiftUI`)
 
-## What is missing and TODOs
+## What is missing, TODOs, and bugs
 #### Tests
 Currently, `Remote` is not being tested. This is due to time constraints and to the fact that I've not yet delved into mocking `URLSession` for Combine.
 
 UI tests are missing, too, due to time constraints. To be honest I have never set up UI tests infrastructure from scratch — it might take long, or not, I do not know. I've had experience in adding new tests similar to pre-existing ones and modifying others, but not yet setting them up. I would love to learn how to do it, but in fairness to the constraints of the project (I can't take too much time to solve it!) I've decided to skip them.
+
+Lastly, I regrettably had to skip over testing `view model`s. Arguably this is the most important piece of code to be tested, as they power all the logic changes within the app. However, to keep with my self-imposed time limit of not going over the weekend something had to give. I haven't had the chance to write infrastructure for them yet, I need to explore further how to use test schedulers in Combine. What I would do, however, is this: set up the view model (with a test scheduler) and trigger a UI event (e.g: `viewDidAppear`). Then, check every state change when "stepping over" with the scheduler to make sure it's the correct one. Then, trigger something else (e.g: `viewWillDisappear`) and repeat until satisfied.
 
 Everything else should be tested, unless I've accidentally missed it. There's also an integration test for the persistence layer, which probably belongs to another target (it's fast, though, so it's fine for now).
 
@@ -174,8 +143,7 @@ Sadly I was not able to complete pagination (or fetching more than the initial 2
 * Adapt the persister to write to disk the entirety of the superheroes array
 * Display the new array in the view
 
-TODO
-## TODOs
+#### Other TODOs, in no particular order
 * odd spacing issues (added by the scrollview?)
 * shadows
 * fix hero detail button width in bigger phones — probable SwiftUI bug
@@ -186,8 +154,7 @@ TODO
 * extract asyncimageview initialization into container views via a closure (similar to presented views)
 
 
-# Bugs
+#### Bugs
 * status bar should be color-able
+* there's an odd scrollview artifact when scrolling
 * the divider just below the marvel logo does not go edge to edge
-* images in mysquad disappear after returning from the detail view
-* detail view often flashes because of the image being reloaded

@@ -11,7 +11,10 @@ final class HeroAppearancesViewSnapshotTests: XCTestCase {
 
     func test_loaded() {
         assertSnapshot(
-            matching: HeroAppearancesView(appearances: [.fixture(), .fixture(), .fixture()])
+            matching: HeroAppearancesView(
+                appearances: [.fixture(), .fixture(), .fixture()],
+                asyncImageView: { _, _, _ in .fixture() }
+            )
                 .background(Colors.background)
                 .frame(height: 200),
             as: .image()

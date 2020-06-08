@@ -4,6 +4,7 @@ struct MySquadView<Destination: View>: View {
     @ObservedObject var viewModel: MySquadViewModel
     @State private var selectedMemberID: Int? = nil
     let destinationView: (Superhero, [Superhero]) -> Destination
+    let asyncImageView: (_ url: URL, _ placeholder: UIImage, _ contentMode: ContentMode) -> AsyncImageView
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -67,16 +68,7 @@ extension MySquadView {
             label: {
                 VStack(spacing: 4) {
                     if member.imageURL.isNotNil {
-                        AsyncImageView(
-                            viewModel: AsyncImageViewModel(
-                                url: member.imageURL,
-                                dataProvider: ImageProvider(
-                                    api: MarvelAPI(remote: Remote()),
-                                    persister: ImagePersister()
-                                ).imageDataProviding(member.imageURL!) // SwiftUI not supporting optional binding
-                            ),
-                            contentMode: .fill
-                        )
+                        asyncImageView(member.imageURL!, UIImage(), .fit)
                             .frame(width: 64, height: 64)
                             .clipShape(Circle())
                         Text(member.name)
@@ -113,7 +105,19 @@ struct MySquadView_Previews: PreviewProvider {
         
         return MySquadView(
             viewModel: viewModel,
-            destinationView: { _, _ in EmptyView() }
+            destinationView: { _, _ in EmptyView() },
+            asyncImageView: { url, placeholder, contentMode in
+                AsyncImageView(
+                    sourcePublisher: ImageProvider(
+                        api: MarvelAPI(remote: Remote()),
+                        persister: ImagePersister()
+                    ).imageDataProviding(url)
+                        .fetch(url.absoluteString)
+                        .ignoreError(),
+                    placeholder: placeholder,
+                    contentMode: contentMode
+                )
+            }
         )
             .background(Colors.cellBackground)
     }

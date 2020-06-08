@@ -23,7 +23,8 @@ final class MySquadViewSnapshotTests: XCTestCase {
         assertSnapshot(
             matching: MySquadView(
                 viewModel: viewModel,
-                destinationView: { _, _ in EmptyView() }
+                destinationView: { _, _ in EmptyView() },
+                asyncImageView: { _, _, _ in .fixture() }
             )
                 .background(Colors.background)
                 .frame(width: 500, height: 200),
@@ -44,7 +45,8 @@ final class MySquadViewSnapshotTests: XCTestCase {
         assertSnapshot(
             matching: MySquadView(
                 viewModel: viewModel,
-                destinationView: { _, _ in EmptyView() }
+                destinationView: { _, _ in EmptyView() },
+                asyncImageView: { _, _, _ in .fixture() }
             )
                 .background(Colors.background)
                 .frame(width: 500, height: 200),
@@ -74,7 +76,8 @@ final class MySquadViewSnapshotTests: XCTestCase {
         assertSnapshot(
             matching: MySquadView(
                 viewModel: viewModel,
-                destinationView: { _, _ in EmptyView() }
+                destinationView: { _, _ in EmptyView() },
+                asyncImageView: { _, _, _ in .fixture() }
             )
                 .background(Colors.background)
                 .frame(width: 500, height: 200),
@@ -95,7 +98,8 @@ final class MySquadViewSnapshotTests: XCTestCase {
         assertSnapshot(
             matching: MySquadView(
                 viewModel: viewModel,
-                destinationView: { _, _ in EmptyView() }
+                destinationView: { _, _ in EmptyView() },
+                asyncImageView: { _, _, _ in .fixture() }
             )
                 .background(Colors.background)
                 .frame(width: 500, height: 200),

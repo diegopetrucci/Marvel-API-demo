@@ -26,7 +26,8 @@ final class SuperheroListSnapshotTests: XCTestCase {
             matching: SuperheroList(
                 superheroes: superheroes,
                 mySquad: superheroes,
-                destinationView: { _, _ in EmptyView() }
+                destinationView: { _, _ in EmptyView() },
+                asyncImageView: { _, _, _ in .fixture() }
             )
                 .background(Colors.background),
             as: .image()

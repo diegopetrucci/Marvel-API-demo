@@ -6,7 +6,7 @@ final class HeroDetailViewSnapshotTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        record = true
+        record = false
     }
 
     func test_idle() {

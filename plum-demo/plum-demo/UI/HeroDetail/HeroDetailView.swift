@@ -2,48 +2,46 @@ import SwiftUI
 
 struct HeroDetailView: View {
     @ObservedObject var viewModel: HeroDetailViewModel
+    let asyncImageView: (_ url: URL, _ placeholder: UIImage, _ contentMode: ContentMode) -> AsyncImageView
     
     var body: some View {
-        VStack(spacing: 24) {
-            if viewModel.state.superhero.imageURL.isNotNil {
-                AsyncImage(
-                    source: ImageProvider(
-                        api: MarvelAPI(remote: Remote()),
-                        persister: ImagePersister()
-                    ).imageDataProviding(viewModel.state.superhero.imageURL!)
-                        .fetch(viewModel.state.superhero.imageURL!.absoluteString)
-                        .ignoreError(),
-                    placeholder: UIImage()
+        ScrollView {
+            VStack(spacing: 24) {
+                if viewModel.state.superhero.imageURL.isNotNil {
+                    asyncImageView(viewModel.state.superhero.imageURL!, UIImage(), .fit)
+                        // Setting `maxWidth` to `.inifinity`, which would be
+                        // the desidered behaviour as per spec, crashes the app.
+                        .frame(maxWidth: .infinity, maxHeight: 300)
+                }
+                HeroDescriptionView(
+                    superhero: viewModel.state.superhero,
+                    button: .init(
+                        text: viewModel.state.isPartOfSquad
+                            ? "🔥 Fire from Squad"
+                            : "💪 Recruit to Squad",
+                        backgroundColor: viewModel.state.isPartOfSquad
+                            ? Colors.buttonBackgroundInverted
+                            : Colors.buttonBackground,
+                        backgroundColorPressed: viewModel.state.isPartOfSquad
+                            ? Colors.buttonBackgroundInvertedPressed
+                            : Colors.buttonBackgroundPressed
+                        ,
+                        onPress: { self.viewModel.send(event: .onSquadButtonPress) }
+                    )
                 )
-                    // Setting `maxWidth` to `.inifinity`, which would be
-                    // the desidered behaviour as per spec, crashes the app.
-                    .frame(maxWidth: 300)
-            }
-            HeroDescriptionView(
-                superhero: viewModel.state.superhero,
-                button: .init(
-                    text: viewModel.state.isPartOfSquad
-                        ? "🔥 Fire from Squad"
-                        : "💪 Recruit to Squad",
-                    backgroundColor: viewModel.state.isPartOfSquad
-                        ? Colors.buttonBackgroundInverted
-                        : Colors.buttonBackground,
-                    backgroundColorPressed: viewModel.state.isPartOfSquad
-                        ? Colors.buttonBackgroundInvertedPressed
-                        : Colors.buttonBackgroundPressed
-                    ,
-                    onPress: { self.viewModel.send(event: .onSquadButtonPress) }
+                    .padding(.horizontal, Spacing.default)
+                HeroAppearancesView(
+                    appearances: viewModel.state.appearances,
+                    asyncImageView: { _, _, _ in .fixture() }
                 )
-            )
-                .padding(.horizontal, Spacing.default)
-            HeroAppearancesView(appearances: viewModel.state.appearances)
-                .padding(.horizontal, Spacing.default)
-            Spacer()
-            // The following is, from what it seems so far, the only way
-            // to make sure the parent VStack fills the full width.
-            // (Setting the frame to .infinity does not appear to be working.)
-            HStack {
+                    .padding(.horizontal, Spacing.default)
                 Spacer()
+                // The following is, from what it seems so far, the only way
+                // to make sure the parent VStack fills the full width.
+                // (Setting the frame to .infinity does not appear to be working.)
+                HStack {
+                    Spacer()
+                }
             }
         }
         .onAppear(perform: { self.viewModel.send(event: .onAppear) })
@@ -87,7 +85,10 @@ struct HeroDetailView_Previews: PreviewProvider {
             status: .loaded
         )
 
-        return HeroDetailView(viewModel: viewModel)
+        return HeroDetailView(
+            viewModel: viewModel,
+            asyncImageView: { _, _, _ in .fixture() }
+        )
             .background(Colors.background)
     }
 }

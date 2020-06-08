@@ -11,7 +11,10 @@ final class SuperheroCellSnapshotTests: XCTestCase {
 
     func test_default() {
         assertSnapshot(
-            matching: SuperheroCell(superhero: .fixture()),
+            matching: SuperheroCell(
+                superhero: .fixture(),
+                asyncImageView: { _, _, _ in .fixture() }
+            ),
             as: .image()
         )
     }

@@ -4,6 +4,7 @@ struct MySquadView<Destination: View>: View {
     @ObservedObject var viewModel: MySquadViewModel
     @State private var selectedMemberID: Int? = nil
     let destinationView: (Superhero, [Superhero]) -> Destination
+    let asyncImageView: (_ url: URL, _ placeholder: UIImage, _ contentMode: ContentMode) -> AsyncImageView
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -67,15 +68,7 @@ extension MySquadView {
             label: {
                 VStack(spacing: 4) {
                     if member.imageURL.isNotNil {
-                        AsyncImage(
-                            source: ImageProvider(
-                                api: MarvelAPI(remote: Remote()),
-                                persister: ImagePersister()
-                            ).imageDataProviding(member.imageURL!)
-                                .fetch(member.imageURL!.absoluteString)
-                                .ignoreError(),
-                            placeholder: UIImage()
-                        )
+                        asyncImageView(member.imageURL!, UIImage(), .fit)
                             .frame(width: 64, height: 64)
                             .clipShape(Circle())
                         Text(member.name)
@@ -112,7 +105,19 @@ struct MySquadView_Previews: PreviewProvider {
         
         return MySquadView(
             viewModel: viewModel,
-            destinationView: { _, _ in EmptyView() }
+            destinationView: { _, _ in EmptyView() },
+            asyncImageView: { url, placeholder, contentMode in
+                AsyncImageView(
+                    source: ImageProvider(
+                        api: MarvelAPI(remote: Remote()),
+                        persister: ImagePersister()
+                    ).imageDataProviding(url)
+                        .fetch(url.absoluteString)
+                        .ignoreError(),
+                    placeholder: placeholder,
+                    contentMode: contentMode
+                )
+            }
         )
             .background(Colors.cellBackground)
     }

@@ -46,7 +46,19 @@ struct HeroDetailContainerView: View {
                 shouldPresentAlert: $shouldPresentAlert,
                 appearancesDataProvider: appearancesDataProvider,
                 mySquadDataProvider: mySquadDataProvider
-            )
+            ),
+            asyncImageView: { url, placeholder, contentMode in
+                AsyncImageView(
+                    source: ImageProvider(
+                        api: MarvelAPI(remote: Remote()),
+                        persister: ImagePersister()
+                    ).imageDataProviding(url)
+                        .fetch(url.absoluteString)
+                        .ignoreError(),
+                    placeholder: placeholder,
+                    contentMode: contentMode
+                )
+            }
         )
             .background(Colors.background)
             .navigationBarTitle("", displayMode: .inline)

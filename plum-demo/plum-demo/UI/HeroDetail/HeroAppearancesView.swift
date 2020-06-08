@@ -6,6 +6,7 @@ struct HeroAppearancesView: View {
     // many views to pick, or if it should be restricted from that
     // and spoon-fed its content (states).
     let appearances: [Appearance]
+    let asyncImageView: (_ url: URL, _ placeholder: UIImage, _ contentMode: ContentMode) -> AsyncImageView
 
     var body: some View {
         VStack(spacing: Spacing.default) {
@@ -19,12 +20,18 @@ struct HeroAppearancesView: View {
             HStack(alignment: .center, spacing: Spacing.default) {
                 if appearances.isNotEmpty {
                     // Unavoidable due to SwiftUI not supporting optional binding.
-                    PreviousIssueView(appearance: appearances.first!)
+                    PreviousIssueView(
+                        appearance: appearances.first!,
+                        asyncImageView: asyncImageView
+                    )
                 }
 
                 if appearances.second.isNotNil {
                     // Unavoidable due to SwiftUI not supporting optional binding.
-                    PreviousIssueView(appearance: appearances.second!)
+                    PreviousIssueView(
+                        appearance: appearances.second!,
+                        asyncImageView: asyncImageView
+                    )
                 }
             }
 
@@ -57,7 +64,8 @@ extension HeroAppearancesView {
 struct HeroAppearancesView_Previews: PreviewProvider {
     static var previews: some View {
         HeroAppearancesView(
-            appearances: [.fixture(), .fixture(), .fixture()]
+            appearances: [.fixture(), .fixture(), .fixture()],
+            asyncImageView: { _, _, _ in .fixture() }
         )
             .background(Colors.background)
     }

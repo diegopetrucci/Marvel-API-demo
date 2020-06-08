@@ -6,7 +6,7 @@ final class HeroDetailViewSnapshotTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        record = false
+        record = true
     }
 
     func test_idle() {
@@ -33,7 +33,9 @@ final class HeroDetailViewSnapshotTests: XCTestCase {
 
         assertSnapshot(
             matching: HeroDetailView(
-                viewModel: viewModel)
+                viewModel: viewModel,
+                asyncImageView: { _, _, _ in .fixture() }
+            )
                 .background(Colors.background),
             as: .image()
         )
@@ -63,7 +65,9 @@ final class HeroDetailViewSnapshotTests: XCTestCase {
 
         assertSnapshot(
             matching: HeroDetailView(
-                viewModel: viewModel)
+                viewModel: viewModel,
+                asyncImageView: { _, _, _ in .fixture() }
+            )
                 .background(Colors.background),
             as: .image()
         )
@@ -95,8 +99,11 @@ final class HeroDetailViewSnapshotTests: XCTestCase {
 
         assertSnapshot(
             matching: HeroDetailView(
-                viewModel: viewModel)
-                .background(Colors.background),
+                viewModel: viewModel,
+                asyncImageView: { _, _, _ in .fixture() }
+            )
+                .background(Colors.background)
+                .frame(height: 1000),
             as: .image()
         )
     }
@@ -125,7 +132,9 @@ final class HeroDetailViewSnapshotTests: XCTestCase {
 
         assertSnapshot(
             matching: HeroDetailView(
-                viewModel: viewModel)
+                viewModel: viewModel,
+                asyncImageView: { _, _, _ in .fixture() }
+            )
                 .background(Colors.background),
             as: .image()
         )

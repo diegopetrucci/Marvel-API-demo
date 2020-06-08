@@ -1,28 +1,27 @@
 import SwiftUI
 import Combine
 
-struct AsyncImage: View {
+struct AsyncImageView: View {
     private let image: SwiftUI.State<UIImage>
     private let source: AnyPublisher<UIImage, Never>
-    private let animation: Animation?
+    private let contentMode: ContentMode
 
     init(
         source: AnyPublisher<UIImage, Never>,
         placeholder: UIImage,
-        animation: Animation? = nil
+        contentMode: ContentMode = .fit
     ) {
         self.source = source
         self.image = SwiftUI.State(initialValue: placeholder)
-        self.animation = animation
+        self.contentMode = contentMode
     }
 
     var body: some View {
         return Image(uiImage: image.wrappedValue)
             .renderingMode(.original)
             .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(maxHeight: 300)
-            .bind(source, to: image.projectedValue.animation(animation))
+            .aspectRatio(contentMode: contentMode)
+            .bind(source, to: image.projectedValue)
     }
 }
 

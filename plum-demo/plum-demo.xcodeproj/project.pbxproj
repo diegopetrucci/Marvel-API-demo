@@ -19,6 +19,8 @@
 		6C02648E248590D4002EE69A /* SuperheroCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C02648D248590D4002EE69A /* SuperheroCell.swift */; };
 		6C094787248983250097CDD8 /* Remote+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C094786248983250097CDD8 /* Remote+Fixture.swift */; };
 		6C0947892489835E0097CDD8 /* API+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C0947882489835E0097CDD8 /* API+Fixture.swift */; };
+		6C4A4053248EE83B006C8825 /* ImageDataProvider+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4A4052248EE83B006C8825 /* ImageDataProvider+Fixture.swift */; };
+		6C4A4057248EEDC1006C8825 /* AsyncImageView+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4A4056248EEDC1006C8825 /* AsyncImageView+Fixture.swift */; };
 		6C51CCD8248AD28400B69902 /* SuperheroesDataProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCD7248AD28400B69902 /* SuperheroesDataProviding.swift */; };
 		6C51CCDA248AD5EE00B69902 /* AppearancesDataProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCD9248AD5EE00B69902 /* AppearancesDataProviding.swift */; };
 		6C51CCDC248AE45900B69902 /* ImageDataProviding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C51CCDB248AE45900B69902 /* ImageDataProviding.swift */; };
@@ -112,6 +114,8 @@
 		6C02648D248590D4002EE69A /* SuperheroCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroCell.swift; sourceTree = "<group>"; };
 		6C094786248983250097CDD8 /* Remote+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Remote+Fixture.swift"; sourceTree = "<group>"; };
 		6C0947882489835E0097CDD8 /* API+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Fixture.swift"; sourceTree = "<group>"; };
+		6C4A4052248EE83B006C8825 /* ImageDataProvider+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImageDataProvider+Fixture.swift"; sourceTree = "<group>"; };
+		6C4A4056248EEDC1006C8825 /* AsyncImageView+Fixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AsyncImageView+Fixture.swift"; sourceTree = "<group>"; };
 		6C51CCD7248AD28400B69902 /* SuperheroesDataProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperheroesDataProviding.swift; sourceTree = "<group>"; };
 		6C51CCD9248AD5EE00B69902 /* AppearancesDataProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearancesDataProviding.swift; sourceTree = "<group>"; };
 		6C51CCDB248AE45900B69902 /* ImageDataProviding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDataProviding.swift; sourceTree = "<group>"; };
@@ -243,6 +247,7 @@
 		6C02647D24857192002EE69A /* plum-demoTests */ = {
 			isa = PBXGroup;
 			children = (
+				6C4A4051248EE82A006C8825 /* Utils */,
 				6C02647E24857192002EE69A /* plum_demoTests.swift */,
 				6C02648024857192002EE69A /* Info.plist */,
 				6C6FE3DB2485986400709EAF /* SnapshotTesting+SwiftUI.swift */,
@@ -262,6 +267,20 @@
 				6C6FE3D82485974900709EAF /* SnapshotTests */,
 			);
 			path = RootView;
+			sourceTree = "<group>";
+		};
+		6C4A4051248EE82A006C8825 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6C55869824883582004D9480 /* CharacterDTO+Fixture.swift */,
+				6C55869A248835E3004D9480 /* ThumbnailDTO+Fixture.swift */,
+				6C55869F24883648004D9480 /* ComicDTO+Fixture.swift */,
+				6C094786248983250097CDD8 /* Remote+Fixture.swift */,
+				6C0947882489835E0097CDD8 /* API+Fixture.swift */,
+				6C4A4052248EE83B006C8825 /* ImageDataProvider+Fixture.swift */,
+				6C51CCE0248AFF7300B69902 /* ImagePersister+Fixture.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		6C51CCDD248AFE0C00B69902 /* Tests */ = {
@@ -316,15 +335,10 @@
 			children = (
 				6C558687248814D8004D9480 /* UIIImage+Fixture.swift */,
 				6C55868924881503004D9480 /* URL+Fixture.swift */,
-				6C55869824883582004D9480 /* CharacterDTO+Fixture.swift */,
-				6C55869A248835E3004D9480 /* ThumbnailDTO+Fixture.swift */,
-				6C55869F24883648004D9480 /* ComicDTO+Fixture.swift */,
-				6C094786248983250097CDD8 /* Remote+Fixture.swift */,
-				6C0947882489835E0097CDD8 /* API+Fixture.swift */,
-				6C51CCE0248AFF7300B69902 /* ImagePersister+Fixture.swift */,
 				6C51CCE2248B019B00B69902 /* SuperheroesPersister+Fixture.swift */,
 				6C51CCE4248B027200B69902 /* AppearancePersister+Fixture.swift */,
 				6C6BADEA248C57D0004C64A2 /* MySquadPersister+Fixture.swift */,
+				6C4A4056248EEDC1006C8825 /* AsyncImageView+Fixture.swift */,
 			);
 			path = Fixtures;
 			sourceTree = "<group>";
@@ -631,6 +645,7 @@
 				6C5586A324884CB1004D9480 /* Response.swift in Sources */,
 				6C6DDFBB24899859000AD7A0 /* DataProvider.swift in Sources */,
 				6C55868A24881503004D9480 /* URL+Fixture.swift in Sources */,
+				6C4A4057248EEDC1006C8825 /* AsyncImageView+Fixture.swift in Sources */,
 				6C02648E248590D4002EE69A /* SuperheroCell.swift in Sources */,
 				6C51CCDC248AE45900B69902 /* ImageDataProviding.swift in Sources */,
 				6CE7AEF22486E074000B8B41 /* PreviousIssueView.swift in Sources */,
@@ -676,6 +691,7 @@
 				6C6FE3DC2485986400709EAF /* SnapshotTesting+SwiftUI.swift in Sources */,
 				6C6A386E2485AC5F0047474C /* MySquadViewSnapshotTests.swift in Sources */,
 				6C82335A2486F83800D51F5B /* HeroDetailContainerViewSnapshotTests.swift in Sources */,
+				6C4A4053248EE83B006C8825 /* ImageDataProvider+Fixture.swift in Sources */,
 				6C51CCDF248AFE2200B69902 /* ImageDataProvidingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
